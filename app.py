@@ -22,6 +22,9 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+import charts
+import equations
+
 BASE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE)
 RESULTS = os.path.join(BASE, "results")
@@ -223,11 +226,9 @@ with tab_live:
 
     # --- accuracy so far ---
     st.subheader("Detection accuracy so far")
-    df = pd.DataFrame({SHORT[a]: [r["round_accuracy"] for r in log[a][:t + 1]] for a in ARMS},
-                      index=[r["round"] for r in log[ARMS[0]][:t + 1]])
-    df.index.name = "round"
-    pad = pd.DataFrame(index=range(t + 2, N + 1), columns=df.columns, dtype=float)
-    st.line_chart(pd.concat([df, pad]), color=[COLORS[a] for a in ARMS], height=300)
+    st.altair_chart(charts.accuracy_chart(log, upto=t, n_rounds=N, height=340))
+    st.caption("Shaded bands are stream phases. Triangles mark rounds where that arm "
+               "accepted a proposed update.")
 
     # --- event feed ---
     st.subheader("Event log")
@@ -306,21 +307,28 @@ with tab_summary:
                 f"Traffic evidence alone was not enough.")
 
     st.subheader("Detection accuracy per round")
-    dfa = pd.DataFrame({LABELS[a]: [r["round_accuracy"] for r in log[a]] for a in ARMS},
-                       index=[r["round"] for r in log[ARMS[0]]])
-    dfa.index.name = "round"
-    st.line_chart(dfa, color=[COLORS[a] for a in ARMS], height=340)
+    st.altair_chart(charts.accuracy_chart(log, n_rounds=N, height=400))
+    st.caption("Shaded bands are stream phases; dashed rules mark the boundaries. Triangles "
+               "mark rounds where that arm accepted a proposed update. Hover any point for "
+               "the running accuracy.")
 
     gate_rounds = [r for r in log["gate_full"] if r.get("drift_active")]
     if gate_rounds:
         st.subheader("Gate decision trace")
-        trace = pd.DataFrame([{
-            "round": r["round"],
-            "reputation": r.get("reputation"),
-            "trust score": r.get("trust_score"),
-            "veto threshold": VETO,
-        } for r in gate_rounds]).set_index("round")
-        st.line_chart(trace, height=300, color=["#8b1a1a", "#2ca02c", "#bbbbbb"])
+        gc = charts.gate_chart(log, THRESH, VETO, height=340)
+        if gc is not None:
+            st.altair_chart(gc)
+            st.caption("Orange crosses mark rounds where the traffic-only gate ACCEPTED an "
+                       "update the full gate refused. The trust score there is healthy and "
+                       "above threshold - only the independent reputation channel separates "
+                       "them.")
+
+        st.subheader("Traffic evidence components")
+        ec = charts.evidence_chart(log, height=300)
+        if ec is not None:
+            st.altair_chart(ec)
+            st.caption("All three are attacker-shapeable. Their weighted sum is the trust "
+                       "score T plotted above.")
 
         tbl = pd.DataFrame([{
             "round": r["round"], "phase": r.get("phase"),
@@ -337,6 +345,9 @@ with tab_summary:
         } for r in gate_rounds])
         with st.expander(f"Round-by-round decisions ({len(tbl)} drift-active rounds)"):
             st.dataframe(tbl, width='stretch', hide_index=True)
+
+    st.divider()
+    equations.render(w_att, w_topo, w_temp, THRESH, VETO)
 
     st.divider()
     with st.expander("What this demonstrates — and what it does not"):
