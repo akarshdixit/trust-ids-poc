@@ -1,0 +1,2810 @@
+{
+  "static": [
+    {
+      "round": 1,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 2,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 3,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 4,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 5,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 6,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 7,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 8,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 9,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 10,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 11,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 12,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 13,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 14,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 15,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 16,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 17,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 18,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 19,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 20,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 21,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 22,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 23,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 24,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 25,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 26,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 27,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 28,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 29,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 30,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 31,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 32,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 33,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 34,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 35,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 36,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 37,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 38,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 39,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 40,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 41,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 42,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 43,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 44,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 45,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 46,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 47,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 48,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 49,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 50,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 51,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990196078431373,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 52,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990384615384615,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 53,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990566037735849,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 54,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990740740740741,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 55,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990909090909091,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 56,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991071428571429,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 57,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991228070175439,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 58,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991379310344828,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 59,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991525423728813,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 60,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991666666666666,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 61,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991803278688525,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 62,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9983870967741936,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 63,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9984126984126984,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 64,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.99765625,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 65,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9976923076923077,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 66,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977272727272727,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 67,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977611940298508,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 68,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977941176470588,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 69,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9978260869565218,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 70,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9978571428571429,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    }
+  ],
+  "ungated": [
+    {
+      "round": 1,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 2,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 3,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 4,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 5,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 6,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 7,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 8,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 9,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 10,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 11,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 12,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 13,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 14,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 15,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 16,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 17,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 18,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 19,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 20,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 21,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 22,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 23,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 24,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 25,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 26,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 27,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 28,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 29,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 30,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 31,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 32,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 33,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 34,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 35,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 36,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 37,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 38,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 39,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 40,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 41,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 42,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 43,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 44,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 45,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 46,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 47,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 48,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 49,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 50,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 51,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990196078431373,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 52,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990384615384615,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 53,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990566037735849,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 54,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990740740740741,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 55,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990909090909091,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 56,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991071428571429,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 57,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991228070175439,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 58,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991379310344828,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 59,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991525423728813,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 60,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991666666666666,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 61,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991803278688525,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 62,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9983870967741936,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 63,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9984126984126984,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 64,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.99765625,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 65,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9976923076923077,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 66,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977272727272727,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 67,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977611940298508,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 68,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977941176470588,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 69,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9978260869565218,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 70,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9978571428571429,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    }
+  ],
+  "gate_traffic_only": [
+    {
+      "round": 1,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 2,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 3,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 4,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 5,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 6,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 7,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 8,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 9,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 10,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 11,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 12,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 13,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 14,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 15,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 16,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 17,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 18,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 19,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 20,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 21,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 22,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 23,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 24,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 25,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 26,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 27,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 28,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 29,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 30,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 31,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 32,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 33,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 34,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 35,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 36,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 37,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 38,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 39,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 40,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 41,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 42,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 43,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 44,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 45,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 46,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 47,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 48,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 49,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 50,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 51,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990196078431373,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 52,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990384615384615,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 53,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990566037735849,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 54,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990740740740741,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 55,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990909090909091,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 56,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991071428571429,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 57,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991228070175439,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 58,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991379310344828,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 59,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991525423728813,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 60,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991666666666666,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 61,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991803278688525,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 62,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9983870967741936,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 63,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9984126984126984,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 64,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.99765625,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 65,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9976923076923077,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 66,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977272727272727,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 67,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977611940298508,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 68,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977941176470588,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 69,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9978260869565218,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 70,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9978571428571429,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    }
+  ],
+  "gate_full": [
+    {
+      "round": 1,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 2,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 3,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 4,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 5,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 6,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 7,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 8,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 9,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 10,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 11,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 12,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 13,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 14,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 15,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 16,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 17,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 18,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 19,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 20,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "pre_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 21,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 22,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 23,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 24,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 25,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 26,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 27,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 28,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 29,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 30,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 31,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 32,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 33,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 34,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 35,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 36,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 37,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 38,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 39,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 40,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 41,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 42,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 43,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 44,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 45,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 46,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 47,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 48,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 49,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 50,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "genuine_drift",
+      "reputation": 1.0,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 51,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990196078431373,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 52,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990384615384615,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 53,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990566037735849,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 54,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990740740740741,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 55,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9990909090909091,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 56,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991071428571429,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 57,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991228070175439,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 58,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991379310344828,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 59,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991525423728813,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 60,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991666666666666,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 61,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9991803278688525,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 62,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9983870967741936,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 63,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9984126984126984,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 64,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.99765625,
+      "f1": 0.0,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 65,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9976923076923077,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 66,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977272727272727,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 67,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977611940298508,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 68,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9977941176470588,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 69,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9978260869565218,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 70,
+      "authorized": false,
+      "drift_active": false,
+      "phase": "post_drift",
+      "reputation": 1.0,
+      "accuracy": 0.9978571428571429,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    }
+  ]
+}
