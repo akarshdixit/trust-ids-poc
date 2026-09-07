@@ -1,0 +1,3014 @@
+{
+  "static": [
+    {
+      "round": 1,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 2,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 3,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 4,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 5,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 6,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 7,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 8,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 9,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 10,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 11,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 12,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 13,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 14,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 15,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 16,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 17,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 18,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 19,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 20,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 21,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 22,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 23,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 24,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 25,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 26,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 27,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 28,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 29,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 30,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 31,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 32,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 33,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 34,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 35,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 36,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 37,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 38,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.9986842105263158,
+      "f1": 0.9986091794158554,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 39,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.9974358974358974,
+      "f1": 0.9973614775725593,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 40,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.985,
+      "f1": 0.9847715736040609,
+      "round_accuracy": 0.5
+    },
+    {
+      "round": 41,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.974390243902439,
+      "f1": 0.9743589743589743,
+      "round_accuracy": 0.55
+    },
+    {
+      "round": 42,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.9571428571428572,
+      "f1": 0.957345971563981,
+      "round_accuracy": 0.25
+    },
+    {
+      "round": 43,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.9383720930232559,
+      "f1": 0.9388696655132642,
+      "round_accuracy": 0.15
+    },
+    {
+      "round": 44,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.9181818181818182,
+      "f1": 0.9189189189189189,
+      "round_accuracy": 0.05
+    },
+    {
+      "round": 45,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.8977777777777778,
+      "f1": 0.8986784140969163,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 46,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.8782608695652174,
+      "f1": 0.8793103448275863,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 47,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.8595744680851064,
+      "f1": 0.8607594936708861,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 48,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.8416666666666667,
+      "f1": 0.8429752066115702,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 49,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.8244897959183674,
+      "f1": 0.825910931174089,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 50,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.808,
+      "f1": 0.8095238095238095,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 51,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.792156862745098,
+      "f1": 0.7937743190661478,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 52,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.7769230769230769,
+      "f1": 0.7786259541984732,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 53,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.7622641509433963,
+      "f1": 0.7640449438202247,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 54,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.7481481481481481,
+      "f1": 0.7499999999999999,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 55,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.7345454545454545,
+      "f1": 0.7364620938628159,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 56,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.7214285714285714,
+      "f1": 0.7234042553191489,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 57,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.7087719298245614,
+      "f1": 0.7108013937282229,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 58,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.696551724137931,
+      "f1": 0.6986301369863014,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 59,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6847457627118644,
+      "f1": 0.686868686868687,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 60,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6733333333333333,
+      "f1": 0.6754966887417219,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 61,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6622950819672131,
+      "f1": 0.6644951140065146,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 62,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6516129032258065,
+      "f1": 0.6538461538461539,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 63,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6412698412698413,
+      "f1": 0.6435331230283912,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 64,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.63125,
+      "f1": 0.6335403726708074,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 65,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6215384615384615,
+      "f1": 0.6238532110091742,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 66,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6121212121212121,
+      "f1": 0.6144578313253012,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 67,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6029850746268657,
+      "f1": 0.6053412462908012,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 68,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5941176470588235,
+      "f1": 0.5964912280701754,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 69,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5855072463768116,
+      "f1": 0.5878962536023055,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 70,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5771428571428572,
+      "f1": 0.5795454545454546,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 71,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5830985915492958,
+      "f1": 0.5911602209944751,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 72,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.5888888888888889,
+      "f1": 0.6021505376344086,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 73,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.5945205479452055,
+      "f1": 0.6125654450261779,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 74,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6,
+      "f1": 0.6224489795918368,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 75,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6053333333333333,
+      "f1": 0.6318407960199004,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 76,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6105263157894737,
+      "f1": 0.6407766990291262,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 77,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6155844155844156,
+      "f1": 0.6492890995260664,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 78,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6205128205128205,
+      "f1": 0.6574074074074074,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 79,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.6253164556962025,
+      "f1": 0.6651583710407241,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 80,
+      "authorized": false,
+      "drift_active": true,
+      "accuracy": 0.63,
+      "f1": 0.6725663716814159,
+      "round_accuracy": 1.0
+    }
+  ],
+  "ungated": [
+    {
+      "round": 1,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 2,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 3,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 4,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 5,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 6,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 7,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 8,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 9,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 10,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 11,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 12,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 13,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 14,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 15,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 16,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 17,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 18,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 19,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 20,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 21,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 22,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 23,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 24,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 25,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 26,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 27,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 28,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 29,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 30,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 31,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 32,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 33,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 34,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 35,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 36,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 37,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 38,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.9986842105263158,
+      "f1": 0.9986091794158554,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 39,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.9974358974358974,
+      "f1": 0.9973614775725593,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 40,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.985,
+      "f1": 0.9847715736040609,
+      "round_accuracy": 0.5
+    },
+    {
+      "round": 41,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.9695121951219512,
+      "f1": 0.9693251533742331,
+      "round_accuracy": 0.35
+    },
+    {
+      "round": 42,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.9488095238095238,
+      "f1": 0.9486260454002389,
+      "round_accuracy": 0.1
+    },
+    {
+      "round": 43,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.9279069767441861,
+      "f1": 0.9277389277389276,
+      "round_accuracy": 0.05
+    },
+    {
+      "round": 44,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.9079545454545455,
+      "f1": 0.9078498293515359,
+      "round_accuracy": 0.05
+    },
+    {
+      "round": 45,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.8877777777777778,
+      "f1": 0.8876529477196886,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 46,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.8684782608695653,
+      "f1": 0.8683351468988031,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 47,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.85,
+      "f1": 0.8498402555910544,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 48,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.8322916666666667,
+      "f1": 0.832116788321168,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 49,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.8153061224489796,
+      "f1": 0.81511746680286,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 50,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.799,
+      "f1": 0.7987987987987988,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 51,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.7833333333333333,
+      "f1": 0.7831207065750736,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 52,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.7682692307692308,
+      "f1": 0.7680461982675649,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 53,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.7537735849056604,
+      "f1": 0.7535410764872521,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 54,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.7398148148148148,
+      "f1": 0.7395736793327155,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 55,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.7263636363636363,
+      "f1": 0.7261146496815287,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 56,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.7133928571428572,
+      "f1": 0.7131367292225201,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 57,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.7008771929824561,
+      "f1": 0.7006145741878842,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 58,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.6887931034482758,
+      "f1": 0.6885245901639345,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 59,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.6771186440677966,
+      "f1": 0.6768447837150127,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 60,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.6658333333333334,
+      "f1": 0.6655546288573811,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 61,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.6549180327868852,
+      "f1": 0.6546349466776046,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 62,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.6443548387096775,
+      "f1": 0.6440677966101694,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 63,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.6341269841269841,
+      "f1": 0.6338363780778395,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 64,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.62421875,
+      "f1": 0.6239249413604379,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 65,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.6146153846153846,
+      "f1": 0.6143187066974596,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 66,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.6053030303030303,
+      "f1": 0.6050037907505686,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 67,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.5962686567164179,
+      "f1": 0.5959671396564601,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 68,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5875,
+      "f1": 0.5871964679911701,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 69,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5789855072463768,
+      "f1": 0.5786802030456853,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 70,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5707142857142857,
+      "f1": 0.5704074338813439,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 71,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5767605633802817,
+      "f1": 0.5823488533703961,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 72,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.5826388888888889,
+      "f1": 0.5936443542934415,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 73,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.5746575342465754,
+      "f1": 0.5857238158772515,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 74,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.5668918918918919,
+      "f1": 0.5780118499012509,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 75,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.5593333333333333,
+      "f1": 0.5705003248862898,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 76,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.5519736842105263,
+      "f1": 0.563181526619628,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 77,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.5448051948051948,
+      "f1": 0.5560481317289423,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 78,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.5378205128205128,
+      "f1": 0.5490931832395247,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 79,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.5310126582278482,
+      "f1": 0.5423100679431748,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 80,
+      "authorized": true,
+      "drift_active": true,
+      "accuracy": 0.524375,
+      "f1": 0.5356924954240391,
+      "round_accuracy": 0.0
+    }
+  ],
+  "gate_traffic_only": [
+    {
+      "round": 1,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 2,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 3,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 4,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 5,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 6,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 7,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 8,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 9,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 10,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 11,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 12,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 13,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 14,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 15,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 16,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 17,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 18,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 19,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 20,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 21,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 22,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 23,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 24,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 25,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 26,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 27,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 28,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 29,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 30,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 31,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 32,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 33,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 34,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 35,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 36,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 37,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 38,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.9986842105263158,
+      "f1": 0.9986091794158554,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 39,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.9974358974358974,
+      "f1": 0.9973614775725593,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 40,
+      "authorized": true,
+      "drift_active": true,
+      "trust_score": 0.5952288983375825,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.92046931669007,
+      "temporal": 0.39696034443520517,
+      "reason": "trust_score 0.60 >= threshold 0.55",
+      "accuracy": 0.985,
+      "f1": 0.9847715736040609,
+      "round_accuracy": 0.5
+    },
+    {
+      "round": 41,
+      "authorized": true,
+      "drift_active": true,
+      "trust_score": 0.5503174377970899,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.3479707892784597,
+      "topology": 0.8914092232060915,
+      "temporal": 0.47902118374626185,
+      "reason": "trust_score 0.55 >= threshold 0.55",
+      "accuracy": 0.9695121951219512,
+      "f1": 0.9693251533742331,
+      "round_accuracy": 0.35
+    },
+    {
+      "round": 42,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.4900507965890448,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.2367224137570615,
+      "topology": 0.8928414095080719,
+      "temporal": 0.42503136077932885,
+      "reason": "trust_score 0.49 < threshold 0.55",
+      "accuracy": 0.9488095238095238,
+      "f1": 0.9486260454002389,
+      "round_accuracy": 0.1
+    },
+    {
+      "round": 43,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.49759242045791013,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.21874692137556878,
+      "topology": 0.9202659756301199,
+      "temporal": 0.44671286406215543,
+      "reason": "trust_score 0.50 < threshold 0.55",
+      "accuracy": 0.9279069767441861,
+      "f1": 0.9277389277389276,
+      "round_accuracy": 0.05
+    },
+    {
+      "round": 44,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.41091658149132637,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.06372982599614707,
+      "topology": 0.9387569062269334,
+      "temporal": 0.34599193074929174,
+      "reason": "trust_score 0.41 < threshold 0.55",
+      "accuracy": 0.9079545454545455,
+      "f1": 0.9078498293515359,
+      "round_accuracy": 0.05
+    },
+    {
+      "round": 45,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.42671385872073253,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.04264053480730978,
+      "topology": 0.938405954543744,
+      "temporal": 0.42711952811561815,
+      "reason": "trust_score 0.43 < threshold 0.55",
+      "accuracy": 0.8877777777777778,
+      "f1": 0.8876529477196886,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 46,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.40230864539052613,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.04201036880527714,
+      "topology": 0.8706370053290157,
+      "temporal": 0.41437798756570215,
+      "reason": "trust_score 0.40 < threshold 0.55",
+      "accuracy": 0.8684782608695653,
+      "f1": 0.8683351468988031,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 47,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.3990074674351196,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.025101785958750678,
+      "topology": 0.9400095033067449,
+      "temporal": 0.35654634019865283,
+      "reason": "trust_score 0.40 < threshold 0.55",
+      "accuracy": 0.85,
+      "f1": 0.8498402555910544,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 48,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.3862012921381505,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.02117884112087476,
+      "topology": 0.8966243378448845,
+      "temporal": 0.36247484778778427,
+      "reason": "trust_score 0.39 < threshold 0.55",
+      "accuracy": 0.8322916666666667,
+      "f1": 0.832116788321168,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 49,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.397121218711873,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.017235668371474056,
+      "topology": 0.9329288948885245,
+      "temporal": 0.3678276096557534,
+      "reason": "trust_score 0.40 < threshold 0.55",
+      "accuracy": 0.8153061224489796,
+      "f1": 0.81511746680286,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 50,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.3891462190031264,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.01172975256772052,
+      "topology": 0.8784564681673634,
+      "temporal": 0.40305792508609717,
+      "reason": "trust_score 0.39 < threshold 0.55",
+      "accuracy": 0.799,
+      "f1": 0.7987987987987988,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 51,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.4151823208920483,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.006914798685205781,
+      "topology": 0.9298345688835372,
+      "temporal": 0.4448867691763494,
+      "reason": "trust_score 0.42 < threshold 0.55",
+      "accuracy": 0.7833333333333333,
+      "f1": 0.7831207065750736,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 52,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.4089789664496315,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.008642901161167282,
+      "topology": 0.9119421429539748,
+      "temporal": 0.4397972103299072,
+      "reason": "trust_score 0.41 < threshold 0.55",
+      "accuracy": 0.7682692307692308,
+      "f1": 0.7680461982675649,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 53,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.42343030433898976,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.008493563418891514,
+      "topology": 0.8959520807860337,
+      "temporal": 0.5041575157854102,
+      "reason": "trust_score 0.42 < threshold 0.55",
+      "accuracy": 0.7537735849056604,
+      "f1": 0.7535410764872521,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 54,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.3995775138066056,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.007137790277035372,
+      "topology": 0.8951981359370537,
+      "temporal": 0.4272098563822513,
+      "reason": "trust_score 0.40 < threshold 0.55",
+      "accuracy": 0.7398148148148148,
+      "f1": 0.7395736793327155,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 55,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.39900561759387326,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.009230990691383612,
+      "topology": 0.916518374429775,
+      "temporal": 0.4011923632946244,
+      "reason": "trust_score 0.40 < threshold 0.55",
+      "accuracy": 0.7263636363636363,
+      "f1": 0.7261146496815287,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 56,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.398674120907344,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.010611917829010609,
+      "topology": 0.9088710832288975,
+      "temporal": 0.4058934293569016,
+      "reason": "trust_score 0.40 < threshold 0.55",
+      "accuracy": 0.7133928571428572,
+      "f1": 0.7131367292225201,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 57,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.4080150242817622,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.010717836582387008,
+      "topology": 0.8604345752627716,
+      "temporal": 0.4853250568999195,
+      "reason": "trust_score 0.41 < threshold 0.55",
+      "accuracy": 0.7008771929824561,
+      "f1": 0.7006145741878842,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 58,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.40544084264466207,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.004054874794031327,
+      "topology": 0.9209418435860504,
+      "temporal": 0.42512113217078135,
+      "reason": "trust_score 0.41 < threshold 0.55",
+      "accuracy": 0.6887931034482758,
+      "f1": 0.6885245901639345,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 59,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.417573695480956,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.012198031689963751,
+      "topology": 0.944773872114644,
+      "temporal": 0.43087440390192444,
+      "reason": "trust_score 0.42 < threshold 0.55",
+      "accuracy": 0.6771186440677966,
+      "f1": 0.6768447837150127,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 60,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.41331841000710134,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.016749214675163937,
+      "topology": 0.94840281344221,
+      "temporal": 0.40699293368124256,
+      "reason": "trust_score 0.41 < threshold 0.55",
+      "accuracy": 0.6658333333333334,
+      "f1": 0.6655546288573811,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 61,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.4082739867788201,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.013498768340073797,
+      "topology": 0.9347110423333765,
+      "temporal": 0.40820388914259204,
+      "reason": "trust_score 0.41 < threshold 0.55",
+      "accuracy": 0.6549180327868852,
+      "f1": 0.6546349466776046,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 62,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.40865025198411514,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.008847016959803389,
+      "topology": 0.9588770811214494,
+      "temporal": 0.39149440287919646,
+      "reason": "trust_score 0.41 < threshold 0.55",
+      "accuracy": 0.6443548387096775,
+      "f1": 0.6440677966101694,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 63,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.4308535612152743,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.007124554821792306,
+      "topology": 0.9203918391432914,
+      "temporal": 0.5062872918119,
+      "reason": "trust_score 0.43 < threshold 0.55",
+      "accuracy": 0.6341269841269841,
+      "f1": 0.6338363780778395,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 64,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.43499453708953856,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.01793818589604934,
+      "topology": 0.9724931123294475,
+      "temporal": 0.4535710967742819,
+      "reason": "trust_score 0.43 < threshold 0.55",
+      "accuracy": 0.62421875,
+      "f1": 0.6239249413604379,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 65,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.42108407177505897,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.012233655639262597,
+      "topology": 0.9568732925954848,
+      "temporal": 0.43042873913569496,
+      "reason": "trust_score 0.42 < threshold 0.55",
+      "accuracy": 0.6146153846153846,
+      "f1": 0.6143187066974596,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 66,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.4034568230701542,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.011039938264721438,
+      "topology": 0.870782180042709,
+      "temporal": 0.4593539791715097,
+      "reason": "trust_score 0.40 < threshold 0.55",
+      "accuracy": 0.6053030303030303,
+      "f1": 0.6050037907505686,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 67,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.41692424750502693,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.006519990955366761,
+      "topology": 0.979219380337754,
+      "temporal": 0.40183479007184686,
+      "reason": "trust_score 0.42 < threshold 0.55",
+      "accuracy": 0.5962686567164179,
+      "f1": 0.5959671396564601,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 68,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5875,
+      "f1": 0.5871964679911701,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 69,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5789855072463768,
+      "f1": 0.5786802030456853,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 70,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5707142857142857,
+      "f1": 0.5704074338813439,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 71,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5767605633802817,
+      "f1": 0.5823488533703961,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 72,
+      "authorized": true,
+      "drift_active": true,
+      "trust_score": 0.8000904219795543,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.9941079151561409,
+      "topology": 0.950733000499847,
+      "temporal": 0.3907578525571461,
+      "reason": "trust_score 0.80 >= threshold 0.55",
+      "accuracy": 0.5826388888888889,
+      "f1": 0.5936443542934415,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 73,
+      "authorized": true,
+      "drift_active": true,
+      "trust_score": 0.6410603554984524,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5749875445086797,
+      "topology": 0.9524950039226439,
+      "temporal": 0.4177227883939577,
+      "reason": "trust_score 0.64 >= threshold 0.55",
+      "accuracy": 0.5746575342465754,
+      "f1": 0.5857238158772515,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 74,
+      "authorized": true,
+      "drift_active": true,
+      "trust_score": 0.6062341335084105,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5158851990293196,
+      "topology": 0.9464572493208967,
+      "temporal": 0.3864762636680452,
+      "reason": "trust_score 0.61 >= threshold 0.55",
+      "accuracy": 0.5668918918918919,
+      "f1": 0.5780118499012509,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 75,
+      "authorized": true,
+      "drift_active": true,
+      "trust_score": 0.5839972300197319,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.4445099652562342,
+      "topology": 0.9563321764990356,
+      "temporal": 0.397645303225092,
+      "reason": "trust_score 0.58 >= threshold 0.55",
+      "accuracy": 0.5593333333333333,
+      "f1": 0.5705003248862898,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 76,
+      "authorized": true,
+      "drift_active": true,
+      "trust_score": 0.597519852371527,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.4955842120304855,
+      "topology": 0.9250863859536514,
+      "temporal": 0.4058675059107913,
+      "reason": "trust_score 0.60 >= threshold 0.55",
+      "accuracy": 0.5519736842105263,
+      "f1": 0.563181526619628,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 77,
+      "authorized": true,
+      "drift_active": true,
+      "trust_score": 0.6093853874714238,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5382275442687927,
+      "topology": 0.9196653642199538,
+      "temporal": 0.3939825349930685,
+      "reason": "trust_score 0.61 >= threshold 0.55",
+      "accuracy": 0.5448051948051948,
+      "f1": 0.5560481317289423,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 78,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.48001750479847194,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.20858423864910713,
+      "topology": 0.9682521623450737,
+      "temporal": 0.3536938687843567,
+      "reason": "trust_score 0.48 < threshold 0.55",
+      "accuracy": 0.5378205128205128,
+      "f1": 0.5490931832395247,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 79,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5012948345110959,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.29815983393958856,
+      "topology": 0.936905635373235,
+      "temporal": 0.3365307010776333,
+      "reason": "trust_score 0.50 < threshold 0.55",
+      "accuracy": 0.5310126582278482,
+      "f1": 0.5423100679431748,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 80,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5034089516022281,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.2500007346682465,
+      "topology": 0.9268785963221995,
+      "temporal": 0.41781692946089877,
+      "reason": "trust_score 0.50 < threshold 0.55",
+      "accuracy": 0.524375,
+      "f1": 0.5356924954240391,
+      "round_accuracy": 0.0
+    }
+  ],
+  "gate_full": [
+    {
+      "round": 1,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 2,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 3,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 4,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 5,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 6,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 7,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 8,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 9,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 10,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 11,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 12,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 13,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 14,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 15,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 16,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 17,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 18,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 19,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 20,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 0.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 21,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 22,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 23,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 24,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 25,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 26,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 27,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 28,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 29,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 30,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 31,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 32,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 33,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 34,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 35,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 36,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 37,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 1.0,
+      "f1": 1.0,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 38,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.9986842105263158,
+      "f1": 0.9986091794158554,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 39,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.9974358974358974,
+      "f1": 0.9973614775725593,
+      "round_accuracy": 0.95
+    },
+    {
+      "round": 40,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5952288983375825,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.92046931669007,
+      "temporal": 0.39696034443520517,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.985,
+      "f1": 0.9847715736040609,
+      "round_accuracy": 0.5
+    },
+    {
+      "round": 41,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.611129122085706,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.8914092232060915,
+      "temporal": 0.47902118374626185,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.974390243902439,
+      "f1": 0.9743589743589743,
+      "round_accuracy": 0.55
+    },
+    {
+      "round": 42,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5953618310862202,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.8928414095080719,
+      "temporal": 0.42503136077932885,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.9571428571428572,
+      "f1": 0.957345971563981,
+      "round_accuracy": 0.25
+    },
+    {
+      "round": 43,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6100936519076826,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9202659756301199,
+      "temporal": 0.44671286406215543,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.9383720930232559,
+      "f1": 0.9388696655132642,
+      "round_accuracy": 0.15
+    },
+    {
+      "round": 44,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5854246510928676,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9387569062269334,
+      "temporal": 0.34599193074929174,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.9181818181818182,
+      "f1": 0.9189189189189189,
+      "round_accuracy": 0.05
+    },
+    {
+      "round": 45,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6096576447978086,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.938405954543744,
+      "temporal": 0.42711952811561815,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.8977777777777778,
+      "f1": 0.8986784140969163,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 46,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5855044978684153,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.8706370053290157,
+      "temporal": 0.41437798756570215,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.8782608695652174,
+      "f1": 0.8793103448275863,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 47,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5889667530516194,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9400095033067449,
+      "temporal": 0.35654634019865283,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.8595744680851064,
+      "f1": 0.8607594936708861,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 48,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5777297556898007,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.8966243378448845,
+      "temporal": 0.36247484778778427,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.8416666666666667,
+      "f1": 0.8429752066115702,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 49,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5902269513632834,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9329288948885245,
+      "temporal": 0.3678276096557534,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.8244897959183674,
+      "f1": 0.825910931174089,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 50,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5844543179760382,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.8784564681673634,
+      "temporal": 0.40305792508609717,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.808,
+      "f1": 0.8095238095238095,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 51,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.612416401417966,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9298345688835372,
+      "temporal": 0.4448867691763494,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.792156862745098,
+      "f1": 0.7937743190661478,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 52,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6055218059851646,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9119421429539748,
+      "temporal": 0.4397972103299072,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.7769230769230769,
+      "f1": 0.7786259541984732,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 53,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6200328789714331,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.8959520807860337,
+      "temporal": 0.5041575157854102,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.7622641509433963,
+      "f1": 0.7640449438202247,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 54,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5967223976957915,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.8951981359370537,
+      "temporal": 0.4272098563822513,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.7481481481481481,
+      "f1": 0.7499999999999999,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 55,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5953132213173198,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.916518374429775,
+      "temporal": 0.4011923632946244,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.7345454545454545,
+      "f1": 0.7364620938628159,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 56,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5944293537757397,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9088710832288975,
+      "temporal": 0.4058934293569016,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.7214285714285714,
+      "f1": 0.7234042553191489,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 57,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6037278896488073,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.8604345752627716,
+      "temporal": 0.4853250568999195,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.7087719298245614,
+      "f1": 0.7108013937282229,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 58,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6038188927270496,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9209418435860504,
+      "temporal": 0.42512113217078135,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.696551724137931,
+      "f1": 0.6986301369863014,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 59,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6126944828049705,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.944773872114644,
+      "temporal": 0.43087440390192444,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6847457627118644,
+      "f1": 0.686868686868687,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 60,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6066187241370358,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.94840281344221,
+      "temporal": 0.40699293368124256,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6733333333333333,
+      "f1": 0.6754966887417219,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 61,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6028744794427906,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9347110423333765,
+      "temporal": 0.40820388914259204,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6622950819672131,
+      "f1": 0.6644951140065146,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 62,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6051114452001938,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9588770811214494,
+      "temporal": 0.39149440287919646,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6516129032258065,
+      "f1": 0.6538461538461539,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 63,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6280037392865574,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9203918391432914,
+      "temporal": 0.5062872918119,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6412698412698413,
+      "f1": 0.6435331230283912,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 64,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6278192627311188,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9724931123294475,
+      "temporal": 0.4535710967742819,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.63125,
+      "f1": 0.6335403726708074,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 65,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6161906095193539,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9568732925954848,
+      "temporal": 0.43042873913569496,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6215384615384615,
+      "f1": 0.6238532110091742,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 66,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5990408477642657,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.870782180042709,
+      "temporal": 0.4593539791715097,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6121212121212121,
+      "f1": 0.6144578313253012,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 67,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6143162511228802,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.979219380337754,
+      "temporal": 0.40183479007184686,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6029850746268657,
+      "f1": 0.6053412462908012,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 68,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5941176470588235,
+      "f1": 0.5964912280701754,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 69,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5855072463768116,
+      "f1": 0.5878962536023055,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 70,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5771428571428572,
+      "f1": 0.5795454545454546,
+      "round_accuracy": 0.0
+    },
+    {
+      "round": 71,
+      "authorized": false,
+      "drift_active": false,
+      "accuracy": 0.5830985915492958,
+      "f1": 0.5911602209944751,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 72,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6024472559170979,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.950733000499847,
+      "temporal": 0.3907578525571461,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.5888888888888889,
+      "f1": 0.6021505376344086,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 73,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6110653376949804,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9524950039226439,
+      "temporal": 0.4177227883939577,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.5945205479452055,
+      "f1": 0.6125654450261779,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 74,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5998800538966826,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9464572493208967,
+      "temporal": 0.3864762636680452,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6,
+      "f1": 0.6224489795918368,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 75,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6061932439172383,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9563321764990356,
+      "temporal": 0.397645303225092,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6053333333333333,
+      "f1": 0.6318407960199004,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 76,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5992861675593328,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9250863859536514,
+      "temporal": 0.4058675059107913,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6105263157894737,
+      "f1": 0.6407766990291262,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 77,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5940943697639067,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9196653642199538,
+      "temporal": 0.3939825349930685,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6155844155844156,
+      "f1": 0.6492890995260664,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 78,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5965838093388292,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9682521623450737,
+      "temporal": 0.3536938687843567,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6205128205128205,
+      "f1": 0.6574074074074074,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 79,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.5820309009352606,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.936905635373235,
+      "temporal": 0.3365307010776333,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.6253164556962025,
+      "f1": 0.6651583710407241,
+      "round_accuracy": 1.0
+    },
+    {
+      "round": 80,
+      "authorized": false,
+      "drift_active": true,
+      "trust_score": 0.6034086577349295,
+      "reputation": 0.05000000000000001,
+      "attribution": 0.5,
+      "topology": 0.9268785963221995,
+      "temporal": 0.41781692946089877,
+      "reason": "out-of-band reputation veto (0.05 < 0.3)",
+      "accuracy": 0.63,
+      "f1": 0.6725663716814159,
+      "round_accuracy": 1.0
+    }
+  ]
+}
