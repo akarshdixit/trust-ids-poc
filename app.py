@@ -45,6 +45,18 @@ SHORT = {
 COLORS = {"static": "#888888", "ungated": "#d62728",
           "gate_traffic_only": "#ff7f0e", "gate_full": "#2ca02c"}
 
+EVIDENCE_PLAIN = [
+    ("attribution",
+     "A  ·  same direction as drift we already approved?",
+     "1.0 = matches approved drift · 0.5 = nothing to compare to yet · 0.0 = opposite"),
+    ("topology",
+     "P  ·  varied like real usage, or narrow like one C2 channel?",
+     "High = many behaviours · Low = the same pattern repeating"),
+    ("temporal",
+     "S  ·  smooth and gradual, rather than a sudden jump?",
+     "High = looks like the last window. A patient attacker maximises this on purpose."),
+]
+
 PHASE_HELP = {
     "calib_benign": "calibration",
     "calib_attack": "calibration",
@@ -179,7 +191,7 @@ with tab_live:
            f"reputation of this window: **{now['static'].get('reputation', float('nan')):.2f}**")
 
     # --- live classification, this window ---
-    st.subheader("Classifying this window")
+    st.subheader("Classifying this window — 20 records, predict before training")
     cs = st.columns(4)
     for col, arm in zip(cs, ARMS):
         acc = now[arm]["round_accuracy"]
@@ -192,7 +204,7 @@ with tab_live:
                              if t > 0 else None))
 
     # --- the gate, right now ---
-    st.subheader("Authorization gate")
+    st.subheader("Authorization gate — should the model learn from this window?")
     gnow = now["gate_full"]
     tnow = now["gate_traffic_only"]
     if not gnow.get("drift_active"):
@@ -200,19 +212,21 @@ with tab_live:
     else:
         gc = st.columns([2, 2, 3])
         with gc[0]:
-            st.markdown("**Traffic evidence**")
-            for k in ("attribution", "topology", "temporal"):
+            st.markdown("**Traffic evidence** — the attacker can shape all three")
+            for k, plain, tip in EVIDENCE_PLAIN:
                 v = gnow.get(k)
                 if v is not None:
-                    st.progress(min(1.0, max(0.0, v)), text=f"{k}: {v:.3f}")
+                    st.progress(min(1.0, max(0.0, v)), text=f"{plain}  —  {v:.3f}")
+                    st.caption(tip)
             ts = gnow.get("trust_score")
             if ts is not None:
                 st.markdown(f"trust score **{ts:.3f}** vs threshold {THRESH:.2f}")
         with gc[1]:
-            st.markdown("**Out-of-band channel**")
+            st.markdown("**Out-of-band channel** — the attacker cannot shape this")
             rep = gnow.get("reputation", float("nan"))
-            st.metric("reputation", f"{rep:.2f}")
-            st.caption(f"veto below {VETO:.2f}")
+            st.metric("R  ·  reputation of the destination", f"{rep:.2f}")
+            st.caption(f"1.0 = known-good destination · 0.05 = known C2 infrastructure. "
+                       f"Refuse outright below {VETO:.2f}.")
         with gc[2]:
             st.markdown("**Decision**")
             if tnow.get("authorized"):
