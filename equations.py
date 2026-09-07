@@ -1,9 +1,11 @@
 r"""
-The mechanism explained twice: once in plain English for presenting, once
-formally for the report and the viva.
+The mechanism explained twice: plain first, formal second.
 
-Kept in its own module because LaTeX strings and shell escaping do not mix, and
-because these definitions must stay in lockstep with the code they describe:
+The plain version is written for someone in their first year who has not seen
+this problem before. The maths sits behind a toggle so it can be switched off
+entirely when presenting.
+
+These must stay in lockstep with the code they describe:
   1    evidence/featurespace.py
   2-4  evidence/extract.py
   5-6  gate/trust_gate.py
@@ -13,38 +15,30 @@ because these definitions must stay in lockstep with the code they describe:
 import pandas as pd
 import streamlit as st
 
-# symbol, name, plain meaning, range, who controls it
 GLOSSARY = [
-    ("z", "Calibrated features",
-     "Every measurement rescaled so they can be compared to each other",
-     "—", "Defender (frozen at calibration)"),
-    ("A", "Attribution consistency",
-     "Is this change heading the same way as changes we already approved?",
-     "0 to 1", "Attacker can shape this"),
-    ("P", "Topology / diversity",
-     "Is the traffic varied like real usage, or narrow like one C2 channel?",
-     "0 to 1", "Attacker can shape this"),
-    ("S", "Temporal stability",
-     "Is the change smooth and gradual rather than a sudden jump?",
-     "0 to 1", "Attacker can shape this"),
-    ("T", "Trust score",
-     "The three traffic signals above, combined into one verdict",
-     "0 to 1", "Attacker can shape this"),
+    ("A", "Same direction?",
+     "Is this change going the same way as changes we already said were fine?",
+     "Yes - just send traffic that drifts the 'approved' way"),
+    ("P", "Mixed traffic?",
+     "Is the traffic doing lots of different things (like a real device), or the "
+     "same thing over and over (like phoning one bad server)?",
+     "Yes - just vary the traffic on purpose"),
+    ("S", "Smooth change?",
+     "Is the change gradual, or did everything jump at once?",
+     "Yes - and it is free. Just go slowly."),
+    ("T", "Traffic score",
+     "The three answers above, added up into one score out of 1",
+     "Yes - it is only made of the three above"),
     ("R", "Reputation",
-     "Independent verdict on WHERE the traffic is going, not what it looks like",
-     "0 to 1", "Attacker cannot shape this"),
-    ("tau_T", "Trust threshold",
-     "How much traffic evidence we demand before accepting an update",
-     "0.55", "Defender sets it"),
-    ("tau_R", "Veto threshold",
-     "How bad reputation has to be before we refuse outright",
-     "0.30", "Defender sets it"),
+     "Is this traffic going somewhere known to be bad? Looks at the DESTINATION, "
+     "not at what the traffic looks like",
+     "NO - this is the whole point"),
 ]
 
 
-def _card(symbol, title, plain, equations, reading, show_math):
-    st.markdown(f"### {symbol} — {title}")
-    st.info(f"**In plain English:** {plain}")
+def _card(title, plain, equations, reading, show_math):
+    st.markdown(f"##### {title}")
+    st.info(plain)
     if show_math:
         for eq in equations:
             st.latex(eq)
@@ -53,144 +47,153 @@ def _card(symbol, title, plain, equations, reading, show_math):
 
 
 def render(w_att, w_topo, w_temp, thresh, veto):
-    st.subheader("What the system is actually doing")
+    st.subheader("What is going on here?")
 
-    st.markdown(
-        "**The one-sentence version.** An intrusion detector that keeps learning can be "
-        "taught the wrong thing, so before it accepts any update we score the traffic "
-        "three ways — but all three are things an attacker can fake, so we also check an "
-        "independent signal the attacker does not control, and let that one overrule "
-        "everything else.")
+    st.markdown("""
+**The problem.** A normal security system is trained once and then never changes.
+That is a problem, because real networks change - a device gets a software update
+and starts behaving differently, and the system starts raising false alarms.
 
-    st.markdown("#### Cheat sheet")
+**The obvious fix.** Let the system keep learning. Every so often it looks at recent
+traffic and says "OK, this is what normal looks like now."
+
+**Why that is dangerous.** An attacker who knows the system keeps learning can abuse
+it. Instead of attacking loudly, they attack *very slowly*, nudging their traffic a
+tiny bit more normal-looking each time, until the system has been taught that their
+attack IS normal. This is called poisoning.
+
+**Our idea.** Before the system is allowed to learn anything new, something has to
+approve it. That approver looks at the traffic - but a patient attacker can fake
+anything about the traffic. So it *also* checks one thing the attacker cannot fake:
+**where the traffic is going**. If the destination is a known-bad server, the update
+is refused, no matter how innocent the traffic looks.
+""")
+
+    st.markdown("#### The five things we measure")
     st.table(pd.DataFrame(
-        GLOSSARY, columns=["Symbol", "Name", "What it means", "Range", "Who controls it"]
-    ).set_index("Symbol"))
+        GLOSSARY,
+        columns=["", "Short name", "What it actually asks", "Can an attacker fake it?"]
+    ).set_index(""))
     st.caption(
-        "The last column is the whole argument. Rows 2-5 are computed from the traffic "
-        "being adapted to, so a patient attacker can shape all of them. R is not — which is "
-        "why it is allowed to overrule them.")
+        "Read the last column. Four of the five can be faked by an attacker who is "
+        "willing to be patient, because they are all measured from the traffic itself. "
+        "Only R cannot - which is exactly why R is allowed to overrule the rest.")
 
     st.divider()
-    show_math = st.toggle("Show the equations", value=True,
-                          help="Turn off for a non-technical audience.")
+    show_math = st.toggle("Show the maths", value=False,
+                          help="Off by default. Turn on for the report and the viva.")
 
     left, right = st.columns(2, gap="large")
 
     with left:
-        _card("z", "Calibrated feature space",
-              "Put every measurement on the same scale first, so no single one can "
-              "shout down the others.",
+        _card("Step 0 - put everything on the same scale",
+              "Some measurements in this data are millions of times bigger than others. "
+              "If we do not fix that, the big ones drown out everything else, like one "
+              "person shouting over a whole room.",
               [r"z = \frac{\operatorname{sgn}(x)\odot\log(1+|x|) - \mu_{\mathrm{cal}}}"
                r"{\sigma_{\mathrm{cal}}}"],
-              "*Why it matters:* raw N-BaIoT features span 19 orders of magnitude. "
-              "Without this, five jitter-variance columns account for 100% of every "
-              "comparison and the other 110 features are ignored. The scale is fixed "
-              "during calibration and never updated — otherwise the attacker could move "
-              "the ruler.", show_math)
+              "We work out the scale once, at the start, from traffic we trust - and "
+              "then never change it. If we recalculated it as we went, the attacker "
+              "could slowly move the goalposts.", show_math)
 
-        _card("A", "Attribution consistency",
-              "Is this change heading in the same direction as changes we already "
-              "approved as genuine?",
-              [r"\Delta_w = \mu_w - b",
-               r"A = \operatorname{clip}\!\left(\frac{1}{2}\left(1 + "
-               r"\frac{\Delta_w \cdot r}{\lVert\Delta_w\rVert \, \lVert r\rVert}"
-               r"\right),\, 0,\, 1\right)"],
-              "**1.0** — drifting exactly the way previously approved drift went  \n"
-              "**0.5** — nothing to compare against yet (no update approved so far)  \n"
-              "**0.0** — drifting the opposite way to everything we have trusted", show_math)
+        _card("A - Same direction?",
+              "Is this change heading the same way as changes we already approved?",
+              [r"A = \tfrac{1}{2}\left(1 + \cos\theta\right), \qquad "
+               r"\theta = \angle(\Delta_w,\ r)"],
+              "**1.0** = going exactly the way approved changes went  \n"
+              "**0.5** = we have not approved anything yet, so there is nothing to "
+              "compare to  \n"
+              "**0.0** = going the opposite way", show_math)
 
-        _card("P", "Topology / diversity",
-              "Is this traffic varied, the way genuine device usage is — or narrow and "
-              "repetitive, the way a single command-and-control channel is?",
+        _card("P - Mixed traffic?",
+              "Real devices do lots of different things. A machine quietly reporting to "
+              "one attacker-controlled server does the same thing over and over.",
               [r"P = \frac{-\sum_i p_i \ln p_i}{\ln K}, \qquad K = 9"],
-              "**High** — many different behaviours, looks like organic usage  \n"
-              "**Low** — the same narrow pattern repeating  \n"
-              "*Stand-in measure:* N-BaIoT ships no IP or port data, so we approximate "
-              "topology using the spread of the traffic features themselves.", show_math)
+              "**High** = lots of different behaviour, looks like a real device  \n"
+              "**Low** = the same narrow pattern repeating  \n"
+              "*Note:* this data does not tell us which addresses were contacted, so we "
+              "estimate variety from the traffic measurements instead.", show_math)
 
-        _card("S", "Temporal stability",
-              "Is the change smooth and gradual, rather than a sudden jump?",
+        _card("S - Smooth change?",
+              "Did things change gradually, or jump all at once? A sudden jump is "
+              "suspicious.",
               [r"S = \frac{1}{1 + \lVert \mu_w - \mu_{w-1} \rVert}"],
-              "**High** — this window looks much like the last one  \n"
-              "**Low** — something changed abruptly  \n"
-              "*The catch:* this is exactly the signal a patient attacker maximises on "
-              "purpose. Going slowly is free for them. That is why a high S alone proves "
-              "nothing — and why the traffic-only baseline exists, to show it being "
-              "fooled.", show_math)
+              "**High** = this batch looks much like the last one  \n"
+              "**Low** = something changed suddenly  \n"
+              "**The catch:** a patient attacker gets a high score here for free, just "
+              "by going slowly. So a high S on its own proves nothing at all.",
+              show_math)
 
     with right:
-        _card("T", "Trust score",
-              "Roll the three traffic signals into a single number.",
-              [r"T = w_A A + w_P P + w_S S",
-               rf"T = {w_att:.2f}\,A + {w_topo:.2f}\,P + {w_temp:.2f}\,S"],
-              "*The limitation to say out loud:* all three inputs come from the traffic "
-              "we are being asked to learn from. No choice of weights fixes that — a "
-              "sufficiently patient attacker can raise all three at once. That is the "
-              "argument for needing a channel outside the traffic.", show_math)
+        _card("T - the traffic score",
+              "Add the three answers above together into one number between 0 and 1.",
+              [rf"T = {w_att:.2f}\,A + {w_topo:.2f}\,P + {w_temp:.2f}\,S"],
+              "**The important limitation:** all three inputs are measured from the very "
+              "traffic we are being asked to trust. Changing how we weight them does not "
+              "help - a patient attacker can push all three up at once. This is why we "
+              "need something from outside the traffic.", show_math)
 
-        _card("R", "Reputation — the out-of-band channel",
-              "A verdict on WHERE the traffic is going, arriving from outside the "
-              "traffic itself.",
-              [r"R(x) \neq f(x)"],
-              "**1.0** — destination is known-good  \n"
-              "**0.05** — destination is known command-and-control infrastructure  \n"
-              "*Why it is independent:* R is not computed from the features x at all. "
-              "The attacker can make traffic look however they like and R does not "
-              "move.  \n"
-              "*Be honest in review:* here R is simulated from ground-truth traffic "
-              "origin, because N-BaIoT has no reputation field. It is a stand-in for a "
-              "real threat-intel feed, and closer to an oracle than one would be.",
-              show_math)
+        _card("R - reputation (the outside check)",
+              "Is this traffic going to a destination already known to be bad? This does "
+              "not look at what the traffic looks like at all - only where it is headed.",
+              [r"R \text{ does not depend on the traffic } x"],
+              "**1.0** = destination looks fine  \n"
+              "**0.05** = destination is a known attacker server  \n"
+              "The attacker can make their traffic look as innocent as they like and this "
+              "number does not budge.  \n\n"
+              "**Say this honestly in the review:** we do not have a real threat-intel "
+              "feed, so R is simulated from whether the record truly came from an attack "
+              "file. It stands in for a real feed. This proves what an approval step can "
+              "do *once it has an outside signal* - it does not prove we can detect the "
+              "attacker.", show_math)
 
-        _card("Decision", "The authorization rule",
-              "Refuse outright if reputation is bad. Otherwise accept only if the "
-              "traffic evidence clears the bar.",
+        _card("The decision",
+              "If reputation is bad, refuse - full stop. Otherwise, accept only if the "
+              "traffic score is high enough.",
               [r"\mathrm{auth} = \begin{cases}"
-               r"\textbf{false} & \text{if } R < \tau_R \ \ (\text{veto})\\[6pt]"
-               r"\mathbb{1}\!\left[\,T \geq \tau_T\,\right] & \text{otherwise}"
-               r"\end{cases}",
+               r"\textbf{false} & \text{if } R < \tau_R\\[4pt]"
+               r"T \geq \tau_T & \text{otherwise}\end{cases}",
                rf"\tau_T = {thresh:.2f}, \qquad \tau_R = {veto:.2f}"],
-              "The veto line is the **only** difference between the proposed mechanism "
-              "and the traffic-only baseline. Everything else about them is identical — "
-              "same model, same evidence, same threshold, same data.", show_math)
+              "That first line is the **only** difference between our method and the "
+              "'checks traffic only' comparison. Same model, same measurements, same "
+              "cut-off, same data. One extra check.", show_math)
 
-        _card("Update", "What happens after a decision",
-              "An approved update moves the model AND our reference point. A refused "
-              "one changes absolutely nothing.",
-              [r"r \leftarrow (1-\lambda)\,r + \lambda\,\Delta_w, \qquad b \leftarrow \mu_w",
-               r"\lambda = 0.3"],
-              "*Why this matters for the result:* a rejected poisoning attempt leaves no "
-              "residue at all — not in the model, not in the baseline b, not in the "
-              "reference direction r. That is why the gated arm ends up identical to the "
-              "frozen baseline rather than merely better than the ungated one.",
-              show_math)
+        _card("What happens afterwards",
+              "If an update is approved, the system learns it and we move our reference "
+              "point. If it is refused, absolutely nothing changes.",
+              [r"r \leftarrow 0.7\,r + 0.3\,\Delta_w, \qquad b \leftarrow \mu_w"],
+              "A refused attack leaves no trace at all. That is why our method ends up "
+              "performing exactly like the never-learning system on the final test, "
+              "instead of being merely a bit better than the careless one.", show_math)
 
-        _card("Trigger", "When is an update even proposed?",
-              "Only when the frozen detector starts making mistakes — that is what "
-              "signals the world has changed.",
-              [r"\text{ADWIN}\big(\,\mathbb{1}[\hat{y}^{\text{static}}_t \neq y_t]\,\big)"
-               r"\;\Rightarrow\; \text{15-round window}"],
-              "ADWIN watches the error stream of the arm that **never updates**, so the "
-              "trigger is identical for all four arms and cannot be corrupted by an "
-              "arm's own bad updates. Outside a triggered window nothing is proposed and "
-              "nobody learns.", show_math)
+        _card("When do we even ask?",
+              "Only when the never-learning system starts getting things wrong. That is "
+              "the signal that the world has changed and an update might be needed.",
+              [r"\text{ADWIN on } \mathbb{1}[\hat{y}^{\text{static}}_t \neq y_t]"],
+              "We watch the system that never updates, so the trigger is the same for "
+              "all four and cannot be corrupted by any of them making bad decisions. "
+              "The rest of the time, nothing is proposed and nobody learns.", show_math)
 
     st.divider()
-    st.markdown("#### How to read the live demo")
-    st.markdown(
-        "1. **Benign phase** — nothing is happening, all four arms agree.\n"
-        "2. **Poisoning phase** — the attacker walks attack traffic slowly toward the "
-        "benign region. The traffic evidence starts to look fine, because the attacker "
-        "is making it look fine. Reputation stays at 0.05 throughout.\n"
-        "3. **Attack looks benign** — the attacker is now fully inside the benign region. "
-        "Every arm scores 0 here, including the frozen one. That is not a failure of the "
-        "method: these packets are indistinguishable from benign traffic by construction, "
-        "so no traffic-based detector could do better. Only R knows.\n"
-        "4. **Repeat attack** — an obvious, full-strength repeat of the attack the model "
-        "was originally trained on. **This is the phase that decides the result.** Whoever "
-        "accepted poisoned updates has forgotten how to catch it; whoever refused them "
-        "still catches it every time.")
-    st.caption(
-        "Present the repeat-attack number as the headline. Overall accuracy is dragged "
-        "down for every arm by phase 3, where a perfect detector would also score zero.")
+    st.markdown("#### How to read the demo, in four steps")
+    st.markdown("""
+**Step 1 - normal traffic.** Nothing happening. All four systems agree.
+
+**Step 2 - the attacker sneaks in.** Attack traffic is nudged closer to normal, a
+little at a time. The traffic checks start looking fine, because the attacker is
+deliberately making them look fine. Reputation stays bad the whole time.
+
+**Step 3 - the attack now looks completely normal.** Every system scores 0 here,
+**including the one that never learns**. That is not our method failing: at this
+point the attack traffic is genuinely identical to normal traffic, so *nothing* that
+only looks at traffic could tell the difference. Only reputation knows.
+
+**Step 4 - an obvious attack comes back.** A loud, full-strength version of the same
+attack the system was originally trained to catch. **This is the step that decides
+everything.** Any system that accepted the poisoned updates has forgotten how to
+catch it. Any system that refused them still catches it every single time.
+""")
+    st.success(
+        "**The one number to quote:** how often each system catches the obvious attack "
+        "in Step 4. Do not lead with overall accuracy - Step 3 drags that down for "
+        "everyone, including a hypothetical perfect detector.")

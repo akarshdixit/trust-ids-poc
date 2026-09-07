@@ -31,42 +31,34 @@ RESULTS = os.path.join(BASE, "results")
 
 ARMS = ["static", "ungated", "gate_traffic_only", "gate_full"]
 LABELS = {
-    "static": "Static (never updates)",
-    "ungated": "Ungated continual learning",
-    "gate_traffic_only": "Traffic-only gate (ExpIDS-style)",
-    "gate_full": "Proposed: trust gate + reputation veto",
+    "static": "Never learns",
+    "ungated": "Learns from everything",
+    "gate_traffic_only": "Checks traffic only",
+    "gate_full": "Our method (traffic + reputation)",
 }
-SHORT = {
-    "static": "Static",
-    "ungated": "Ungated",
-    "gate_traffic_only": "Traffic-only gate",
-    "gate_full": "Full gate (proposed)",
-}
+SHORT = LABELS
 COLORS = {"static": "#888888", "ungated": "#d62728",
           "gate_traffic_only": "#ff7f0e", "gate_full": "#2ca02c"}
 
 EVIDENCE_PLAIN = [
-    ("attribution",
-     "A  ·  same direction as drift we already approved?",
-     "1.0 = matches approved drift · 0.5 = nothing to compare to yet · 0.0 = opposite"),
-    ("topology",
-     "P  ·  varied like real usage, or narrow like one C2 channel?",
-     "High = many behaviours · Low = the same pattern repeating"),
-    ("temporal",
-     "S  ·  smooth and gradual, rather than a sudden jump?",
-     "High = looks like the last window. A patient attacker maximises this on purpose."),
+    ("attribution", "Same direction as changes we already approved?",
+     "1.0 = yes  ·  0.5 = nothing approved yet  ·  0.0 = opposite direction"),
+    ("topology", "Traffic doing lots of different things?",
+     "High = looks like a real device  ·  Low = same thing over and over"),
+    ("temporal", "Changing smoothly rather than jumping?",
+     "High = gradual. A patient attacker gets a high score here for free."),
 ]
 
 PHASE_HELP = {
-    "calib_benign": "calibration",
-    "calib_attack": "calibration",
-    "pre_attack": "Clean benign steady state",
-    "slow_poison": "ATTACKER ACTIVE — attack traffic being paced toward the benign region",
-    "post_poison": "ATTACKER ACTIVE — traffic now sits inside the benign region",
-    "recovery_check": "PAYOFF — obvious full-strength repeat of the calibrated attack",
-    "pre_drift": "Benign steady state, device A",
-    "genuine_drift": "Legitimate benign drift toward device B",
-    "post_drift": "Settled at device B's benign operating point",
+    "calib_benign": "training",
+    "calib_attack": "training",
+    "pre_attack": "Step 1 - normal traffic, nothing happening",
+    "slow_poison": "Step 2 - ATTACKER SNEAKING IN, nudging traffic to look normal",
+    "post_poison": "Step 3 - the attack now looks completely normal",
+    "recovery_check": "Step 4 - AN OBVIOUS ATTACK IS BACK. This step decides everything.",
+    "pre_drift": "Step 1 - normal traffic from device A",
+    "genuine_drift": "Step 2 - slowly changing to a new normal",
+    "post_drift": "Step 3 - settled into the new normal (device B)",
 }
 
 st.set_page_config(page_title="Trust-Aware IDS", layout="wide")
@@ -191,7 +183,7 @@ with tab_live:
            f"reputation of this window: **{now['static'].get('reputation', float('nan')):.2f}**")
 
     # --- live classification, this window ---
-    st.subheader("Classifying this window — 20 records, predict before training")
+    st.subheader("Is each system spotting the attack right now?")
     cs = st.columns(4)
     for col, arm in zip(cs, ARMS):
         acc = now[arm]["round_accuracy"]
@@ -199,12 +191,12 @@ with tab_live:
         with col:
             st.markdown(f"**{SHORT[arm]}**")
             st.progress(acc, text=f"{ncorrect}/{ROUND_SIZE} correct this window")
-            st.metric("running accuracy", f"{now[arm]['accuracy']:.3f}",
+            st.metric("right so far", f"{now[arm]['accuracy']:.3f}",
                       delta=(f"{now[arm]['accuracy'] - log[arm][t - 1]['accuracy']:+.3f}"
                              if t > 0 else None))
 
     # --- the gate, right now ---
-    st.subheader("Authorization gate — should the model learn from this window?")
+    st.subheader("Should the system be allowed to learn from this traffic?")
     gnow = now["gate_full"]
     tnow = now["gate_traffic_only"]
     if not gnow.get("drift_active"):
@@ -212,7 +204,7 @@ with tab_live:
     else:
         gc = st.columns([2, 2, 3])
         with gc[0]:
-            st.markdown("**Traffic evidence** — the attacker can shape all three")
+            st.markdown("**Checks on the traffic** - an attacker can fake all three")
             for k, plain, tip in EVIDENCE_PLAIN:
                 v = gnow.get(k)
                 if v is not None:
@@ -222,13 +214,13 @@ with tab_live:
             if ts is not None:
                 st.markdown(f"trust score **{ts:.3f}** vs threshold {THRESH:.2f}")
         with gc[1]:
-            st.markdown("**Out-of-band channel** — the attacker cannot shape this")
+            st.markdown("**Check from outside** - an attacker cannot fake this")
             rep = gnow.get("reputation", float("nan"))
-            st.metric("R  ·  reputation of the destination", f"{rep:.2f}")
+            st.metric("Where is this traffic going?", f"{rep:.2f}")
             st.caption(f"1.0 = known-good destination · 0.05 = known C2 infrastructure. "
                        f"Refuse outright below {VETO:.2f}.")
         with gc[2]:
-            st.markdown("**Decision**")
+            st.markdown("**What each one decided**")
             if tnow.get("authorized"):
                 st.warning("Traffic-only gate: **AUTHORIZED** — evidence looked fine")
             else:
@@ -239,10 +231,10 @@ with tab_live:
                 st.error(f"Full gate: **REFUSED** — {gnow.get('reason', '')}")
 
     # --- accuracy so far ---
-    st.subheader("Detection accuracy so far")
+    st.subheader("How often each system has been right")
     st.altair_chart(charts.accuracy_chart(log, upto=t, n_rounds=N, height=340))
-    st.caption("Shaded bands are stream phases. Triangles mark rounds where that arm "
-               "accepted a proposed update.")
+    st.caption("Hover anywhere to read every line at that round. Shaded stripes are the "
+               "four steps. Triangles mark where a system accepted an update.")
 
     # --- event feed ---
     st.subheader("Event log")
@@ -302,9 +294,9 @@ with tab_summary:
         n_auth = sum(1 for r in log[arm] if r.get("authorized"))
         with col:
             st.markdown(f"**{LABELS[arm]}**")
-            st.metric("Overall accuracy", f"{final['accuracy']:.3f}")
+            st.metric("Right overall", f"{final['accuracy']:.3f}")
             if recovery[arm] is not None:
-                st.metric("Repeat-attack detection", f"{recovery[arm]:.3f}",
+                st.metric("Caught the obvious attack", f"{recovery[arm]:.3f}",
                           help="Accuracy on an obvious, full-strength repeat of the attack "
                                "the model was calibrated on — measures lasting damage from "
                                "unauthorized updates.")
@@ -320,29 +312,28 @@ with tab_summary:
                 f"out-of-band reputation channel, still detects it {gf:.0%} of the time. "
                 f"Traffic evidence alone was not enough.")
 
-    st.subheader("Detection accuracy per round")
+    st.subheader("How often each system was right")
     st.altair_chart(charts.accuracy_chart(log, n_rounds=N, height=400))
-    st.caption("Shaded bands are stream phases; dashed rules mark the boundaries. Triangles "
-               "mark rounds where that arm accepted a proposed update. Hover any point for "
-               "the running accuracy.")
+    st.caption("Hover anywhere to read every line at that round. Shaded stripes are the "
+               "four steps. Triangles mark where a system accepted an update - watch "
+               "what happens to the orange line shortly after it accepts one.")
 
     gate_rounds = [r for r in log["gate_full"] if r.get("drift_active")]
     if gate_rounds:
-        st.subheader("Gate decision trace")
+        st.subheader("Traffic score vs reputation, side by side")
         gc = charts.gate_chart(log, THRESH, VETO, height=340)
         if gc is not None:
             st.altair_chart(gc)
-            st.caption("Orange crosses mark rounds where the traffic-only gate ACCEPTED an "
-                       "update the full gate refused. The trust score there is healthy and "
-                       "above threshold - only the independent reputation channel separates "
-                       "them.")
+            st.caption("Orange crosses are the moments that matter: the traffic-only system said "
+                       "YES and ours said NO. Both saw the same healthy traffic score. Only "
+                       "the reputation line told them apart.")
 
-        st.subheader("Traffic evidence components")
+        st.subheader("The three traffic checks, separately")
         ec = charts.evidence_chart(log, height=300)
         if ec is not None:
             st.altair_chart(ec)
-            st.caption("All three are attacker-shapeable. Their weighted sum is the trust "
-                       "score T plotted above.")
+            st.caption("An attacker can push all three of these up. Added together they make the "
+                       "traffic score in the chart above.")
 
         tbl = pd.DataFrame([{
             "round": r["round"], "phase": r.get("phase"),
