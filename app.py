@@ -110,11 +110,15 @@ st.sidebar.divider()
 live = st.sidebar.toggle(
     "Live re-run with custom gate", value=False,
     help="Recompute the whole pipeline. Slow on real data (~1 min first time), then cached.")
-trust_threshold = st.sidebar.slider("Trust threshold", 0.0, 1.0, 0.55, 0.01, disabled=not live)
-veto_threshold = st.sidebar.slider("Reputation veto threshold", 0.0, 1.0, 0.30, 0.01, disabled=not live)
-w_att = st.sidebar.slider("weight: attribution", 0.0, 1.0, 0.40, 0.05, disabled=not live)
-w_topo = st.sidebar.slider("weight: topology", 0.0, 1.0, 0.30, 0.05, disabled=not live)
-w_temp = st.sidebar.slider("weight: temporal", 0.0, 1.0, 0.30, 0.05, disabled=not live)
+with st.sidebar.expander("Advanced settings", expanded=False):
+    st.caption("Only used when live re-run is on.")
+    trust_threshold = st.slider("Traffic score needed to accept", 0.0, 1.0, 0.55, 0.01,
+                                disabled=not live)
+    veto_threshold = st.slider("Refuse outright below this reputation", 0.0, 1.0, 0.30,
+                               0.01, disabled=not live)
+    w_att = st.slider("Weight: same direction?", 0.0, 1.0, 0.40, 0.05, disabled=not live)
+    w_topo = st.slider("Weight: mixed traffic?", 0.0, 1.0, 0.30, 0.05, disabled=not live)
+    w_temp = st.slider("Weight: smooth change?", 0.0, 1.0, 0.30, 0.05, disabled=not live)
 
 if live:
     log = run_live(scenario, tag, trust_threshold, veto_threshold, w_att, w_topo, w_temp)
@@ -270,7 +274,6 @@ with tab_live:
             st.rerun()
         else:
             st.session_state.playing = False
-            st.balloons()
 
 # ==================================================================== SUMMARY
 with tab_summary:
@@ -282,6 +285,10 @@ with tab_summary:
             "watches the frozen arm's *error rate*, and this benign-to-benign shift never "
             "crosses the decision boundary — the static model still scores ~0.99, so nothing "
             "needed adapting.")
+
+    st.markdown("**Four systems, same traffic, same model.** The only difference is what "
+                "each one is allowed to learn from. Scroll down for the plain-English "
+                "explanation.")
 
     recovery = {}
     for arm in ARMS:
@@ -320,18 +327,18 @@ with tab_summary:
 
     gate_rounds = [r for r in log["gate_full"] if r.get("drift_active")]
     if gate_rounds:
-        st.subheader("Traffic score vs reputation, side by side")
-        gc = charts.gate_chart(log, THRESH, VETO, height=340)
-        if gc is not None:
-            st.altair_chart(gc)
+        with st.expander("Look closer: traffic score vs reputation"):
+            gc = charts.gate_chart(log, THRESH, VETO, height=330)
+            if gc is not None:
+                st.altair_chart(gc)
             st.caption("Orange crosses are the moments that matter: the traffic-only system said "
                        "YES and ours said NO. Both saw the same healthy traffic score. Only "
                        "the reputation line told them apart.")
 
-        st.subheader("The three traffic checks, separately")
-        ec = charts.evidence_chart(log, height=300)
-        if ec is not None:
-            st.altair_chart(ec)
+        with st.expander("Look closer: the three traffic checks"):
+            ec = charts.evidence_chart(log, height=290)
+            if ec is not None:
+                st.altair_chart(ec)
             st.caption("An attacker can push all three of these up. Added together they make the "
                        "traffic score in the chart above.")
 
@@ -352,7 +359,8 @@ with tab_summary:
             st.dataframe(tbl, width='stretch', hide_index=True)
 
     st.divider()
-    equations.render(w_att, w_topo, w_temp, THRESH, VETO)
+    with st.expander("Explain how this works", expanded=False):
+        equations.render(w_att, w_topo, w_temp, THRESH, VETO)
 
     st.divider()
     with st.expander("What this demonstrates — and what it does not"):
