@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 660" width="1400" height="660" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="aGrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="aBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1e5f9e"/>
+    </marker>
+    <marker id="aTeal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f766e"/>
+    </marker>
+    <marker id="aAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#b45309"/>
+    </marker>
+    <marker id="aPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <rect width="1400" height="660" fill="#ffffff"/>
+
+  <!-- ============ feedback loop (far left) ============ -->
+  <path d="M 255 470 H 22 V 71 H 326" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#aGrey)"/>
+  <text x="14" y="285" font-size="10.5" fill="#6b7280" transform="rotate(-90 14 285)" text-anchor="middle">prequential error stream</text>
+
+  <!-- ============ boundary conditions ============ -->
+  <rect x="330" y="38" width="340" height="66" rx="9" fill="#f9fafb" stroke="#6b7280" stroke-width="2"/>
+  <text x="500" y="63" font-size="15" font-weight="700" fill="#111827" text-anchor="middle" letter-spacing="0.6">TRAFFIC  STREAM  +  DRIFT  TRIGGER</text>
+  <text x="500" y="80" font-size="10.5" fill="#4b5563" text-anchor="middle">N-BaIoT · 20 records per round · ADWIN watches the frozen model</text>
+  <text x="500" y="95" font-size="10.5" fill="#4b5563" text-anchor="middle">a change point opens a 15-round adaptation window</text>
+
+  <path d="M 500 104 V 143" fill="none" stroke="#6b7280" stroke-width="1.6" marker-end="url(#aGrey)"/>
+  <text x="512" y="127" font-size="10" fill="#6b7280">drift-active window</text>
+
+  <!-- ============ tier 1 : proposer ============ -->
+  <rect x="255" y="145" width="490" height="88" rx="9" fill="#eaf2fb" stroke="#1e5f9e" stroke-width="2.4"/>
+  <text x="500" y="173" font-size="16" font-weight="700" fill="#0f3d6b" text-anchor="middle" letter-spacing="1">ADAPTATION  TIER  —  PROPOSER</text>
+  <text x="500" y="193" font-size="10.5" fill="#374151" text-anchor="middle">untrusted · every signal it measures comes from attacker-shapeable traffic</text>
+  <text x="500" y="209" font-size="10.5" fill="#374151" text-anchor="middle">relabels the window as normal · proposes an update only</text>
+  <text x="500" y="225" font-size="10.5" fill="#374151" text-anchor="middle">never reaches the model directly</text>
+
+  <path d="M 500 233 V 273" fill="none" stroke="#1e5f9e" stroke-width="1.8" marker-end="url(#aBlue)"/>
+  <text x="512" y="257" font-size="10" fill="#1e5f9e">proposed update</text>
+
+  <!-- ============ tier 2 : the gate ============ -->
+  <rect x="255" y="275" width="490" height="104" rx="9" fill="#e6f4f1" stroke="#0f766e" stroke-width="2.6"/>
+  <text x="500" y="303" font-size="16" font-weight="700" fill="#0b4f4a" text-anchor="middle" letter-spacing="1">AUTHORIZATION  TIER  —  TRUST  GATE</text>
+  <text x="500" y="323" font-size="10.5" fill="#374151" text-anchor="middle">independent authority · decides on every proposed update</text>
+  <text x="500" y="339" font-size="10.5" fill="#374151" text-anchor="middle">weighs traffic evidence A, P, S into a score T — then cross-checks R</text>
+  <text x="500" y="355" font-size="10.5" fill="#374151" text-anchor="middle">reputation may veto regardless of T</text>
+  <text x="500" y="371" font-size="10.5" font-weight="600" fill="#0b4f4a" text-anchor="middle">the only route to the model</text>
+
+  <path d="M 500 379 V 418" fill="none" stroke="#0f766e" stroke-width="1.8" marker-end="url(#aTeal)"/>
+  <text x="512" y="403" font-size="10" fill="#0f766e">authorized updates only</text>
+
+  <!-- ============ tier 3 : the model ============ -->
+  <rect x="255" y="420" width="490" height="76" rx="9" fill="#fef6e7" stroke="#d97706" stroke-width="2.4"/>
+  <text x="500" y="448" font-size="16" font-weight="700" fill="#8a4b06" text-anchor="middle" letter-spacing="1">MODEL  —  ONLINE  IDS</text>
+  <text x="500" y="468" font-size="10.5" fill="#374151" text-anchor="middle">River · standardiser → logistic regression</text>
+  <text x="500" y="484" font-size="10.5" fill="#374151" text-anchor="middle">prequential: predict first, then train</text>
+
+  <!-- ============ out-of-band reputation (left) ============ -->
+  <rect x="42" y="288" width="172" height="82" rx="9" fill="#fdf3e3" stroke="#b45309" stroke-width="2.2"/>
+  <text x="128" y="313" font-size="12.5" font-weight="700" fill="#8a4b06" text-anchor="middle">R — OUT-OF-BAND</text>
+  <text x="128" y="329" font-size="12.5" font-weight="700" fill="#8a4b06" text-anchor="middle">REPUTATION</text>
+  <text x="128" y="347" font-size="10" fill="#4b5563" text-anchor="middle">not a function of the traffic</text>
+  <text x="128" y="361" font-size="10" fill="#4b5563" text-anchor="middle">the attacker cannot move it</text>
+  <path d="M 214 329 H 251" fill="none" stroke="#b45309" stroke-width="1.8" marker-end="url(#aAmber)"/>
+
+  <!-- ============ assurance / decision log (right) ============ -->
+  <rect x="795" y="288" width="176" height="82" rx="9" fill="#f5f0fe" stroke="#7c3aed" stroke-width="2.2"/>
+  <text x="883" y="313" font-size="12.5" font-weight="700" fill="#5b21b6" text-anchor="middle">DECISION  LOG</text>
+  <text x="883" y="332" font-size="10" fill="#4b5563" text-anchor="middle">observer only</text>
+  <text x="883" y="346" font-size="10" fill="#4b5563" text-anchor="middle">records proposed vs applied</text>
+  <text x="883" y="360" font-size="10" fill="#4b5563" text-anchor="middle">with the reason for each</text>
+  <path d="M 745 320 H 791" fill="none" stroke="#7c3aed" stroke-width="1.8" marker-end="url(#aPurple)"/>
+  <text x="752" y="313" font-size="10" fill="#7c3aed">copy</text>
+
+  <!-- ============ refusal path ============ -->
+  <path d="M 745 355 H 768 V 540 H 500" fill="none" stroke="#8b1a1a" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#aGrey)"/>
+  <text x="620" y="534" font-size="10" fill="#8b1a1a" text-anchor="middle">refused — nothing changes anywhere</text>
+
+  <!-- ============ caption ============ -->
+  <text x="500" y="576" font-size="11.5" font-style="italic" fill="#374151" text-anchor="middle">The proposer never bypasses the gate, and a refused update leaves no residue —</text>
+  <text x="500" y="594" font-size="11.5" font-style="italic" fill="#374151" text-anchor="middle">not in the model, not in the baseline, not in the reference direction.</text>
+  <text x="500" y="616" font-size="11.5" font-style="italic" font-weight="600" fill="#111827" text-anchor="middle">The gate is an authorization authority, not a second detector.</text>
+
+  <!-- ============ annotation column ============ -->
+  <text x="1010" y="60" font-size="12.5" font-weight="700" fill="#111827">The adaptation tier proposes.</text>
+  <text x="1010" y="82" font-size="11" fill="#374151">It is untrusted. Every signal it can measure is taken</text>
+  <text x="1010" y="98" font-size="11" fill="#374151">from traffic the attacker controls, so it never reaches</text>
+  <text x="1010" y="114" font-size="11" fill="#374151">the model directly.</text>
+
+  <text x="1010" y="152" font-size="12.5" font-weight="700" fill="#111827">The gate disposes.</text>
+  <text x="1010" y="174" font-size="11" fill="#374151">Every proposed update is checked before it can touch</text>
+  <text x="1010" y="190" font-size="11" fill="#374151">the model. It is the only route in.</text>
+
+  <text x="1010" y="228" font-size="12.5" font-weight="700" fill="#111827">Reputation can overrule the evidence.</text>
+  <text x="1010" y="250" font-size="11" fill="#374151">A, P and S are all measured from the traffic, so a patient</text>
+  <text x="1010" y="266" font-size="11" fill="#374151">attacker can raise all three. R is not — a healthy traffic</text>
+  <text x="1010" y="282" font-size="11" fill="#374151">score does not excuse a known-bad destination.</text>
+
+  <text x="1010" y="320" font-size="12.5" font-weight="700" fill="#111827">Refusal is a designed path.</text>
+  <text x="1010" y="342" font-size="11" fill="#374151">A refused update changes nothing at all. The baseline and</text>
+  <text x="1010" y="358" font-size="11" fill="#374151">reference direction only ever advance through drift that</text>
+  <text x="1010" y="374" font-size="11" fill="#374151">was authorized, so a rejected attack leaves no trace.</text>
+
+  <text x="1010" y="412" font-size="12.5" font-weight="700" fill="#111827">Drift is detected on the frozen model.</text>
+  <text x="1010" y="434" font-size="11" fill="#374151">ADWIN watches the arm that never updates, so the trigger</text>
+  <text x="1010" y="450" font-size="11" fill="#374151">is identical for all four arms and cannot be corrupted by</text>
+  <text x="1010" y="466" font-size="11" fill="#374151">any arm's own bad decisions.</text>
+
+  <text x="1010" y="504" font-size="12.5" font-weight="700" fill="#111827">Remove one branch to get the baseline.</text>
+  <text x="1010" y="526" font-size="11" fill="#374151">Delete the R input and this becomes the traffic-only gate.</text>
+  <text x="1010" y="542" font-size="11" fill="#374151">That single deletion is what was fooled at rounds 40, 72,</text>
+  <text x="1010" y="558" font-size="11" fill="#374151">73, 74 and 75 — and it is the entire contribution.</text>
+</svg>
