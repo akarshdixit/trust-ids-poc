@@ -1,0 +1,1118 @@
+<title>Demo Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#F6F8F8; --surface:#FFFFFF; --sunk:#EFF3F2;
+  --ink:#12211F; --ink-mid:#374B48; --ink-mute:#5D6E6B;
+  --rule:#DCE5E3; --rule-firm:#C3D1CE;
+  --accent:#0F766E; --accent-wash:#E6F2F0;
+  --refuse:#8B1A1A; --refuse-wash:#FBEDED;
+  --intact:#1B7A3E; --intact-wash:#EAF5EE;
+  --broken:#B45309; --broken-wash:#FDF3E3;
+  --propose:#1E5F9E; --propose-wash:#EAF2FB;
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--serif);font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+.shell{display:grid;grid-template-columns:236px minmax(0,1fr);max-width:1560px;margin:0 auto}
+.index{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;
+  padding:38px 22px 38px 28px;border-right:1px solid var(--rule);
+  font-family:var(--sans);font-size:12.5px;line-height:1.45}
+.index .brand{font-weight:700;font-size:14px;margin-bottom:2px}
+.index .brandsub{color:var(--ink-mute);font-size:11.5px;margin-bottom:22px}
+.index a{display:grid;grid-template-columns:26px 1fr;gap:5px;text-decoration:none;
+  color:var(--ink-mid);padding:4px 6px;border-radius:4px;margin-bottom:1px}
+.index a .n{color:var(--rule-firm);font-variant-numeric:tabular-nums;font-weight:600}
+.index a:hover{background:var(--accent-wash);color:var(--accent)}
+.index a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+main{padding:38px 44px 120px;min-width:0}
+.wrap{max-width:76ch}
+h1,h2,h3{font-family:var(--sans);text-wrap:balance;margin:0}
+h1{font-size:34px;line-height:1.15;letter-spacing:-.025em;font-weight:600;margin-bottom:12px}
+h2{font-size:21px;letter-spacing:-.015em;font-weight:600}
+h3{font-size:15px;font-weight:600;margin:26px 0 8px}
+p{margin:0 0 15px}
+.lede{font-size:18.5px;line-height:1.55;color:var(--ink-mid)}
+.eyebrow{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+
+.note{border-left:3px solid var(--accent);background:var(--accent-wash);
+  padding:14px 18px;margin:20px 0;font-size:15.5px}
+.note.warn{border-left-color:var(--broken);background:var(--broken-wash)}
+.note.stop{border-left-color:var(--refuse);background:var(--refuse-wash)}
+.note p:last-child{margin-bottom:0}
+.note .tag{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;display:block;margin-bottom:5px;color:var(--accent)}
+.note.warn .tag{color:var(--broken)} .note.stop .tag{color:var(--refuse)}
+
+/* ---------- screenshot block ---------- */
+.block{padding-top:44px;margin-top:44px;border-top:1px solid var(--rule)}
+.bhead{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:start;margin-bottom:18px}
+.bnum{font-family:var(--sans);font-size:27px;font-weight:600;color:var(--rule-firm);
+  line-height:1;font-variant-numeric:tabular-nums;padding-top:3px}
+.bsub{font-family:var(--sans);font-size:13px;color:var(--ink-mute);margin-top:4px}
+
+.shot{position:relative;aspect-ratio:1920/1032;width:100%;
+  border:1px solid var(--rule-firm);border-radius:4px;overflow:hidden;background:var(--sunk)}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  z-index:1;background:var(--surface);display:block}
+.ph{position:absolute;inset:0;display:grid;place-content:center;text-align:center;
+  font-family:var(--sans);font-size:14px;color:var(--ink-mute);padding:24px;z-index:0}
+.ph b{font-family:var(--mono);color:var(--accent);font-size:15px}
+.anno{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.anno .hl{fill:none;stroke:#E8590C;stroke-width:4;rx:6}
+.anno .ar{fill:none;stroke:#E8590C;stroke-width:4;stroke-linecap:round}
+.anno .pin{fill:#E8590C}
+.anno .pint{fill:#fff;font-family:"IBM Plex Sans",sans-serif;font-size:26px;
+  font-weight:700;text-anchor:middle;dominant-baseline:central}
+
+/* ---------- explanation cards ---------- */
+.notes{list-style:none;counter-reset:nn;margin:20px 0 0;padding:0;display:grid;gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:4px}
+.notes li{counter-increment:nn;background:var(--surface);padding:15px 18px 15px 56px;position:relative}
+.notes li::before{content:counter(nn);position:absolute;left:16px;top:15px;
+  width:26px;height:26px;border-radius:50%;background:#E8590C;color:#fff;
+  font-family:var(--sans);font-size:14px;font-weight:700;display:grid;place-content:center}
+.notes b.q{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-mute);display:inline-block;min-width:52px}
+.notes .row{margin-bottom:6px}
+.notes .row:last-child{margin-bottom:0}
+.notes .ttl{font-family:var(--sans);font-weight:600;font-size:15px;margin-bottom:8px;display:block}
+
+.scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--surface);border-radius:3px;margin:18px 0}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:13px}
+th,td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--rule);white-space:nowrap}
+th{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-mute);background:var(--sunk)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:none}
+.chip{display:inline-block;font-family:var(--sans);font-size:10.5px;font-weight:600;
+  padding:2px 7px;border-radius:3px}
+.chip.ok{background:var(--intact-wash);color:var(--intact)}
+.chip.no{background:var(--refuse-wash);color:var(--refuse)}
+.chip.warn{background:var(--broken-wash);color:var(--broken)}
+code{font-family:var(--mono);font-size:13.5px;background:var(--sunk);padding:1px 5px;border-radius:3px}
+ul,ol{margin:0 0 15px;padding-left:22px} li{margin-bottom:6px}
+strong{font-weight:600}
+
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .index{position:static;height:auto;border-right:none;border-bottom:1px solid var(--rule);padding:22px}
+  main{padding:26px 20px 80px}
+  h1{font-size:27px}
+}
+</style>
+
+<div class="shell">
+<nav class="index">
+  <div class="brand">Demo Walkthrough</div>
+  <div class="brandsub">Screen by screen, for the review</div>
+  <a href="#setup"><span class="n">—</span><span>Setup</span></a>
+  <a href="#s01"><span class="n">01</span><span>Round 1 — nothing happening</span></a>
+  <a href="#s02"><span class="n">02</span><span>The chart and event log</span></a>
+  <a href="#s03"><span class="n">03</span><span>Round 10 — still quiet</span></a>
+  <a href="#s04"><span class="n">04</span><span>Round 55 — everyone at zero</span></a>
+  <a href="#s05"><span class="n">05</span><span>Round 80 — the split</span></a>
+  <a href="#s06"><span class="n">06</span><span>The gate, decided</span></a>
+  <a href="#s07"><span class="n">07</span><span>The event log</span></a>
+  <a href="#s08"><span class="n">08</span><span>Summary — the numbers</span></a>
+  <a href="#s09"><span class="n">09</span><span>Summary — the chart</span></a>
+  <a href="#s10"><span class="n">10</span><span>Score vs reputation</span></a>
+  <a href="#s11"><span class="n">11</span><span>Round-by-round table</span></a>
+  <a href="#s12"><span class="n">12</span><span>The five measures</span></a>
+  <a href="#s13"><span class="n">13</span><span>The maths, part 1</span></a>
+  <a href="#s14"><span class="n">14</span><span>The maths, part 2</span></a>
+  <a href="#s15"><span class="n">15</span><span>Four steps, and caveats</span></a>
+  <a href="#s16"><span class="n">16</span><span>Changing the gate live</span></a>
+  <a href="#script"><span class="n">—</span><span>Five-minute script</span></a>
+  <a href="#qa"><span class="n">—</span><span>Questions you'll get</span></a>
+</nav>
+
+<main>
+
+<header class="wrap">
+  <div class="eyebrow">Project-I · Review 2 · Demo notes</div>
+  <h1>What is on the screen, and why</h1>
+  <p class="lede">Every screen of the live demo, with each part pointed at and explained —
+  what it is, why it is there, and how it got that value. Written so you can present it
+  without needing to remember anything.</p>
+</header>
+
+<!-- ============================================ SETUP -->
+<section class="block wrap" id="setup">
+  <div class="bhead">
+    <div class="bnum">—</div>
+    <div><h2>Before you read on: save the screenshots</h2>
+    <div class="bsub">The arrows are positioned for your exact captures</div></div>
+  </div>
+
+  <p>The images are not in the repository yet. Save your sixteen screenshots into
+  <code>docs/walkthrough/screenshots/</code> named <code>01.png</code> through
+  <code>16.png</code>, in the order below. Every arrow on this page is placed for a
+  1920&times;1032 capture, so save them at the size you took them.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>File</th><th>Which screenshot</th><th>How to recognise it</th></tr></thead>
+    <tbody>
+      <tr><td>01.png</td><td>Round 1, top of Live stream</td><td>All four at 1.000, blue banner</td></tr>
+      <tr><td>02.png</td><td>Round 1, scrolled down</td><td>Chart almost empty, one event in the log</td></tr>
+      <tr><td>03.png</td><td>Round 10</td><td>Slider at 9, delta chips read +0.000</td></tr>
+      <tr><td>04.png</td><td>Round 55</td><td>Red banner, all four show 0/20 and 0.623</td></tr>
+      <tr><td>05.png</td><td>Round 80, top</td><td>Two arms at 20/20, two at 0/20</td></tr>
+      <tr><td>06.png</td><td>Round 80, gate panel</td><td>Three bars, R = 0.05, two verdict boxes</td></tr>
+      <tr><td>07.png</td><td>Event log, filled</td><td>Rows reading VETO, DRIFT, PHASE</td></tr>
+      <tr><td>08.png</td><td>Summary tab, top</td><td>Four columns, green result banner</td></tr>
+      <tr><td>09.png</td><td>Summary, scrolled</td><td>Same numbers plus the full chart</td></tr>
+      <tr><td>10.png</td><td>Look closer, both charts</td><td>Orange crosses; three coloured check lines</td></tr>
+      <tr><td>11.png</td><td>Round-by-round decisions</td><td>Table of rounds 36 to 45</td></tr>
+      <tr><td>12.png</td><td>Explain how this works</td><td>The five-measures table</td></tr>
+      <tr><td>13.png</td><td>Show the maths, upper</td><td>The z, A and T formulae</td></tr>
+      <tr><td>14.png</td><td>Show the maths, lower</td><td>P, S, the decision, the update rule</td></tr>
+      <tr><td>15.png</td><td>Four steps and caveats</td><td>Green "one number to quote" banner</td></tr>
+      <tr><td>16.png</td><td>Round 37, sliders open</td><td>Advanced settings expanded in the sidebar</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note">
+    <span class="tag">One sentence to open with</span>
+    <p>"Four intrusion detectors, the same real traffic, the same model. The only thing that
+    differs is what each one is allowed to learn from — and by the end, two of them have
+    forgotten how to catch an attack they were trained on."</p>
+  </div>
+</section>
+
+<!-- ============================================ 01 -->
+<section class="block" id="s01">
+  <div class="bhead"><div class="bnum">01</div>
+    <div><h2>Round 1 — the starting state</h2>
+    <div class="bsub">Live stream tab · phase <code>pre_attack</code> · nothing has happened yet</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/01.png</b><br>Round 1, top of Live stream</div>
+    <img src="screenshots/01.png" alt="Round 1 of the live stream: all four detectors at 1.000 accuracy, blue phase banner, no drift signalled.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <rect class="hl" x="18" y="262" width="266" height="160"/>
+      <path class="ar" d="M418,222 L214,254"/><circle class="pin" cx="446" cy="212" r="24"/><text class="pint" x="446" y="212">1</text>
+      <rect class="hl" x="374" y="360" width="840" height="46"/>
+      <path class="ar" d="M1318,312 L1010,354"/><circle class="pin" cx="1346" cy="304" r="24"/><text class="pint" x="1346" y="304">2</text>
+      <path class="ar" d="M1318,446 L562,508"/><circle class="pin" cx="1346" cy="440" r="24"/><text class="pint" x="1346" y="440">3</text>
+      <rect class="hl" x="376" y="552" width="1454" height="60"/>
+      <path class="ar" d="M1470,640 L1240,606"/><circle class="pin" cx="1498" cy="648" r="24"/><text class="pint" x="1498" y="648">4</text>
+      <rect class="hl" x="376" y="686" width="1454" height="176"/>
+      <path class="ar" d="M1786,700 L1700,712"/><circle class="pin" cx="1814" cy="694" r="24"/><text class="pint" x="1814" y="694">5</text>
+      <path class="ar" d="M1268,952 L800,946"/><circle class="pin" cx="1296" cy="954" r="24"/><text class="pint" x="1296" y="954">6</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">The two choices that define the run</span>
+      <div class="row"><b class="q">What</b> Scenario 2, slow poisoning, on real N-BaIoT data.</div>
+      <div class="row"><b class="q">Why</b> Scenario 1 is the benign-drift control; scenario 2 is the adversarial one that produces the result. Real rather than synthetic, because synthetic proves only that the code runs.</div>
+      <div class="row"><b class="q">How</b> These two radio buttons pick which recorded log the page replays. Everything else on screen follows from them.</div></li>
+
+    <li><span class="ttl">Transport controls</span>
+      <div class="row"><b class="q">What</b> Play, Pause, Step, Reset, and a speed control.</div>
+      <div class="row"><b class="q">Why</b> The demo is a replay of a completed run, not a live computation. That means you can pause on the exact round that matters instead of hoping it appears.</div>
+      <div class="row"><b class="q">How</b> The run was executed once and every decision written to a log file. Play advances an index through that log.</div></li>
+
+    <li><span class="ttl">Round 1 of 80 · records 0–20</span>
+      <div class="row"><b class="q">What</b> The clock. One round is a window of 20 consecutive network records.</div>
+      <div class="row"><b class="q">Why</b> The detector does not decide per packet — it batches into windows, because the evidence signals are statistics over a window and need more than one sample.</div>
+      <div class="row"><b class="q">How</b> 80 rounds × 20 records = 1,600 records, after a separate 400-record calibration block that trained all four arms identically.</div></li>
+
+    <li><span class="ttl">The phase banner — blue means safe</span>
+      <div class="row"><b class="q">What</b> States the round, the phase name, a plain-English description, and this window's reputation.</div>
+      <div class="row"><b class="q">Why</b> Without it, the audience cannot tell whether what they are seeing is normal traffic or an attack in progress. The colour does that job before anyone reads the words.</div>
+      <div class="row"><b class="q">How</b> Blue for benign phases, red for attack phases. Reputation reads <strong>1.00</strong> here because this traffic really is benign.</div></li>
+
+    <li><span class="ttl">The four detectors, side by side</span>
+      <div class="row"><b class="q">What</b> Left to right: never learns, learns from everything, checks traffic only, ours. Each shows how many of this window's 20 records it classified correctly, and its running accuracy.</div>
+      <div class="row"><b class="q">Why</b> They are in a fixed order all the way through, so the audience learns the positions once. The rightmost column is always ours.</div>
+      <div class="row"><b class="q">How</b> All four are at 20/20 and 1.000 because they were trained on the same calibration data and nothing has yet happened to separate them.</div></li>
+
+    <li><span class="ttl">"No drift signalled — nobody learns"</span>
+      <div class="row"><b class="q">What</b> The gate was not consulted this round.</div>
+      <div class="row"><b class="q">Why</b> This is important and easy to miss. The system does not adapt continuously — it adapts only when something changes. In steady state no update is proposed to anyone, so there is nothing to authorize.</div>
+      <div class="row"><b class="q">How</b> A change detector watches the frozen arm's error stream. It has not fired, so no adaptation window is open.</div></li>
+  </ol>
+
+  <div class="note">
+    <span class="tag">Say this here</span>
+    <p>"Everything starts identical. Any difference you see later was caused by exactly one
+    thing — whether that detector was allowed to learn from a particular window."</p>
+  </div>
+</section>
+
+<!-- ============================================ 02 -->
+<section class="block" id="s02">
+  <div class="bhead"><div class="bnum">02</div>
+    <div><h2>The chart and the event log</h2>
+    <div class="bsub">Same round, scrolled down · both are empty because the story has not started</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/02.png</b><br>Round 1, scrolled down</div>
+    <img src="screenshots/02.png" alt="Round 1 scrolled down: the accuracy chart holds a single point and the event log holds one phase entry.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <path class="ar" d="M878,318 L486,462"/><circle class="pin" cx="906" cy="308" r="24"/><text class="pint" x="906" y="308">1</text>
+      <rect class="hl" x="440" y="392" width="740" height="46"/>
+      <path class="ar" d="M1290,352 L1190,410"/><circle class="pin" cx="1318" cy="342" r="24"/><text class="pint" x="1318" y="342">2</text>
+      <path class="ar" d="M1620,586 L1560,656"/><circle class="pin" cx="1642" cy="574" r="24"/><text class="pint" x="1642" y="574">3</text>
+      <rect class="hl" x="384" y="840" width="920" height="42"/>
+      <path class="ar" d="M1428,866 L1318,862"/><circle class="pin" cx="1456" cy="868" r="24"/><text class="pint" x="1456" y="868">4</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">The chart grows with the playhead</span>
+      <div class="row"><b class="q">What</b> A single dot at round 1, value 1.0.</div>
+      <div class="row"><b class="q">Why</b> The chart draws only rounds that have already been played, so the audience watches the lines being written rather than reading a finished result. A finished chart gives the ending away.</div>
+      <div class="row"><b class="q">How</b> The chart is redrawn each round from the log slice up to the current index.</div></li>
+
+    <li><span class="ttl">Each detector appears twice in the legend</span>
+      <div class="row"><b class="q">What</b> Four names as line swatches, then the same four as dot swatches.</div>
+      <div class="row"><b class="q">Why</b> Not a bug — the chart has a line layer and a hover-point layer, and the charting library labels both.</div>
+      <div class="row"><b class="q">How</b> If asked, say the points appear on hover so you can read exact values; the duplicate legend is a side effect of that.</div></li>
+
+    <li><span class="ttl">The axis already spans all 80 rounds</span>
+      <div class="row"><b class="q">What</b> The x-axis is fixed from the start even though only one round is drawn.</div>
+      <div class="row"><b class="q">Why</b> Deliberate. If the axis rescaled every round, the lines would appear to move around and the phase bands would slide. A fixed axis means what you see at round 40 is in the same place at round 80.</div>
+      <div class="row"><b class="q">How</b> The x domain is pinned to the full round count rather than to the data drawn so far.</div></li>
+
+    <li><span class="ttl">The event log</span>
+      <div class="row"><b class="q">What</b> One entry so far: the phase change at round 1.</div>
+      <div class="row"><b class="q">Why</b> This is the audit trail. Everything consequential — a phase change, the change detector firing, a veto — is recorded here with its round number, so nothing has to be taken on trust.</div>
+      <div class="row"><b class="q">How</b> Newest entries appear at the top, so as the run proceeds you read the story downwards in reverse. Mention that before it fills up.</div></li>
+  </ol>
+</section>
+
+<!-- ============================================ 03 -->
+<section class="block" id="s03">
+  <div class="bhead"><div class="bnum">03</div>
+    <div><h2>Round 10 — still nothing</h2>
+    <div class="bsub">Ten rounds in · deliberately uneventful</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/03.png</b><br>Round 10</div>
+    <img src="screenshots/03.png" alt="Round 10: the slider has advanced, all four detectors still at 1.000, deltas show plus zero.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <path class="ar" d="M878,404 L578,460"/><circle class="pin" cx="906" cy="396" r="24"/><text class="pint" x="906" y="396">1</text>
+      <path class="ar" d="M1028,556 L570,534"/><circle class="pin" cx="1056" cy="560" r="24"/><text class="pint" x="1056" y="560">2</text>
+      <rect class="hl" x="376" y="848" width="1454" height="42"/>
+      <path class="ar" d="M950,936 L482,882"/><circle class="pin" cx="978" cy="942" r="24"/><text class="pint" x="978" y="942">3</text>
+      <path class="ar" d="M1268,978 L800,972"/><circle class="pin" cx="1296" cy="980" r="24"/><text class="pint" x="1296" y="980">4</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">The playhead has moved</span>
+      <div class="row"><b class="q">What</b> The scrubber sits at 9, showing round 10 of 80.</div>
+      <div class="row"><b class="q">Why</b> You can drag this to jump anywhere. In the review, use it to skip the quiet stretch rather than waiting through it.</div>
+      <div class="row"><b class="q">How</b> Drag to a round and the whole page redraws for that moment in the run.</div></li>
+
+    <li><span class="ttl">Records 180 to 200</span>
+      <div class="row"><b class="q">What</b> Round 10 covers the 180th to 200th record of the post-calibration stream.</div>
+      <div class="row"><b class="q">Why</b> Shows the windows are consecutive and non-overlapping — the detector sees each record exactly once.</div>
+      <div class="row"><b class="q">How</b> Round <em>n</em> covers records 20(<em>n</em>−1) to 20<em>n</em>.</div></li>
+
+    <li><span class="ttl">The delta chips read +0.000</span>
+      <div class="row"><b class="q">What</b> Change in running accuracy since the previous round: zero for all four.</div>
+      <div class="row"><b class="q">Why</b> Confirms nothing is drifting. When these turn red later, that is the moment things start going wrong — the chips are the earliest visible warning.</div>
+      <div class="row"><b class="q">How</b> Current running accuracy minus the previous round's.</div></li>
+
+    <li><span class="ttl">Still no drift</span>
+      <div class="row"><b class="q">What</b> Ten rounds in, the change detector has not fired once.</div>
+      <div class="row"><b class="q">Why</b> Worth saying out loud: a system that proposed updates constantly would be handing the attacker constant opportunities. Adapting rarely is itself part of the defence.</div>
+      <div class="row"><b class="q">How</b> No error signal has appeared, because the traffic genuinely has not changed.</div></li>
+  </ol>
+</section>
+
+<!-- ============================================ 04 -->
+<section class="block" id="s04">
+  <div class="bhead"><div class="bnum">04</div>
+    <div><h2>Round 55 — everyone is at zero</h2>
+    <div class="bsub">Phase <code>post_poison</code> · the most misread screen in the demo</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/04.png</b><br>Round 55</div>
+    <img src="screenshots/04.png" alt="Round 55: red banner, all four detectors score zero of twenty this window and 0.623 running accuracy.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <rect class="hl" x="376" y="552" width="1454" height="60"/>
+      <path class="ar" d="M1570,516 L1330,566"/><circle class="pin" cx="1598" cy="508" r="24"/><text class="pint" x="1598" y="508">1</text>
+      <path class="ar" d="M1620,646 L1300,600"/><circle class="pin" cx="1648" cy="654" r="24"/><text class="pint" x="1648" y="654">2</text>
+      <rect class="hl" x="376" y="722" width="1454" height="46"/>
+      <path class="ar" d="M1000,690 L1000,716"/><circle class="pin" cx="1000" cy="672" r="24"/><text class="pint" x="1000" y="672">3</text>
+      <rect class="hl" x="376" y="800" width="1454" height="56"/>
+      <path class="ar" d="M1560,900 L1500,862"/><circle class="pin" cx="1580" cy="912" r="24"/><text class="pint" x="1580" y="912">4</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">The banner is red now</span>
+      <div class="row"><b class="q">What</b> Phase <code>post_poison</code>, "the attack now looks completely normal".</div>
+      <div class="row"><b class="q">Why</b> The attacker has finished walking their traffic across into the benign region. The disguise is complete.</div>
+      <div class="row"><b class="q">How</b> Real attack records were interpolated toward real benign records over the preceding thirty rounds. At this point the interpolation has reached the benign end.</div></li>
+
+    <li><span class="ttl">Reputation is still 0.05</span>
+      <div class="row"><b class="q">What</b> The one number that has not changed.</div>
+      <div class="row"><b class="q">Why</b> <strong>This is the whole argument in one value.</strong> The traffic now looks completely benign, but it is still going to the same command-and-control server. The attacker changed everything they control and nothing they don't.</div>
+      <div class="row"><b class="q">How</b> Reputation is attached to the record's origin, not computed from its features, so disguising the traffic cannot move it.</div></li>
+
+    <li><span class="ttl">All four score 0 out of 20 — including "never learns"</span>
+      <div class="row"><b class="q">What</b> Every detector gets every record in this window wrong.</div>
+      <div class="row"><b class="q">Why</b> <strong>Pre-empt this before you are asked.</strong> It is not a failure of the method. In this phase the attack records are numerically identical to benign records while still carrying an attack label — we verified this to a relative difference of 4.7&times;10<sup>-16</sup>. No detector that looks only at traffic can score above zero here, including the frozen one that never updated at all.</div>
+      <div class="row"><b class="q">How</b> The interpolation reached its benign endpoint exactly, so these are benign feature vectors with an attack label.</div></li>
+
+    <li><span class="ttl">All four running accuracies identical at 0.623</span>
+      <div class="row"><b class="q">What</b> No detector has separated from the others yet.</div>
+      <div class="row"><b class="q">Why</b> Because this phase punishes all of them equally, overall accuracy is a misleading headline for this experiment. Say so here, and then give them the number that does mean something at round 80.</div>
+      <div class="row"><b class="q">How</b> They diverge only when one of them <em>learns</em> something the others did not.</div></li>
+  </ol>
+
+  <div class="note stop">
+    <span class="tag">The trap to avoid</span>
+    <p>If you present overall accuracy as the headline, an examiner will correctly point out
+    that your frozen baseline scores 55% and ask what the method achieved. Lead with
+    repeat-attack detection instead, and explain this phase as the reason.</p>
+  </div>
+</section>
+
+<!-- ============================================ 05 -->
+<section class="block" id="s05">
+  <div class="bhead"><div class="bnum">05</div>
+    <div><h2>Round 80 — the split</h2>
+    <div class="bsub">Phase <code>recovery_check</code> · this is the screen the whole demo exists for</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/05.png</b><br>Round 80, top</div>
+    <img src="screenshots/05.png" alt="Round 80: never-learns and ours score twenty of twenty; learns-from-everything and checks-traffic-only score zero of twenty.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <rect class="hl" x="376" y="552" width="1454" height="60"/>
+      <path class="ar" d="M1000,500 L1000,548"/><circle class="pin" cx="1000" cy="482" r="24"/><text class="pint" x="1000" y="482">1</text>
+      <rect class="hl" x="376" y="722" width="356" height="46"/>
+      <path class="ar" d="M476,676 L520,718"/><circle class="pin" cx="456" cy="660" r="24"/><text class="pint" x="456" y="660">2</text>
+      <rect class="hl" x="742" y="722" width="356" height="46"/>
+      <path class="ar" d="M846,676 L890,718"/><circle class="pin" cx="826" cy="660" r="24"/><text class="pint" x="826" y="660">3</text>
+      <rect class="hl" x="1108" y="722" width="356" height="46"/>
+      <path class="ar" d="M1212,676 L1256,718"/><circle class="pin" cx="1192" cy="660" r="24"/><text class="pint" x="1192" y="660">4</text>
+      <rect class="hl" x="1474" y="722" width="356" height="46"/>
+      <path class="ar" d="M1578,676 L1622,718"/><circle class="pin" cx="1558" cy="660" r="24"/><text class="pint" x="1558" y="660">5</text>
+      <rect class="hl" x="376" y="800" width="1454" height="56"/>
+      <path class="ar" d="M1000,918 L1000,862"/><circle class="pin" cx="1000" cy="936" r="24"/><text class="pint" x="1000" y="936">6</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">Step 4 — an obvious attack is back</span>
+      <div class="row"><b class="q">What</b> Full-strength, unmodified Mirai traffic — the same attack the model was calibrated on.</div>
+      <div class="row"><b class="q">Why</b> This is the test that matters. Anyone can look good while the attack is subtle. The real question is whether the detector, <em>after</em> the campaign, can still recognise something it definitely used to know.</div>
+      <div class="row"><b class="q">How</b> Raw records straight from the attack capture file, with no interpolation applied.</div></li>
+
+    <li><span class="ttl">Never learns — 20 out of 20</span>
+      <div class="row"><b class="q">What</b> The frozen detector catches every record.</div>
+      <div class="row"><b class="q">Why</b> Of course it does. It never learned anything after calibration, so there was nothing to corrupt. This is the safety ceiling.</div>
+      <div class="row"><b class="q">How</b> It refused, structurally, all 80 rounds.</div></li>
+
+    <li><span class="ttl">Learns from everything — 0 out of 20</span>
+      <div class="row"><b class="q">What</b> The ungated detector catches nothing.</div>
+      <div class="row"><b class="q">Why</b> It accepted 24 updates during the campaign, several of which told it that attack traffic was normal. It has been taught to ignore this attack.</div>
+      <div class="row"><b class="q">How</b> Every proposal accepted, no checks at all. This is the damage floor.</div></li>
+
+    <li><span class="ttl">Checks traffic only — also 0 out of 20</span>
+      <div class="row"><b class="q">What</b> The gated detector that inspects only the traffic. Also catches nothing.</div>
+      <div class="row"><b class="q">Why</b> <strong>This is the finding.</strong> It had a gate. It rejected 19 of 24 proposals. And it ended up exactly as damaged as the arm with no gate at all — because the five it accepted were the ones that mattered.</div>
+      <div class="row"><b class="q">How</b> It accepted at rounds 40, 72, 73, 74 and 75. Five bad decisions were enough.</div></li>
+
+    <li><span class="ttl">Ours — 20 out of 20</span>
+      <div class="row"><b class="q">What</b> Full detection retained.</div>
+      <div class="row"><b class="q">Why</b> It refused all 24 proposals, because the reputation channel was bad on every one of them. Its model is byte-identical to the frozen arm's.</div>
+      <div class="row"><b class="q">How</b> The reputation veto fired on every drift-active round.</div></li>
+
+    <li><span class="ttl">The pairing in the running accuracies</span>
+      <div class="row"><b class="q">What</b> 0.553, 0.453, 0.453, 0.553 — the arms pair up exactly.</div>
+      <div class="row"><b class="q">Why</b> Ours does not merely beat the ungated arm; it is <em>numerically identical to the frozen arm</em>. That is a stronger claim, and it is only possible because a refusal changes nothing at all — not the model, not the baseline, not the reference direction.</div>
+      <div class="row"><b class="q">How</b> Identical inputs plus zero accepted updates gives an identical model.</div></li>
+  </ol>
+
+  <div class="note">
+    <span class="tag">Say this here — the single most important line</span>
+    <p>"Both of these gates saw the same traffic and the same evidence. One of them also
+    asked where the traffic was going. That is the entire difference between the third
+    column and the fourth."</p>
+  </div>
+</section>
+
+<!-- ============================================ 06 -->
+<section class="block" id="s06">
+  <div class="bhead"><div class="bnum">06</div>
+    <div><h2>Inside the gate at that moment</h2>
+    <div class="bsub">The decision panel, scrolled into view · this is the mechanism itself</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/06.png</b><br>Round 80, gate panel</div>
+    <img src="screenshots/06.png" alt="The gate panel: three traffic-evidence bars, the reputation value 0.05, and both gates' verdicts.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <rect class="hl" x="374" y="238" width="418" height="296"/>
+      <path class="ar" d="M600,192 L594,234"/><circle class="pin" cx="608" cy="176" r="24"/><text class="pint" x="608" y="176">1</text>
+      <rect class="hl" x="796" y="238" width="384" height="196"/>
+      <path class="ar" d="M952,214 L890,272"/><circle class="pin" cx="972" cy="200" r="24"/><text class="pint" x="972" y="200">2</text>
+      <rect class="hl" x="1218" y="282" width="612" height="54"/>
+      <path class="ar" d="M1690,216 L1610,286"/><circle class="pin" cx="1712" cy="202" r="24"/><text class="pint" x="1712" y="202">3</text>
+      <rect class="hl" x="1218" y="352" width="612" height="56"/>
+      <path class="ar" d="M1746,470 L1680,412"/><circle class="pin" cx="1766" cy="484" r="24"/><text class="pint" x="1766" y="484">4</text>
+      <path class="ar" d="M878,586 L636,566"/><circle class="pin" cx="906" cy="590" r="24"/><text class="pint" x="906" y="590">5</text>
+      <path class="ar" d="M1518,952 L1662,896"/><circle class="pin" cx="1496" cy="960" r="24"/><text class="pint" x="1496" y="960">6</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">Left column — "an attacker can fake all three"</span>
+      <div class="row"><b class="q">What</b> The three traffic checks with their values: same direction 0.500, mixed traffic 0.480, smooth change 0.520.</div>
+      <div class="row"><b class="q">Why</b> The heading is doing argumentative work. Every one of these is computed from the traffic being judged, so a patient attacker shapes all three. Making them cleverer does not help.</div>
+      <div class="row"><b class="q">How</b> Geometric statistics over the window, computed in a scaling frozen at calibration time so the attacker cannot move the ruler.</div></li>
+
+    <li><span class="ttl">Middle — "an attacker cannot fake this"</span>
+      <div class="row"><b class="q">What</b> Reputation: <strong>0.05</strong>.</div>
+      <div class="row"><b class="q">Why</b> The asymmetry the whole project rests on. The attacker controls what the traffic looks like, not where it has to go.</div>
+      <div class="row"><b class="q">How</b> 1.0 means a known-good destination, 0.05 a known command-and-control server, and anything under 0.30 is refused outright.</div></li>
+
+    <li><span class="ttl">Traffic-only gate: refused</span>
+      <div class="row"><b class="q">What</b> On <em>this</em> round the traffic-only gate also refuses.</div>
+      <div class="row"><b class="q">Why</b> Be accurate about this — do not overclaim. Round 80 is not one of the rounds where they disagreed. Its trust score of 0.500 simply fell below the 0.55 bar, so it refused on its own evidence.</div>
+      <div class="row"><b class="q">How</b> To show the disagreement, scrub back to round 72 or 40. Those are the rounds where the two verdict boxes differ.</div></li>
+
+    <li><span class="ttl">Full gate: REFUSED — reputation veto (0.05 &lt; 0.3)</span>
+      <div class="row"><b class="q">What</b> Our gate refuses for a different reason, and states it.</div>
+      <div class="row"><b class="q">Why</b> The reason string is the audit trail. An operator can later ask why the detector did not adapt on a given day and get an answer, rather than a score.</div>
+      <div class="row"><b class="q">How</b> The veto is checked first. If reputation is below threshold the trust score is never consulted at all.</div></li>
+
+    <li><span class="ttl">"trust score 0.500 vs threshold 0.55"</span>
+      <div class="row"><b class="q">What</b> The three bars combined: 0.40&times;0.500 + 0.30&times;0.480 + 0.30&times;0.520 = 0.500.</div>
+      <div class="row"><b class="q">Why</b> Shows the arithmetic is not hidden. If someone asks how the score is formed, this line answers it on screen.</div>
+      <div class="row"><b class="q">How</b> A fixed weighted sum. The weights are untuned defaults chosen before any result was seen — say so if asked.</div></li>
+
+    <li><span class="ttl">The chart, now complete</span>
+      <div class="row"><b class="q">What</b> Green holds at the top through the final phase; orange drops away.</div>
+      <div class="row"><b class="q">Why</b> This is the visual the audience remembers. One line stays up, one falls, and everything else on the page explains why.</div>
+      <div class="row"><b class="q">How</b> Green is drawn over grey and orange over red, because each pair is exactly coincident.</div></li>
+  </ol>
+</section>
+
+<!-- ============================================ 07 -->
+<section class="block" id="s07">
+  <div class="bhead"><div class="bnum">07</div>
+    <div><h2>The event log — the audit trail</h2>
+    <div class="bsub">Every consequential moment, with its round number</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/07.png</b><br>Event log, filled</div>
+    <img src="screenshots/07.png" alt="The event log listing veto entries at rounds 75 to 72, drift entries at 72 and 36, a veto at 40, and phase changes.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <rect class="hl" x="396" y="556" width="770" height="92"/>
+      <path class="ar" d="M1368,582 L1180,596"/><circle class="pin" cx="1396" cy="576" r="24"/><text class="pint" x="1396" y="576">1</text>
+      <rect class="hl" x="396" y="674" width="500" height="30"/>
+      <path class="ar" d="M1368,690 L912,690"/><circle class="pin" cx="1396" cy="690" r="24"/><text class="pint" x="1396" y="690">2</text>
+      <rect class="hl" x="396" y="760" width="770" height="30"/>
+      <path class="ar" d="M1368,778 L1180,776"/><circle class="pin" cx="1396" cy="780" r="24"/><text class="pint" x="1396" y="780">3</text>
+      <rect class="hl" x="396" y="790" width="500" height="30"/>
+      <path class="ar" d="M1368,850 L912,810"/><circle class="pin" cx="1396" cy="858" r="24"/><text class="pint" x="1396" y="858">4</text>
+      <path class="ar" d="M1530,900 L960,864"/><circle class="pin" cx="1558" cy="906" r="24"/><text class="pint" x="1558" y="906">5</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">Four VETO entries, rounds 72 to 75</span>
+      <div class="row"><b class="q">What</b> "traffic-only ACCEPTED this update; full gate refused — out-of-band reputation veto (0.05 &lt; 0.3)".</div>
+      <div class="row"><b class="q">Why</b> These four rounds are inside the repeat-attack phase. The traffic-only gate was accepting updates <em>while being tested on the attack itself</em> — being taught the attack was normal at the very moment it needed to catch it.</div>
+      <div class="row"><b class="q">How</b> The log records a VETO whenever the two gates disagree, which makes the disagreements findable without reading every round.</div></li>
+
+    <li><span class="ttl">DRIFT at round 72</span>
+      <div class="row"><b class="q">What</b> The change detector fired, opening a fresh adaptation window.</div>
+      <div class="row"><b class="q">Why</b> Explains why proposals reappear at 72 after a quiet stretch. The frozen detector suddenly started getting things right again when the real attack returned, and that change in its error rate is itself a change point.</div>
+      <div class="row"><b class="q">How</b> A fired change point opens a 15-round window during which updates are proposed each round.</div></li>
+
+    <li><span class="ttl">VETO at round 40 — the clean comparison</span>
+      <div class="row"><b class="q">What</b> The first disagreement, in the middle of the poisoning phase.</div>
+      <div class="row"><b class="q">Why</b> <strong>This is the round to demonstrate.</strong> At round 40 both gates had accepted nothing yet, so both were looking at numerically identical evidence — attribution 0.500, topology 0.784, stability 0.459, trust 0.573. One accepted, one refused. Nothing but the reputation channel differs.</div>
+      <div class="row"><b class="q">How</b> 0.573 cleared the 0.55 bar. The veto fired anyway.</div></li>
+
+    <li><span class="ttl">DRIFT at round 36</span>
+      <div class="row"><b class="q">What</b> The first change point of the whole run.</div>
+      <div class="row"><b class="q">Why</b> Note how late it is. The poisoning began at round 21, but the attacker moved slowly enough that it took fifteen rounds to register as a change at all. That patience is the attack.</div>
+      <div class="row"><b class="q">How</b> The change detector needs the frozen arm's error rate to shift materially before it fires.</div></li>
+
+    <li><span class="ttl">The PHASE entries frame the story</span>
+      <div class="row"><b class="q">What</b> Four phase markers at rounds 1, 21, 51 and 71.</div>
+      <div class="row"><b class="q">Why</b> They let you narrate from the log alone: normal, attacker sneaking in, attack looks normal, obvious attack returns.</div>
+      <div class="row"><b class="q">How</b> Newest first, so read <em>bottom to top</em> for chronological order. Say this before you scroll it.</div></li>
+  </ol>
+</section>
+
+<!-- ============================================ 08 -->
+<section class="block" id="s08">
+  <div class="bhead"><div class="bnum">08</div>
+    <div><h2>Summary tab — the numbers for the report</h2>
+    <div class="bsub">Where you land after the replay</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/08.png</b><br>Summary tab, top</div>
+    <img src="screenshots/08.png" alt="Summary tab: four columns of metrics and a green banner stating the result.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <path class="ar" d="M678,268 L528,318"/><circle class="pin" cx="700" cy="256" r="24"/><text class="pint" x="700" y="256">1</text>
+      <path class="ar" d="M1466,336 L1250,372"/><circle class="pin" cx="1494" cy="328" r="24"/><text class="pint" x="1494" y="328">2</text>
+      <rect class="hl" x="376" y="442" width="1454" height="76"/>
+      <path class="ar" d="M1760,432 L1660,462"/><circle class="pin" cx="1782" cy="422" r="24"/><text class="pint" x="1782" y="422">3</text>
+      <rect class="hl" x="376" y="534" width="1454" height="80"/>
+      <path class="ar" d="M1760,626 L1660,610"/><circle class="pin" cx="1782" cy="634" r="24"/><text class="pint" x="1782" y="634">4</text>
+      <path class="ar" d="M900,662 L570,644"/><circle class="pin" cx="928" cy="666" r="24"/><text class="pint" x="928" y="666">5</text>
+      <rect class="hl" x="378" y="672" width="1452" height="76"/>
+      <path class="ar" d="M1000,782 L1000,754"/><circle class="pin" cx="1000" cy="798" r="24"/><text class="pint" x="1000" y="798">6</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">The Summary tab</span>
+      <div class="row"><b class="q">What</b> The second of two tabs. Live stream is the demo; Summary is the evidence.</div>
+      <div class="row"><b class="q">Why</b> Switch here after the replay so the audience sees the finished numbers only once they understand how they were produced.</div>
+      <div class="row"><b class="q">How</b> Same log, aggregated instead of replayed.</div></li>
+
+    <li><span class="ttl">"Four systems, same traffic, same model"</span>
+      <div class="row"><b class="q">What</b> The controlled-experiment claim, in one line.</div>
+      <div class="row"><b class="q">Why</b> Every comparison stands or falls on this. If the arms differed in more than one way, none of the numbers below would be attributable.</div>
+      <div class="row"><b class="q">How</b> One orchestrator, one data stream, one change trigger driven by the frozen arm, four gate policies.</div></li>
+
+    <li><span class="ttl">Right overall — 0.553 / 0.453 / 0.453 / 0.553</span>
+      <div class="row"><b class="q">What</b> Accuracy across all 80 rounds.</div>
+      <div class="row"><b class="q">Why</b> Present this as context, not as the headline. It is dragged down for everyone by the phase where the attack is indistinguishable from benign traffic.</div>
+      <div class="row"><b class="q">How</b> Prequential — every record predicted before the model could train on it.</div></li>
+
+    <li><span class="ttl">Caught the obvious attack — 1.000 / 0.200 / 0.200 / 1.000</span>
+      <div class="row"><b class="q">What</b> <strong>The number to quote.</strong> Detection during the final phase.</div>
+      <div class="row"><b class="q">Why</b> It measures durable damage rather than momentary evasion — whether the detector still knows something it definitely used to know.</div>
+      <div class="row"><b class="q">How</b> Mean windowed accuracy over rounds 71 to 80.</div></li>
+
+    <li><span class="ttl">Rounds authorized — 0, 24, 5, 0</span>
+      <div class="row"><b class="q">What</b> How many updates each arm accepted.</div>
+      <div class="row"><b class="q">Why</b> The most quietly damning line on the page. The traffic-only gate refused 19 of 24 proposals — it was working hard — and it still ended up as damaged as the arm that refused nothing.</div>
+      <div class="row"><b class="q">How</b> Counted from the decision log.</div></li>
+
+    <li><span class="ttl">The green result banner</span>
+      <div class="row"><b class="q">What</b> The finding as a sentence, generated from the numbers above it.</div>
+      <div class="row"><b class="q">Why</b> If you read only one thing aloud from this screen, read this.</div>
+      <div class="row"><b class="q">How</b> The percentages are pulled from the log, not typed in, so they cannot drift out of step with the data.</div></li>
+  </ol>
+</section>
+
+<!-- ============================================ 09 -->
+<section class="block" id="s09">
+  <div class="bhead"><div class="bnum">09</div>
+    <div><h2>Summary with the chart</h2>
+    <div class="bsub">The same numbers, plus the trajectory that produced them</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/09.png</b><br>Summary, scrolled</div>
+    <img src="screenshots/09.png" alt="Summary scrolled: metrics, the green result banner, and the full four-line accuracy chart.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <rect class="hl" x="376" y="170" width="1454" height="256"/>
+      <path class="ar" d="M1000,132 L1000,166"/><circle class="pin" cx="1000" cy="116" r="24"/><text class="pint" x="1000" y="116">1</text>
+      <path class="ar" d="M1770,468 L1700,484"/><circle class="pin" cx="1792" cy="462" r="24"/><text class="pint" x="1792" y="462">2</text>
+      <rect class="hl" x="440" y="656" width="1380" height="304"/>
+      <path class="ar" d="M1856,800 L1826,800"/><circle class="pin" cx="1878" cy="800" r="24"/><text class="pint" x="1878" y="800">3</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">The metric row again</span>
+      <div class="row"><b class="q">What</b> Two figures per detector — overall, then the one that matters.</div>
+      <div class="row"><b class="q">Why</b> Both are shown deliberately. Hiding the weaker number would invite the question anyway; showing both and explaining which to use is stronger.</div>
+      <div class="row"><b class="q">How</b> Hover the small question marks for the definition of each.</div></li>
+
+    <li><span class="ttl">The result banner</span>
+      <div class="row"><b class="q">What</b> 20% against 100%, stated plainly.</div>
+      <div class="row"><b class="q">Why</b> Ends with the honest limiting sentence: "Traffic evidence alone was not enough." That is the claim — not that the attacker was detected.</div>
+      <div class="row"><b class="q">How</b> Composed from the repeat-attack figures directly above.</div></li>
+
+    <li><span class="ttl">The chart in full</span>
+      <div class="row"><b class="q">What</b> All 80 rounds, four lines, two visible because each pair coincides.</div>
+      <div class="row"><b class="q">Why</b> Point at the flat stretch in the middle — that is the phase where nothing can win — then at the single divergence near the right edge. The whole result is that one gap.</div>
+      <div class="row"><b class="q">How</b> Hover anywhere for a tooltip giving the round and all four values at once.</div></li>
+  </ol>
+</section>
+
+<!-- ============================================ 10 -->
+<section class="block" id="s10">
+  <div class="bhead"><div class="bnum">10</div>
+    <div><h2>Trust score against reputation</h2>
+    <div class="bsub">The "look closer" panels · the strongest single chart in the project</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/10.png</b><br>Look closer, both charts</div>
+    <img src="screenshots/10.png" alt="Two charts: trust score against reputation with orange crosses marking disagreements, and the three traffic checks plotted separately.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <path class="ar" d="M1278,272 L1150,388"/><circle class="pin" cx="1300" cy="258" r="24"/><text class="pint" x="1300" y="258">1</text>
+      <path class="ar" d="M1618,318 L1400,442"/><circle class="pin" cx="1646" cy="306" r="24"/><text class="pint" x="1646" y="306">2</text>
+      <path class="ar" d="M1618,516 L1400,472"/><circle class="pin" cx="1646" cy="524" r="24"/><text class="pint" x="1646" y="524">3</text>
+      <rect class="hl" x="1548" y="378" width="130" height="44"/>
+      <path class="ar" d="M1716,566 L1626,428"/><circle class="pin" cx="1728" cy="580" r="24"/><text class="pint" x="1728" y="580">4</text>
+      <path class="ar" d="M690,318 L614,384"/><circle class="pin" cx="712" cy="306" r="24"/><text class="pint" x="712" y="306">5</text>
+      <rect class="hl" x="450" y="740" width="1370" height="212"/>
+      <path class="ar" d="M1722,892 L1560,860"/><circle class="pin" cx="1744" cy="900" r="24"/><text class="pint" x="1744" y="900">6</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">Green — the traffic score, wobbling around 0.5</span>
+      <div class="row"><b class="q">What</b> The combined verdict of the three traffic checks, round by round.</div>
+      <div class="row"><b class="q">Why</b> Look how <em>unremarkable</em> it is. Through a sustained poisoning campaign the traffic evidence never looks alarming. It hovers right around the decision boundary and crosses it occasionally.</div>
+      <div class="row"><b class="q">How</b> The weighted sum, drawn from the log for every drift-active round.</div></li>
+
+    <li><span class="ttl">Red dashed — the veto threshold at 0.30</span>
+      <div class="row"><b class="q">What</b> The line below which an update is refused outright.</div>
+      <div class="row"><b class="q">Why</b> A defender-set parameter, drawn so the audience can see the decision rule rather than take it on trust.</div>
+      <div class="row"><b class="q">How</b> Fixed at 0.30 for the whole run.</div></li>
+
+    <li><span class="ttl">Red solid — the reputation, flat at 0.05 throughout</span>
+      <div class="row"><b class="q">What</b> A perfectly flat line along the bottom, never once rising toward the threshold.</div>
+      <div class="row"><b class="q">Why</b> <strong>This is the picture of the whole idea.</strong> While the green line wanders about — the attacker shaping what they control — the red line does not move at all, because they cannot shape it. It sits below the cut-off from the first round to the last.</div>
+      <div class="row"><b class="q">How</b> Every window in these phases originates from the attack capture, so its reputation is 0.05 by construction.</div></li>
+
+    <li><span class="ttl">Orange crosses — where the two gates disagreed</span>
+      <div class="row"><b class="q">What</b> A cluster of four near rounds 72 to 75.</div>
+      <div class="row"><b class="q">Why</b> Each cross is a moment where the traffic-only gate said yes and ours said no. These are the four during the repeat-attack phase — the ones that did the lasting damage.</div>
+      <div class="row"><b class="q">How</b> Marked wherever the two verdicts differ, so they can be found at a glance.</div></li>
+
+    <li><span class="ttl">The lone cross at round 40</span>
+      <div class="row"><b class="q">What</b> One isolated disagreement during the poisoning phase.</div>
+      <div class="row"><b class="q">Why</b> This is the cleanest one. Both gates saw identical evidence there, so it isolates the contribution to a single decision. It is also the one that started the corruption.</div>
+      <div class="row"><b class="q">How</b> Trust 0.573 against a 0.55 bar. Accepted by one gate, vetoed by the other.</div></li>
+
+    <li><span class="ttl">The lower chart — the three checks separately</span>
+      <div class="row"><b class="q">What</b> Attribution flat at 0.500, topology high and falling, stability rising through the campaign.</div>
+      <div class="row"><b class="q">Why</b> Watch the stability line climb. That is the attacker being rewarded for patience — the slower they move, the better that score gets, and it costs them nothing.</div>
+      <div class="row"><b class="q">How</b> Attribution sits at exactly 0.500 for our gate all run, because it never authorized anything and so never built a reference direction to compare against.</div></li>
+  </ol>
+
+  <div class="note stop">
+    <span class="tag">If you show only one chart, show this one</span>
+    <p>A green line drifting around the threshold, and a red line pinned to the floor beneath
+    it. One is what the attacker controls; the other is what they don't.</p>
+  </div>
+</section>
+
+<!-- ============================================ 11 -->
+<section class="block" id="s11">
+  <div class="bhead"><div class="bnum">11</div>
+    <div><h2>The round-by-round decision table</h2>
+    <div class="bsub">Every drift-active round, with all its values · this is the raw evidence</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/11.png</b><br>Round-by-round decisions</div>
+    <img src="screenshots/11.png" alt="A table of rounds 36 to 45 with attribution, topology, temporal, trust, reputation, both gates' decisions and the reason.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <rect class="hl" x="398" y="252" width="1418" height="404"/>
+      <path class="ar" d="M700,196 L700,246"/><circle class="pin" cx="700" cy="180" r="24"/><text class="pint" x="700" y="180">1</text>
+      <rect class="hl" x="1236" y="428" width="60" height="36"/>
+      <path class="ar" d="M1480,200 L1292,424"/><circle class="pin" cx="1502" cy="188" r="24"/><text class="pint" x="1502" y="188">2</text>
+      <rect class="hl" x="1408" y="288" width="66" height="368"/>
+      <path class="ar" d="M1590,700 L1450,662"/><circle class="pin" cx="1612" cy="710" r="24"/><text class="pint" x="1612" y="710">3</text>
+      <rect class="hl" x="1520" y="288" width="292" height="368"/>
+      <path class="ar" d="M1750,752 L1690,664"/><circle class="pin" cx="1766" cy="766" r="24"/><text class="pint" x="1766" y="766">4</text>
+      <rect class="hl" x="972" y="288" width="86" height="368"/>
+      <path class="ar" d="M912,714 L1006,664"/><circle class="pin" cx="890" cy="724" r="24"/><text class="pint" x="890" y="724">5</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">All 24 drift-active rounds, fully itemised</span>
+      <div class="row"><b class="q">What</b> Every round where an update was proposed, with all three evidence values, the trust score, the reputation, both verdicts and the stated reason.</div>
+      <div class="row"><b class="q">Why</b> Nothing about the mechanism is hidden. If an examiner wants to check the arithmetic on any round, it is on screen.</div>
+      <div class="row"><b class="q">How</b> The visible rows are 36 to 45 — the poisoning phase. Scroll within the table for the rest.</div></li>
+
+    <li><span class="ttl">Round 40 — the one ticked box</span>
+      <div class="row"><b class="q">What</b> In the "traffic-only authorized" column, every box is empty except round 40.</div>
+      <div class="row"><b class="q">Why</b> <strong>Point at this.</strong> One tick, in a column of empties, is the moment the traffic-only gate was fooled during the poisoning phase. Its trust score reached 0.573 — just over the 0.55 bar — and it let the update through.</div>
+      <div class="row"><b class="q">How</b> Everything else on that row is identical to our gate's values. Only the decision differs.</div></li>
+
+    <li><span class="ttl">The "full gate authorized" column is entirely empty</span>
+      <div class="row"><b class="q">What</b> Not one tick, on any row.</div>
+      <div class="row"><b class="q">Why</b> Our gate refused all 24 proposals. Note that this is a real cost as well as a benefit — in this scenario it was correct every time, but a gate that refuses everything would look identical, which is exactly why the benign-drift scenario matters and why its null result is reported honestly.</div>
+      <div class="row"><b class="q">How</b> Reputation was 0.05 on every drift-active round, so the veto fired every time.</div></li>
+
+    <li><span class="ttl">The reason column</span>
+      <div class="row"><b class="q">What</b> "out-of-band reputation veto (0.05 &lt; 0.3)" repeated down the table.</div>
+      <div class="row"><b class="q">Why</b> Every refusal carries a machine-written explanation. This is what makes the decision auditable rather than a black box.</div>
+      <div class="row"><b class="q">How</b> The gate returns a reason string with every decision, and it is stored in the log.</div></li>
+
+    <li><span class="ttl">The trust column hovers near the threshold</span>
+      <div class="row"><b class="q">What</b> 0.504, 0.525, 0.526, 0.548, 0.573, 0.561, 0.569, 0.507, 0.522, 0.566.</div>
+      <div class="row"><b class="q">Why</b> Look how close these are to 0.55. The traffic evidence is not confidently rejecting the poisoning — it is essentially undecided, drifting either side of the line. That is what "the attacker is shaping the evidence" looks like numerically.</div>
+      <div class="row"><b class="q">How</b> Only one of these ten crossed the bar. A slightly different threshold would have changed which — say so before you are asked.</div></li>
+  </ol>
+</section>
+
+<!-- ============================================ 12 -->
+<section class="block" id="s12">
+  <div class="bhead"><div class="bnum">12</div>
+    <div><h2>The built-in explanation</h2>
+    <div class="bsub">For a non-technical audience, or when you are asked to back up</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/12.png</b><br>Explain how this works</div>
+    <img src="screenshots/12.png" alt="The explanation panel: the problem, the fix, why it is dangerous, our idea, and a table of the five things measured.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <rect class="hl" x="394" y="318" width="1422" height="236"/>
+      <path class="ar" d="M700,282 L700,314"/><circle class="pin" cx="700" cy="266" r="24"/><text class="pint" x="700" y="266">1</text>
+      <rect class="hl" x="398" y="620" width="1414" height="248"/>
+      <path class="ar" d="M1856,656 L1818,668"/><circle class="pin" cx="1878" cy="650" r="24"/><text class="pint" x="1878" y="650">2</text>
+      <rect class="hl" x="1300" y="622" width="512" height="246"/>
+      <path class="ar" d="M1590,596 L1558,618"/><circle class="pin" cx="1608" cy="584" r="24"/><text class="pint" x="1608" y="584">3</text>
+      <rect class="hl" x="1302" y="820" width="508" height="46"/>
+      <path class="ar" d="M1032,922 L1330,868"/><circle class="pin" cx="1006" cy="930" r="24"/><text class="pint" x="1006" y="930">4</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">The problem in four paragraphs</span>
+      <div class="row"><b class="q">What</b> Problem, obvious fix, why the fix is dangerous, our idea.</div>
+      <div class="row"><b class="q">Why</b> Built into the app so you never have to reconstruct the motivation from memory under pressure. If a panel member joins late or asks you to start again, open this.</div>
+      <div class="row"><b class="q">How</b> A collapsible section, closed by default so it does not clutter the demo.</div></li>
+
+    <li><span class="ttl">The five-measures table</span>
+      <div class="row"><b class="q">What</b> A, P, S, T and R, each with what it actually asks in plain words.</div>
+      <div class="row"><b class="q">Why</b> Gives the audience the vocabulary before any symbol appears. Nobody has to guess what "attribution consistency" means.</div>
+      <div class="row"><b class="q">How</b> The rows are ordered so that T follows the three it is made from, and R sits apart at the bottom.</div></li>
+
+    <li><span class="ttl">The final column: "Can an attacker fake it?"</span>
+      <div class="row"><b class="q">What</b> Yes, yes, yes, yes — then <strong>NO</strong>.</div>
+      <div class="row"><b class="q">Why</b> <strong>The entire argument, readable in one glance.</strong> If you have thirty seconds to justify the project, point here.</div>
+      <div class="row"><b class="q">How</b> The four yeses are all measured from the traffic. The one no is not.</div></li>
+
+    <li><span class="ttl">"NO — this is the whole point"</span>
+      <div class="row"><b class="q">What</b> The reputation row's answer.</div>
+      <div class="row"><b class="q">Why</b> Also the place to volunteer the honest caveat: in this proof of concept the reputation is simulated from ground truth, because the dataset has no such field. It is closer to an oracle than a real feed would be.</div>
+      <div class="row"><b class="q">How</b> Say the claim carefully — this demonstrates what an authorization step achieves <em>once an independent signal exists</em>, not that we detect the attacker.</div></li>
+  </ol>
+
+  <div class="note warn">
+    <span class="tag">Volunteer this, don't wait for it</span>
+    <p>Raising the simulated-reputation caveat yourself reads as rigour. Having it extracted
+    from you reads as a gap you hoped nobody would find. Same fact, opposite impression.</p>
+  </div>
+</section>
+
+<!-- ============================================ 13 -->
+<section class="block" id="s13">
+  <div class="bhead"><div class="bnum">13</div>
+    <div><h2>The maths, upper half</h2>
+    <div class="bsub">Only if the room wants it · the toggle is off by default</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/13.png</b><br>Show the maths, upper</div>
+    <img src="screenshots/13.png" alt="The formulae: the calibrated feature space, the attribution signal, the trust score, and the reputation independence statement.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <path class="ar" d="M682,962 L470,992"/><circle class="pin" cx="708" cy="954" r="24"/><text class="pint" x="708" y="954">1</text>
+      <rect class="hl" x="398" y="370" width="676" height="62"/>
+      <path class="ar" d="M1132,470 L1000,436"/><circle class="pin" cx="1154" cy="478" r="24"/><text class="pint" x="1154" y="478">2</text>
+      <path class="ar" d="M1030,700 L900,672"/><circle class="pin" cx="1052" cy="708" r="24"/><text class="pint" x="1052" y="708">3</text>
+      <rect class="hl" x="1250" y="342" width="450" height="52"/>
+      <path class="ar" d="M1236,424 L1348,396"/><circle class="pin" cx="1214" cy="430" r="24"/><text class="pint" x="1214" y="430">4</text>
+      <path class="ar" d="M1268,716 L1372,680"/><circle class="pin" cx="1246" cy="724" r="24"/><text class="pint" x="1246" y="724">5</text>
+      <rect class="hl" x="1136" y="798" width="682" height="72"/>
+      <path class="ar" d="M1224,882 L1330,872"/><circle class="pin" cx="1202" cy="886" r="24"/><text class="pint" x="1202" y="886">6</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">"Show the maths" is off by default</span>
+      <div class="row"><b class="q">What</b> A toggle controlling whether formulae appear at all.</div>
+      <div class="row"><b class="q">Why</b> The same page serves a technical examiner and a non-technical one. Leave it off; turn it on only if someone asks for the definition.</div>
+      <div class="row"><b class="q">How</b> Every concept has a plain-English statement above its formula, so the page still reads correctly with the maths hidden.</div></li>
+
+    <li><span class="ttl">Step 0 — the calibrated feature space</span>
+      <div class="row"><b class="q">What</b> A signed logarithm, then standardisation by calibration statistics.</div>
+      <div class="row"><b class="q">Why</b> <strong>Not preprocessing — a trust boundary.</strong> If this scaling were refitted on live data, an attacker controlling the live data would control the measuring frame and could move the goalposts, then measure themselves against them.</div>
+      <div class="row"><b class="q">How</b> Fitted once on calibration benign records and then frozen. The implementation offers no way to refit it.</div></li>
+
+    <li><span class="ttl">A — attribution consistency</span>
+      <div class="row"><b class="q">What</b> Half of one plus the cosine of the angle between this window's shift and the average of previously approved shifts.</div>
+      <div class="row"><b class="q">Why</b> Asks whether this change resembles changes already accepted as genuine.</div>
+      <div class="row"><b class="q">How</b> Returns exactly 0.5 when nothing has been approved yet — a deliberate neutral rather than an invented score. That is why our gate reads 0.500 all run.</div></li>
+
+    <li><span class="ttl">T — the weighted sum</span>
+      <div class="row"><b class="q">What</b> 0.40A + 0.30P + 0.30S.</div>
+      <div class="row"><b class="q">Why</b> The important sentence is underneath it: all three inputs come from the traffic, so reweighting cannot fix the problem. A patient attacker raises all three at once.</div>
+      <div class="row"><b class="q">How</b> Untuned defaults, fixed before any result was seen. Concede readily that tuning them was not attempted.</div></li>
+
+    <li><span class="ttl">R does not depend on x</span>
+      <div class="row"><b class="q">What</b> Stated as a formal property rather than a description.</div>
+      <div class="row"><b class="q">Why</b> This is the mathematical content of the contribution. Everything else in the gate is a function of the traffic; this one thing is not, and that independence is what makes it worth consulting.</div>
+      <div class="row"><b class="q">How</b> If someone challenges the novelty, this line is the answer.</div></li>
+
+    <li><span class="ttl">"Say this honestly in the review"</span>
+      <div class="row"><b class="q">What</b> The caveat written into the app itself.</div>
+      <div class="row"><b class="q">Why</b> Built in deliberately so it cannot be quietly skipped during a presentation.</div>
+      <div class="row"><b class="q">How</b> Read it out. It costs nothing and buys credibility for everything else.</div></li>
+  </ol>
+</section>
+
+<!-- ============================================ 14 -->
+<section class="block" id="s14">
+  <div class="bhead"><div class="bnum">14</div>
+    <div><h2>The maths, lower half</h2>
+    <div class="bsub">The decision rule and what follows it</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/14.png</b><br>Show the maths, lower</div>
+    <img src="screenshots/14.png" alt="The topology and stability formulae, the authorization rule with its veto branch, the state update, and the drift trigger.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <path class="ar" d="M980,176 L836,196"/><circle class="pin" cx="1002" cy="168" r="24"/><text class="pint" x="1002" y="168">1</text>
+      <path class="ar" d="M1010,556 L880,528"/><circle class="pin" cx="1032" cy="564" r="24"/><text class="pint" x="1032" y="564">2</text>
+      <rect class="hl" x="1330" y="240" width="470" height="88"/>
+      <path class="ar" d="M1856,246 L1810,272"/><circle class="pin" cx="1878" cy="238" r="24"/><text class="pint" x="1878" y="238">3</text>
+      <path class="ar" d="M1856,386 L1610,362"/><circle class="pin" cx="1878" cy="390" r="24"/><text class="pint" x="1878" y="390">4</text>
+      <rect class="hl" x="1330" y="612" width="470" height="56"/>
+      <path class="ar" d="M1856,626 L1810,640"/><circle class="pin" cx="1878" cy="620" r="24"/><text class="pint" x="1878" y="620">5</text>
+      <rect class="hl" x="1136" y="676" width="682" height="72"/>
+      <path class="ar" d="M1856,724 L1700,712"/><circle class="pin" cx="1878" cy="728" r="24"/><text class="pint" x="1878" y="728">6</text>
+      <path class="ar" d="M1856,906 L1620,926"/><circle class="pin" cx="1878" cy="900" r="24"/><text class="pint" x="1878" y="900">7</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">P — topology, as normalised entropy</span>
+      <div class="row"><b class="q">What</b> Entropy of a nine-bin histogram, divided by the maximum possible.</div>
+      <div class="row"><b class="q">Why</b> A stand-in measure, and the note below it says so: the dataset carries no address information, so communication variety is estimated from the spread of the traffic statistics instead.</div>
+      <div class="row"><b class="q">How</b> Dividing by the maximum puts it on the same 0-to-1 scale as the other two so they can be weighted together.</div></li>
+
+    <li><span class="ttl">S — stability, and the catch beneath it</span>
+      <div class="row"><b class="q">What</b> One over one-plus the distance moved since the last window.</div>
+      <div class="row"><b class="q">Why</b> Read the line underneath aloud: "a patient attacker gets a high score here for free, just by going slowly". A defence that rewards gradualness rewards exactly the behaviour this attacker exhibits.</div>
+      <div class="row"><b class="q">How</b> This is the clearest single illustration of why traffic-derived evidence is structurally insufficient.</div></li>
+
+    <li><span class="ttl">The authorization rule</span>
+      <div class="row"><b class="q">What</b> Two cases: false if reputation is below threshold; otherwise, is the trust score high enough.</div>
+      <div class="row"><b class="q">Why</b> <strong>The first line is the entire contribution.</strong> Delete it and you have the traffic-only comparison arm — same model, same evidence, same threshold, same data. One extra check.</div>
+      <div class="row"><b class="q">How</b> The veto is evaluated first, so a bad reputation short-circuits the trust score entirely.</div></li>
+
+    <li><span class="ttl">The two thresholds</span>
+      <div class="row"><b class="q">What</b> 0.55 for trust, 0.30 for reputation.</div>
+      <div class="row"><b class="q">Why</b> Defender-set, and both untuned. Round 40 cleared the trust bar at 0.573 — a slightly higher bar would have refused it and the traffic-only arm might have survived. Concede that the result demonstrates a failure <em>mode</em>, not a failure <em>rate</em>.</div>
+      <div class="row"><b class="q">How</b> Both are adjustable live from the sidebar, which is screenshot 16.</div></li>
+
+    <li><span class="ttl">The update rule</span>
+      <div class="row"><b class="q">What</b> On acceptance, the reference direction moves 30% toward this window's shift and the baseline jumps to this window's mean.</div>
+      <div class="row"><b class="q">Why</b> This is how the gate learns what approved drift looks like — and also how it can be corrupted, since an accepted poisoned window becomes part of the reference.</div>
+      <div class="row"><b class="q">How</b> Exponential moving average with weight 0.3.</div></li>
+
+    <li><span class="ttl">"A refused attack leaves no trace at all"</span>
+      <div class="row"><b class="q">What</b> On refusal, nothing changes — not the model, not the baseline, not the reference direction.</div>
+      <div class="row"><b class="q">Why</b> <strong>This is why our arm ends numerically identical to the frozen one.</strong> It also stops corruption compounding: the traffic-only gate's attribution score climbed from 0.500 to 0.956 after it accepted at round 40, because a poisoned window had become its reference. Accepting one bad update made the next one easier to accept.</div>
+      <div class="row"><b class="q">How</b> The asymmetry between the accept and refuse paths is a deliberate design decision, not an implementation detail.</div></li>
+
+    <li><span class="ttl">The drift trigger</span>
+      <div class="row"><b class="q">What</b> A change detector watching the frozen arm's error stream.</div>
+      <div class="row"><b class="q">Why</b> Deliberately the arm that never updates, so the trigger is identical for all four and cannot be corrupted by any arm's own bad decisions. Without this the comparison would not be controlled.</div>
+      <div class="row"><b class="q">How</b> It is also why the benign-drift scenario returned a null result — a benign-to-benign shift produces no errors, so nothing fires.</div></li>
+  </ol>
+</section>
+
+<!-- ============================================ 15 -->
+<section class="block" id="s15">
+  <div class="bhead"><div class="bnum">15</div>
+    <div><h2>The four steps, and the caveats</h2>
+    <div class="bsub">Your closing screen</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/15.png</b><br>Four steps and caveats</div>
+    <img src="screenshots/15.png" alt="The four-step reading guide, the green one-number-to-quote banner, and the what-this-demonstrates disclosures.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <path class="ar" d="M372,244 L396,244"/><circle class="pin" cx="348" cy="244" r="24"/><text class="pint" x="348" y="244">1</text>
+      <path class="ar" d="M372,300 L396,292"/><circle class="pin" cx="348" cy="302" r="24"/><text class="pint" x="348" y="302">2</text>
+      <rect class="hl" x="392" y="338" width="1424" height="60"/>
+      <path class="ar" d="M372,366 L388,362"/><circle class="pin" cx="348" cy="368" r="24"/><text class="pint" x="348" y="368">3</text>
+      <rect class="hl" x="392" y="406" width="1424" height="60"/>
+      <path class="ar" d="M372,432 L388,430"/><circle class="pin" cx="348" cy="434" r="24"/><text class="pint" x="348" y="434">4</text>
+      <rect class="hl" x="380" y="476" width="1436" height="56"/>
+      <path class="ar" d="M372,502 L376,502"/><circle class="pin" cx="348" cy="502" r="24"/><text class="pint" x="348" y="502">5</text>
+      <rect class="hl" x="380" y="668" width="1436" height="292"/>
+      <path class="ar" d="M372,780 L376,780"/><circle class="pin" cx="348" cy="780" r="24"/><text class="pint" x="348" y="780">6</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">Step 1 — normal traffic</span>
+      <div class="row"><b class="q">What</b> All four systems agree; nothing is happening.</div>
+      <div class="row"><b class="q">Why</b> Establishes the baseline so any later difference is visibly caused by the campaign.</div>
+      <div class="row"><b class="q">How</b> Rounds 1 to 20.</div></li>
+
+    <li><span class="ttl">Step 2 — the attacker sneaks in</span>
+      <div class="row"><b class="q">What</b> Attack traffic nudged toward normal, a little at a time.</div>
+      <div class="row"><b class="q">Why</b> The traffic checks start looking fine because the attacker is deliberately making them look fine. Reputation stays bad throughout.</div>
+      <div class="row"><b class="q">How</b> Rounds 21 to 50. The first change point fires at 36; the first disagreement is at 40.</div></li>
+
+    <li><span class="ttl">Step 3 — the attack looks completely normal</span>
+      <div class="row"><b class="q">What</b> Every system scores zero, including the one that never learns.</div>
+      <div class="row"><b class="q">Why</b> Stated in the app so you are not accused of hiding it. At this point the attack traffic is genuinely identical to normal traffic; nothing that only looks at traffic could tell the difference.</div>
+      <div class="row"><b class="q">How</b> Rounds 51 to 70.</div></li>
+
+    <li><span class="ttl">Step 4 — an obvious attack comes back</span>
+      <div class="row"><b class="q">What</b> The step that decides everything.</div>
+      <div class="row"><b class="q">Why</b> Whoever accepted the poisoned updates has forgotten how to catch it. Whoever refused them still catches it every time.</div>
+      <div class="row"><b class="q">How</b> Rounds 71 to 80.</div></li>
+
+    <li><span class="ttl">"The one number to quote"</span>
+      <div class="row"><b class="q">What</b> Repeat-attack detection, not overall accuracy.</div>
+      <div class="row"><b class="q">Why</b> With the reason given: step 3 drags overall accuracy down for everyone, including a hypothetical perfect detector.</div>
+      <div class="row"><b class="q">How</b> If you remember one sentence from this whole page, make it this one.</div></li>
+
+    <li><span class="ttl">"What this demonstrates — and what it does not"</span>
+      <div class="row"><b class="q">What</b> The simulated reputation channel, the honest framing of the claim, no tuning, no elastic-weight baseline, and the scenario-1 null result.</div>
+      <div class="row"><b class="q">Why</b> Every one of these would be found by a careful examiner. Disclosed, they demonstrate rigour; extracted, they look like gaps.</div>
+      <div class="row"><b class="q">How</b> Open this panel yourself at the end rather than waiting to be asked.</div></li>
+  </ol>
+</section>
+
+<!-- ============================================ 16 -->
+<section class="block" id="s16">
+  <div class="bhead"><div class="bnum">16</div>
+    <div><h2>Changing the gate live</h2>
+    <div class="bsub">The strongest thing you can do if you have spare time</div></div>
+  </div>
+
+  <div class="shot">
+    <div class="ph">Save as <b>screenshots/16.png</b><br>Round 37, sliders open</div>
+    <img src="screenshots/16.png" alt="Advanced settings expanded in the sidebar showing the threshold and weight sliders, with the run at round 37.">
+    <svg class="anno" viewBox="0 0 1920 1032">
+      <rect class="hl" x="18" y="422" width="266" height="518"/>
+      <path class="ar" d="M406,428 L290,440"/><circle class="pin" cx="430" cy="424" r="24"/><text class="pint" x="430" y="424">1</text>
+      <path class="ar" d="M406,652 L290,648"/><circle class="pin" cx="430" cy="654" r="24"/><text class="pint" x="430" y="654">2</text>
+      <path class="ar" d="M406,880 L290,884"/><circle class="pin" cx="430" cy="884" r="24"/><text class="pint" x="430" y="884">3</text>
+      <rect class="hl" x="376" y="552" width="1454" height="60"/>
+      <path class="ar" d="M1570,520 L1330,566"/><circle class="pin" cx="1598" cy="512" r="24"/><text class="pint" x="1598" y="512">4</text>
+      <rect class="hl" x="376" y="722" width="1454" height="140"/>
+      <path class="ar" d="M1786,700 L1700,718"/><circle class="pin" cx="1814" cy="694" r="24"/><text class="pint" x="1814" y="694">5</text>
+    </svg>
+  </div>
+
+  <ol class="notes">
+    <li><span class="ttl">Advanced settings</span>
+      <div class="row"><b class="q">What</b> The gate's parameters, exposed and adjustable.</div>
+      <div class="row"><b class="q">Why</b> Collapsed by default so the demo is not cluttered, but available to answer "what if you had chosen differently?" — which is a question you should expect.</div>
+      <div class="row"><b class="q">How</b> They apply only when live re-run is enabled, which recomputes the whole pipeline rather than replaying the log.</div></li>
+
+    <li><span class="ttl">The two thresholds</span>
+      <div class="row"><b class="q">What</b> Trust score needed to accept, 0.55. Refuse below this reputation, 0.30.</div>
+      <div class="row"><b class="q">Why</b> <strong>Here is the demonstration to run if you have two minutes spare.</strong> Drop the reputation threshold below 0.05 and our gate stops vetoing — it degrades into the traffic-only arm and gets poisoned in exactly the same way. That proves the veto is load-bearing rather than decorative.</div>
+      <div class="row"><b class="q">How</b> Move the slider, wait for the re-run, and show the repeat-attack number falling from 1.000 to 0.200.</div></li>
+
+    <li><span class="ttl">The three weights</span>
+      <div class="row"><b class="q">What</b> 0.40, 0.30, 0.30 across attribution, topology and stability.</div>
+      <div class="row"><b class="q">Why</b> Useful for a second point: reweighting these does not rescue the traffic-only gate, because all three are attacker-shaped. You can demonstrate that rather than assert it.</div>
+      <div class="row"><b class="q">How</b> They are exposed precisely so a sceptic can try to fix the problem by tuning and find that they cannot.</div></li>
+
+    <li><span class="ttl">Round 37, mid-poisoning</span>
+      <div class="row"><b class="q">What</b> The attacker is active and the change detector has already fired at 36.</div>
+      <div class="row"><b class="q">Why</b> A good round to pause on before stepping forward to 40, where the first disagreement happens.</div>
+      <div class="row"><b class="q">How</b> Step forward three rounds from here and watch the two verdict boxes diverge.</div></li>
+
+    <li><span class="ttl">All four already at zero here</span>
+      <div class="row"><b class="q">What</b> 0/20 this window, 0.926 running accuracy for all four.</div>
+      <div class="row"><b class="q">Why</b> By round 37 the interpolation has already carried the attack across the decision boundary. The damage to detection has begun; the damage to the <em>model</em> has not happened yet.</div>
+      <div class="row"><b class="q">How</b> The running accuracy is still high because most of the run so far was clean.</div></li>
+  </ol>
+</section>
+
+<!-- ============================================ SCRIPT -->
+<section class="block wrap" id="script">
+  <div class="bhead"><div class="bnum">—</div>
+    <div><h2>A five-minute script</h2>
+    <div class="bsub">If you have to present under time pressure</div></div>
+  </div>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Time</th><th>Screen</th><th>What you say</th></tr></thead>
+    <tbody>
+      <tr><td>0:00</td><td>01</td><td>Four detectors, same traffic, same model. Only difference is what each may learn from.</td></tr>
+      <tr><td>0:30</td><td>Scrub to 40</td><td>First disagreement. Identical evidence, opposite decisions. Only reputation differs.</td></tr>
+      <tr><td>1:30</td><td>04</td><td>Everyone scores zero here — including the frozen one. Explain why, before being asked.</td></tr>
+      <tr><td>2:15</td><td>05</td><td>The split. Two at 20/20, two at 0/20. The gated traffic-only arm is as damaged as the ungated one.</td></tr>
+      <tr><td>3:00</td><td>10</td><td>Green line wanders; red line pinned to the floor. One is shaped by the attacker, one is not.</td></tr>
+      <tr><td>3:45</td><td>08</td><td>0.200 against 1.000. Quote repeat-attack detection, not overall accuracy.</td></tr>
+      <tr><td>4:15</td><td>15</td><td>Open the caveats yourself. Simulated reputation, no tuning, one null result.</td></tr>
+      <tr><td>4:45</td><td>—</td><td>Close on: traffic evidence is insufficient in principle, not merely in practice.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============================================ QA -->
+<section class="block wrap" id="qa">
+  <div class="bhead"><div class="bnum">—</div>
+    <div><h2>Questions you will get</h2>
+    <div class="bsub">With the honest answer to each</div></div>
+  </div>
+
+  <h3>"Your baseline only scores 55%. Is the model any good?"</h3>
+  <p>Overall accuracy is depressed for every arm by the phase where the attack records are
+  numerically identical to benign ones. In that phase no traffic-based detector can exceed
+  zero. The meaningful figure is repeat-attack detection: 1.000 against 0.200.</p>
+
+  <h3>"The reputation signal is doing all the work. Isn't that cheating?"</h3>
+  <p>Partly, and we say so. It is simulated from ground-truth origin, so it never errs. The
+  claim is not that we detect the attacker — it is that an authorization step converts an
+  independent signal into a refusal that traffic evidence alone could not produce. Making
+  that channel realistic is the first item of future work.</p>
+
+  <h3>"Why not just freeze the model? It scores the same as yours."</h3>
+  <p>Because it is safe by being useless — it cannot adapt to anything. Ours matches it on
+  safety while retaining the ability to accept legitimate updates. The honest weakness is
+  that our benign-drift scenario failed to demonstrate that on real data, and we report the
+  null result rather than hiding it.</p>
+
+  <h3>"Would a higher threshold have saved the traffic-only gate?"</h3>
+  <p>Possibly. Round 40 cleared the 0.55 bar at 0.573. That is why we present this as a
+  demonstrated failure mode rather than a quantified failure rate — a sensitivity sweep is
+  future work.</p>
+
+  <h3>"What is actually novel here?"</h3>
+  <p>Not the classifier, the change detector, or poisoning as a concept. What is new is the
+  authorization stage as an explicit, recorded, refusable step whose deciding input is not a
+  function of the data being judged, together with the no-residue rule and the measurement of
+  durable damage after the attack ends.</p>
+
+  <h3>"Why does your gate's attribution stay at exactly 0.500?"</h3>
+  <p>Because it never authorized anything, so it never built a reference direction to compare
+  against, and the signal returns a neutral 0.5 rather than inventing a score. The
+  traffic-only gate's rose to 0.956 after it accepted at round 40 — a poisoned window had
+  become its reference. That is the self-reinforcement finding.</p>
+</section>
+
+</main>
+</div>
