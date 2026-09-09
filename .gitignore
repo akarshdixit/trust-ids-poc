@@ -18,3 +18,6 @@ data/nbaiot/
 *.swo
 *~
 .DS_Store
+
+# built artifact: index.html with the screenshots inlined as data URIs
+docs/walkthrough/standalone.html
