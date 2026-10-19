@@ -10,6 +10,7 @@ measured separately and is written in by hand; it is labelled as such.
 """
 import json
 import os
+import sys
 
 import numpy as np
 from reportlab.graphics.shapes import Drawing, Line, Polygon, Rect, String
@@ -22,6 +23,7 @@ from reportlab.platypus import (Image, KeepTogether, PageBreak, Paragraph, Prefo
                                 SimpleDocTemplate, Spacer, Table, TableStyle)
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, BASE)  # data/, models/ for the feature catalogue and names
 RESULTS = os.path.join(BASE, "results")
 OUT = os.path.join(BASE, "report_ids.pdf")
 
@@ -186,11 +188,13 @@ def title_page():
             Spacer(1, 0.3 * cm),
             P("Repository: github.com/akarshdixit/trust-ids-poc", "subtitle"),
             Spacer(1, 5 * cm),
-            P("Contents: 1 Problem and goal - 2 System structure - 3 Repository layout - "
-              "4 Datasets - 5 Algorithms - 6 Experimental setup - 7 Results - "
-              "8 Robustness and the quarantine extension - 9 Related work and novelty - "
-              "10 Software, packages and backend - 11 Visualizations - 12 Testing - "
-              "13 How to run - 14 Limitations and future work - References", "caption"),
+            P("Contents: 0 Review-panel concerns - 1 Problem and goal - 2 System structure - "
+              "3 Repository layout - 4 Datasets - 5 Data processing and features - "
+              "6 Algorithms and training - 7 Experimental setup - 8 Results - 9 Comparison "
+              "with other models - 10 Live experiment - 11 Robustness and the quarantine "
+              "extension - 12 Related work and novelty - 13 Software, packages and backend - "
+              "14 Visualizations - 15 Testing - 16 How to run - 17 Limitations and future "
+              "work - References", "caption"),
             PageBreak()]
 
 
@@ -258,7 +262,7 @@ def s2_structure():
                     "Consolidation anchoring weights to calibration. Tests whether the gate's "
                     "benefit is merely 'not forgetting'."],
                    [ARM_NAMES["gate_quarantine"], "Sequential reputation test over the drift "
-                    "episode, provisional updates, rollback (section 5.6)."]],
+                    "episode, provisional updates, rollback (section 6.6)."]],
                   [4.2 * cm, 12.3 * cm], bold_col0=True)]
 
 
@@ -283,6 +287,12 @@ def s3_layout():
             ["app.py, charts.py, equations.py", "Streamlit demo, Altair charts, equations"],
             ["tests/", "108 pytest tests"],
             ["results/", "Logs (.json) and figures (.png)"],
+            ["data/features.py", "Meaning of every N-BaIoT and IoT-23 feature (new)"],
+            ["experiments/benchmark.py", "16-model detector benchmark (new)"],
+            ["experiments/data_profile.py", "Data quality, processing effect, importance (new)"],
+            ["experiments/live_experiment.py", "Real-time replay of a real capture (new)"],
+            ["experiments/live_feed.py", "Streams a live Zeek conn.log to the backend (new)"],
+            ["dashboard.py, backend/live.html", "Comparison dashboards, live dashboard (new)"],
             ["PROJECT_GUIDE.txt", "Changes, how to run, meaning of every chart"]]
     return [P("3. Repository layout", "h1"), table(rows, [5.4 * cm, 11.1 * cm])]
 
@@ -310,7 +320,7 @@ def s4_datasets():
             P("All files: 0 NaN, 0 Inf, identical column order. 20 columns (covariance and "
               "Pearson-correlation features) take negative values, and the dynamic range spans "
               "about 19 orders of magnitude (maximum 5.7e17), which is why evidence is computed "
-              "in a calibrated space (section 5.2)."),
+              "in a calibrated space (section 6.2)."),
             P("4.2 IoT-23 (second, independent dataset)", "h2"),
             P("Stratosphere Laboratory, CTU Prague (Garcia et al., 2020). Only the labelled Zeek "
               "flow logs (conn.log.labeled) were downloaded, not the PCAPs. The parser handles "
@@ -347,8 +357,8 @@ def s4_datasets():
 
 
 def s5_algorithms():
-    return [PageBreak(), P("5. Algorithms", "h1"),
-            P("5.1 Online IDS and drift detection", "h2"),
+    return [PageBreak(), P("6. Algorithms", "h1"),
+            P("6.1 Online IDS and drift detection", "h2"),
             P("The detector is River's pipeline StandardScaler | LogisticRegression, trained "
               "one record at a time with SGD. ADWIN (adaptive windowing, Bifet and Gavalda "
               "2007) keeps a variable-length window of a 0/1 error stream and signals a change "
@@ -358,7 +368,7 @@ def s5_algorithms():
               "ADWIN on each record's normalised distance from the calibration centre, "
               "||z - c|| / sqrt(d), which catches benign-to-benign drift that never raises "
               "the error rate."),
-            P("5.2 Calibrated feature space (trust boundary)", "h2"),
+            P("6.2 Calibrated feature space (trust boundary)", "h2"),
             code("""
 z = (slog(x) - mu_calib) / sd_calib        slog(x) = sign(x) * log(1 + |x|)
 mu_calib, sd_calib: fit ONCE on calibration benign records, then frozen
@@ -368,7 +378,7 @@ mu_calib, sd_calib: fit ONCE on calibration benign records, then frozen
               "variance columns carry 100% of every cosine, so nothing is ever authorized. The "
               "signed log keeps the sign of correlation features. Fitting on calibration data "
               "only means the attacker can never move the reference frame."),
-            P("5.3 Traffic evidence", "h2"),
+            P("6.3 Traffic evidence", "h2"),
             code("""
 shift        = mean(window_z) - trusted_baseline
 attribution  = (cos(shift, reference_direction) + 1) / 2      (0.5 if none yet)
@@ -382,21 +392,21 @@ trust score  T = 0.4 * attribution + 0.3 * topology + 0.3 * temporal
               "repeated channel; temporal stability rewards gradual change, which is exactly "
               "what a slow attacker maximises, so it is not sufficient on its own. Weights are "
               "normalised to sum to 1 (negative or all-zero weights are rejected)."),
-            P("5.4 One-shot trust gate (Review 2)", "h2"),
+            P("6.4 One-shot trust gate (Review 2)", "h2"),
             code("""
 r = mean reputation of the 20-record window
 if r < 0.3:            REFUSE  (out-of-band veto)
 elif T >= 0.55:        AUTHORIZE
 else:                  REFUSE  (weak traffic evidence)
 """),
-            P("5.5 Elastic Weight Consolidation baseline", "h2"),
+            P("6.5 Elastic Weight Consolidation baseline", "h2"),
             P("After calibration the logistic-regression weights w* are frozen and the diagonal "
               "Fisher information F is estimated on calibration inputs (p(1-p) z^2, normalised "
               "to a maximum of 1). After each SGD step every weight is pulled back: "
               "w <- w - min(1, eta * lambda * F) (w - w*). This penalises moving important "
               "weights, the standard defence against catastrophic forgetting. Only the LR "
               "weights are anchored; the scaler keeps adapting."),
-            P("5.6 Quarantine extension (new)", "h2"),
+            P("6.6 Quarantine extension (new)", "h2"),
             P("<b>Sequential reputation test.</b> Each record's reputation is a vote (benign if "
               "> 0.5). The feed is assumed wrong on at most e = 30% of records, so under "
               "'benign episode' a benign vote has probability 1 - e and under 'attack episode' "
@@ -435,7 +445,7 @@ a new drift run starts a new episode only when nothing is held
 
 
 def s6_setup():
-    return [PageBreak(), P("6. Experimental setup", "h1"),
+    return [PageBreak(), P("7. Experimental setup", "h1"),
             P("Every stream begins with 400 labelled calibration records (30% attack) on which "
               "all arms are trained identically. The rest is processed in 20-record rounds."),
             table([["Scenario", "Phases (records)", "What a good system does"],
@@ -472,8 +482,8 @@ def results_table(scenario, phase, tags):
 
 
 def s7_results():
-    out = [PageBreak(), P("7. Results", "h1"),
-           P("7.1 Slow poisoning: accuracy on the obvious repeat attack", "h2"),
+    out = [PageBreak(), P("8. Results", "h1"),
+           P("8.1 Slow poisoning: accuracy on the obvious repeat attack", "h2"),
            table(results_table("slow_poisoning", "recovery_check", SOURCES),
                  [6.5 * cm, 3.3 * cm, 3.3 * cm, 3.4 * cm], bold_col0=True),
            P("Table 1. Recovery-check accuracy, oracle reputation feed, seed 42.", "caption"),
@@ -481,7 +491,7 @@ def s7_results():
              "(traffic-only) lets the attacker teach the model that the attack is normal: on "
              "real N-BaIoT both detect only 20% of the repeat attack, on IoT-23 0% and 30%. "
              "Both reputation-aware gates refuse every poisoning update and keep 1.000. EWC "
-             "also survives here, but at a cost shown in 7.2.")]
+             "also survives here, but at a cost shown in 8.2.")]
     seeds = {t: load(f"sweep_seeds_{t}.json") for t, _ in SOURCES}
     rows = [["Arm"] + [name for _, name in SOURCES]]
     for arm in ARMS:
@@ -501,7 +511,7 @@ def s7_results():
 
     tags_fd = [("real_featuredrift", "N-BaIoT + FD"), ("iot23", "IoT-23"),
                ("iot23_featuredrift", "IoT-23 + FD"), ("synth", "Synthetic")]
-    out += [P("7.2 Genuine drift: accuracy after a benign device shift", "h2"),
+    out += [P("8.2 Genuine drift: accuracy after a benign device shift", "h2"),
             table(results_table("genuine_drift", "post_drift", tags_fd),
                   [5.3 * cm, 2.8 * cm, 2.8 * cm, 2.8 * cm, 2.8 * cm], bold_col0=True),
             P("Table 3. Post-drift accuracy (FD = feature-drift trigger on). Without FD, real "
@@ -520,8 +530,8 @@ def s7_results():
 
 
 def s8_robustness():
-    out = [PageBreak(), P("8. Robustness and the quarantine extension", "h1"),
-           P("8.1 One-shot veto under an imperfect feed", "h2"),
+    out = [PageBreak(), P("11. Robustness and the quarantine extension", "h1"),
+           P("11.1 One-shot veto under an imperfect feed", "h2"),
            figure("results/sweep_reputation_real.png",
                   "Figure 5. One-shot full gate vs feed error rate, one line per veto "
                   "threshold (real N-BaIoT)."),
@@ -529,11 +539,11 @@ def s8_robustness():
              "window's mean reputation crosses 0.3 often enough for poison to get in (0.50 on "
              "N-BaIoT, 0.60 on IoT-23). A 0.5 veto holds to 30-40%; 0.7 holds longer but "
              "starts blocking benign drift. A fixed per-window threshold is fragile."),
-           P("8.2 EWC strength", "h2"),
+           P("11.2 EWC strength", "h2"),
            figure("results/sweep_ewc_iot23.png",
                   "Figure 6. EWC lambda sweep on IoT-23: survives poisoning from lambda = 5 but "
                   "post-drift accuracy falls to 0.76, vs 0.98 for the gate."),
-           P("8.3 Quarantine vs one-shot gate", "h2")]
+           P("11.3 Quarantine vs one-shot gate", "h2")]
     sq = {t: load(f"sweep_quarantine_{t}.json") for t, _ in SOURCES}
 
     def cell(t, flip, lag, label, kept=False):
@@ -598,7 +608,7 @@ def s9_related():
              "Trust-aware federated IDS (AGAT-FL, 2025); Crab (2024), FedRecover (2023)"],
             ["Sequential tests over IDS feedback",
              "Zhu et al., collaborative IDS with sequential hypothesis testing (2010)"]]
-    return [PageBreak(), P("9. Related work and novelty", "h1"),
+    return [PageBreak(), P("12. Related work and novelty", "h1"),
             P("A targeted (not systematic) literature search found every building block "
               "already published:"),
             table(rows, [6.3 * cm, 10.2 * cm]),
@@ -623,6 +633,7 @@ def s10_software():
           ["numpy", "2.5.4", "vectors, evidence geometry"],
           ["pandas", "3.0.6", "CSV / Zeek log loading, tables in the app"],
           ["scipy", "1.18.1", "t-distribution confidence intervals in sweeps"],
+          ["scikit-learn", "1.9.1", "benchmark models, random-forest feature importance"],
           ["matplotlib", "3.11.2", "static figures in results/"],
           ["streamlit", "1.66.0", "interactive demo app"],
           ["altair", "6.3.0", "interactive charts in the app"],
@@ -640,10 +651,10 @@ def s10_software():
            ["GET /api/runs, /api/runs/{id}", "list runs / run status and events"],
            ["GET /api/runs/{id}/events", "Server-Sent Events, one per round"],
            ["GET /api/logs/stream", "Server-Sent Events of all server logs"]]
-    return [PageBreak(), P("10. Software, packages and backend", "h1"),
-            P("10.1 Packages (requirements.txt, pinned)", "h2"),
+    return [PageBreak(), P("13. Software, packages and backend", "h1"),
+            P("13.1 Packages (requirements.txt, pinned)", "h2"),
             table(pk, [3.6 * cm, 2.2 * cm, 10.7 * cm]),
-            P("10.2 Backend", "h2"),
+            P("13.2 Backend", "h2"),
             P("backend/server.py is a FastAPI application. Runs execute in worker threads; "
               "every round is logged to the console, logs/backend.log and an in-memory ring "
               "buffer that /api/logs/stream tails. Finished runs are saved to results/runs/ "
@@ -690,8 +701,22 @@ def s11_visuals():
              "Attribution ('same direction?'), topology ('mixed traffic?'), temporal ('smooth "
              "change?') separately."],
             ["Live console", "One line per round; yellow VETO, green AUTH, blue DRIFT, purple "
-             "ROLLBACK, red errors; quarantine verdict with its LLR."]]
-    return [P("11. Visualizations", "h1"),
+             "ROLLBACK, red errors; quarantine verdict with its LLR."],
+            ["benchmark_&lt;source&gt;.png", "F1 of 16 detectors (purple = ours) and F1 vs "
+             "per-record latency (bubble = model size); up-left is better."],
+            ["sweep_models_&lt;source&gt;.png", "Every defence on 5 base learners: repeat attack "
+             "(left) and benign drift (right); a good defence is high in both."],
+            ["data_profile_&lt;source&gt;.png", "Feature spread after each processing step, top "
+             "features, importance by aggregation x time window."],
+            ["live_experiment_iot23.png", "Live run: traffic and drift, rolling accuracy per "
+             "system, processing time and backlog."],
+            ["App: Model comparison tab", "Metric selector over the benchmark, efficiency "
+             "scatter, every-defence-on-every-learner bars, poisoned-updates table."],
+            ["App: Data &amp; features tab", "Processing steps, data checks, feature spread, "
+             "importance, the full feature catalogue, stream layout."],
+            ["App: Live experiment tab / backend /live", "Recorded live run; the /live page "
+             "starts a new one and draws it as it streams."]]
+    return [P("14. Visualizations", "h1"),
             P("Colours are consistent everywhere: grey static, red ungated, orange traffic-only, "
               "green full gate, blue EWC, purple quarantine. PROJECT_GUIDE.txt explains each in "
               "more detail."),
@@ -711,9 +736,13 @@ def s12_tests():
             ["test_reputation.py", "noise model: identity, no mutation, bounds, flips, lag"],
             ["test_fake_nbaiot.py", "fake data format, determinism, loader compatibility"],
             ["test_backend.py", "health, SSE streaming, persistence, validation, auth, "
-             "concurrency limit, quarantine options, log formatting"]]
-    return [P("12. Testing", "h1"),
-            P("108 tests, about 30 seconds (python -m pytest). Tests that need the downloaded "
+             "concurrency limit, quarantine options, log formatting"],
+            ["test_comparison.py", "feature catalogue; temporal split and metrics; all 16 "
+             "benchmark models; every base learner in every arm; confusion counts; Zeek "
+             "featurization; live pacing and live results; live and ingest endpoints; "
+             "dashboards render"]]
+    return [P("15. Testing", "h1"),
+            P("143 tests, about one minute (python -m pytest). Tests that need the downloaded "
               "datasets skip when they are absent. A mutation check (disabling the veto) makes "
               "the headline tests fail, as it should. Adding the quarantine arm is tested to "
               "leave the other five arms bit-identical."),
@@ -721,7 +750,7 @@ def s12_tests():
 
 
 def s13_run():
-    return [P("13. How to run", "h1"),
+    return [P("16. How to run", "h1"),
             code(r"""
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
@@ -734,6 +763,11 @@ py -3.12 -m venv .venv
 
 .\.venv\Scripts\python.exe -m uvicorn backend.server:app --port 8765   # console :8765
 .\.venv\Scripts\streamlit.exe run app.py                               # app     :8501
+.\.venv\Scripts\python.exe experiments\benchmark.py --source real       # model comparison
+.\.venv\Scripts\python.exe experiments\sweeps.py models --source real    # defences x learners
+.\.venv\Scripts\python.exe experiments\data_profile.py --source real     # data and features
+.\.venv\Scripts\python.exe experiments\live_experiment.py --speed 600    # live experiment
+.\.venv\Scripts\python.exe experiments\live_feed.py CONN_LOG --follow    # live Zeek sensor
 .\.venv\Scripts\python.exe docs\build_report.py                        # this PDF
 """),
             P("Datasets go in data/nbaiot/ and data/iot23/ (gitignored); download instructions "
@@ -741,7 +775,7 @@ py -3.12 -m venv .venv
 
 
 def s14_limits():
-    return [P("14. Limitations and future work", "h1"),
+    return [P("17. Limitations and future work", "h1"),
             *bullets([
                 "The reputation feed is simulated from ground truth; integrating a real "
                 "threat-intelligence or C2-cost source is Project-II work.",
@@ -755,6 +789,14 @@ def s14_limits():
                 "reflect calibration-order sensitivity, not dataset variability.",
                 "One device pair per dataset; more devices and CICIoT2023 would strengthen the "
                 "generality claim.",
+                "The scenario detector is trained on 400 rows; it is accurate on the device it "
+                "saw (0.995) but raises false alarms on 36% of an unseen device's benign "
+                "traffic. Larger calibration sets or safe adaptation are needed in deployment.",
+                "The live experiment replays a real capture in real time; it is not packet "
+                "capture on this machine (that needs Zeek or Npcap). The ingest API accepts a "
+                "real sensor's conn.log but scores it without the gate (no reputation feed).",
+                "Benchmark latencies are single-threaded Python on one laptop; they compare "
+                "models with each other, not with production IDS engines.",
                 "Future work: learn the feed's reliability online, model correlated feed errors, "
                 "adaptive hold length from measured feed latency, and adaptive attackers who "
                 "target the provisional threshold.",
@@ -789,6 +831,393 @@ def s14_limits():
             ])]
 
 
+# ------------------------------------------------------------------ review-panel additions
+BENCH_OURS = "Online LR, 400 calibration rows (ours, as deployed)"
+PHASES_SP = ["pre_attack", "slow_poison", "post_poison", "recovery_check"]
+PHASE_NAMES = {"pre_attack": "normal traffic", "slow_poison": "attack morphing to benign",
+               "post_poison": "attack disguised as benign", "recovery_check": "raw repeat attack"}
+
+
+def _bench(source):
+    d = load(f"benchmark_{source}.json")
+    by = {m["model"]: m for m in d["models"]}
+    return d, by
+
+
+def _best(d, key="f1"):
+    return max(d["models"], key=lambda m: m[key])
+
+
+def s0_review():
+    br, brm = _bench("real")
+    bi, bim = _bench("iot23")
+    live = load("live_experiment_iot23.json")["summary"]
+    fast = load("live_experiment_iot23_maxspeed.json")["summary"]
+    sm = {s: load(f"sweep_models_{s}.json") for s in ("real", "iot23")}
+    n_gate_ok = sum(r["slow_poisoning|gate_full"] == 1.0 for s in sm.values() for r in s)
+    n_static_ok = sum(r["slow_poisoning|static"] == 1.0 for s in sm.values() for r in s)
+    n_ung_bad = sum(r["slow_poisoning|ungated"] < 1.0 for s in sm.values() for r in s
+                    if r["slow_poisoning|static"] == 1.0)
+    rows = [
+        ["Panel concern", "What was added", "Where", "Headline result"],
+        ["1. No comparison with other models; which is better / more efficient?",
+         f"Benchmark of {len(br['models'])} detectors (8 supervised batch, 2 unsupervised, "
+         "5 online, plus ours) on the same temporal split; every defence re-run on 5 different "
+         "base learners", "Sections 9.1-9.3; experiments/benchmark.py, sweeps.py models",
+         f"Clean detection: best F1 {_best(br)['f1']:.4f} (N-BaIoT), {_best(bi)['f1']:.4f} "
+         f"(IoT-23); ours {brm[BENCH_OURS]['f1']:.4f} / {bim[BENCH_OURS]['f1']:.4f} at "
+         f"{brm[BENCH_OURS]['single_latency_us']:.0f} / {bim[BENCH_OURS]['single_latency_us']:.0f} "
+         f"us per record. Under poisoning the full gate holds 1.00 in {n_gate_ok} of "
+         f"{n_static_ok} learner/dataset pairs whose detector works; learning everything "
+         f"is poisoned in {n_ung_bad} of those {n_static_ok}."],
+        ["2. How was the dataset processed?",
+         "Step-by-step pipeline with measured effect of each step, splits, sampling and "
+         "stream construction", "Section 5.1-5.3; experiments/data_profile.py",
+         "Raw N-BaIoT features span 18.5 orders of magnitude; after signed log + z-score, 0. "
+         "No missing or infinite values in any file."],
+        ["3. What are the features, how are they defined and used?",
+         "Catalogue of all 115 N-BaIoT and 21 IoT-23 features with meanings, importance "
+         "analysis by aggregation and time window", "Section 5.4-5.5; data/features.py",
+         "Long time windows (~10 s, ~1 min) of per-host packet counts and sizes carry most "
+         "signal on N-BaIoT; protocol and packet counts on IoT-23."],
+        ["4. How were the models trained?",
+         "Training procedure and every hyperparameter, for the scenario pipeline and for "
+         "each benchmark model", "Section 6.7", "400 labelled calibration rows, then online "
+         "SGD only on authorized updates; benchmark models trained on 70% earliest data."],
+        ["5. Accuracy is too low",
+         "Per-phase accuracy breakdown, clean held-out accuracy, live accuracy",
+         "Sections 8.3, 9.1, 10",
+         f"The 0.55 is an average over phases where the attack is deliberately disguised as "
+         f"benign. On clean held-out traffic ours scores {brm[BENCH_OURS]['accuracy']:.3f}; "
+         f"live on a real capture, {live['arms']['gate_full']['accuracy']:.3f}."],
+        ["6. No live experiment",
+         "Real-time replay of a real 24-hour capture in its original order and timing, a "
+         "live dashboard, and an ingest API for raw Zeek logs", "Section 10; "
+         "experiments/live_experiment.py, live_feed.py, backend /live",
+         f"{live['live_flows']:,} live flows: gates {live['arms']['gate_full']['accuracy']:.3f}, "
+         f"learning everything {live['arms']['ungated']['accuracy']:.3f}. Capacity "
+         f"{fast['throughput_flows_per_s']:,.0f} flows/s for all six systems."],
+    ]
+    return [P("0. Review-panel concerns and how they are addressed", "h1"),
+            P("The review panel raised six shortcomings. Everything below was added on top of "
+              "the existing project: the original pipeline, its parameters and its committed "
+              "results are unchanged (tests check that the original arms reproduce their "
+              "committed logs exactly)."),
+            table(rows, [3.3 * cm, 4.6 * cm, 3.2 * cm, 5.4 * cm]),
+            Spacer(1, 6),
+            P("<b>An honest note on 'our model works best'.</b> Two different things are "
+              "compared. As a plain detector on clean data, our online logistic regression is "
+              "<i>not</i> the most accurate model: several batch models reach F1 1.000 on "
+              "N-BaIoT, ours 0.995. It is the fastest and among the smallest, and it is "
+              "trained on only 400 rows. The project's contribution is not the classifier but "
+              "the authorization gate around it, and there the comparison is clear: whatever "
+              "learner is inside, the reputation-aware gates are the only defences that keep "
+              "it from being poisoned, in the scenarios and on live traffic."),
+            PageBreak()]
+
+
+def s5_processing():
+    pr, pi = load("data_profile_real.json"), load("data_profile_iot23.json")
+    q = pr["raw_quality"]
+    rq = [["File", "Rows", "NaN", "Inf", "Negative columns", "Max |value|"]] + [
+        [k, f"{v['rows']:,}", v["nan"], v["inf"], v["negative_columns"], f"{v['max_abs']:.2e}"]
+        for k, v in q.items()]
+    iq = [["Capture", "Flows", "Malicious", "Attack types"]] + [
+        [k, f"{v['flows']:,}", f"{v['malicious']:,}",
+         ", ".join(f"{a} ({n:,})" for a, n in v["attack_types"].items()) or "-"]
+        for k, v in pi["raw_quality"].items()]
+    sp = [["Step", "N-BaIoT std range", "decades", "IoT-23 std range", "decades"]]
+    for key, name in (("raw", "raw values"), ("signed_log", "signed log"),
+                      ("z_score", "signed log + z-score")):
+        a, b = pr["spread"][key], pi["spread"][key]
+        sp.append([name, f"{a['std_min']:.2g} - {a['std_max']:.2g}",
+                   f"{a['orders_of_magnitude']:.1f}", f"{b['std_min']:.2g} - {b['std_max']:.2g}",
+                   f"{b['orders_of_magnitude']:.1f}"])
+    groups = [["Aggregation", "Grouped by", "Statistics", "Count"],
+              ["MI_dir", "source MAC + IP (sending host)", "weight, mean, variance", "15"],
+              ["H", "source IP (sending host)", "weight, mean, variance", "15"],
+              ["HH", "source IP -> destination IP (channel)",
+               "weight, mean, std, magnitude, radius, covariance, pcc", "35"],
+              ["HH_jit", "channel inter-packet time (jitter)", "weight, mean, variance", "15"],
+              ["HpHp", "source IP:port -> destination IP:port (socket)",
+               "weight, mean, std, magnitude, radius, covariance, pcc", "35"]]
+    stats = [["Statistic", "Meaning"],
+             ["weight", "decayed packet count: how many packets recently"],
+             ["mean / variance / std", "packet size (inter-packet time for HH_jit)"],
+             ["magnitude", "sqrt(mean_out^2 + mean_in^2): traffic size in both directions"],
+             ["radius", "sqrt(var_out^2 + var_in^2): spread in both directions"],
+             ["covariance, pcc", "covariance and Pearson correlation of outbound vs inbound sizes"]]
+    from data.features import IOT23_FEATURES
+    iot = [["Feature", "Meaning"]] + [[k, v] for k, v in IOT23_FEATURES.items()]
+    top = [["Rank", "Feature", "Meaning", "Importance"]] + [
+        [i + 1, t["feature"], t["meaning"], f"{t['importance']:.3f}"]
+        for i, t in enumerate(pr["top_features"][:10])]
+    topi = [["Rank", "Feature", "Meaning", "Importance"]] + [
+        [i + 1, t["feature"], t["meaning"], f"{t['importance']:.3f}"]
+        for i, t in enumerate(pi["top_features"][:8])]
+    lay = [["Phase", "Records", "Attack records", "Purpose"]]
+    purpose = {"calibration": "labelled training set (30% attack)",
+               "pre_attack": "clean benign steady state",
+               "slow_poison": "real attack rows interpolated towards benign rows",
+               "post_poison": "attack fully mapped onto benign (undetectable from traffic)",
+               "recovery_check": "raw attack again: was the model poisoned?"}
+    for ph in pr["stream_layout"]["slow_poisoning"]:
+        lay.append([ph["phase"], ph["records"], ph["attack"], purpose.get(ph["phase"], "")])
+    return [PageBreak(), P("5. Data processing and features", "h1"),
+            P("5.1 Processing pipeline", "h2"),
+            *bullets([
+                "<b>Load.</b> N-BaIoT: CSV files, one row per packet window with 115 numeric "
+                "statistics (no packet parsing needed). IoT-23: Zeek conn.log.labeled, parsed by "
+                "data/load_iot23.py into 21 per-flow features (unset fields '-' become 0; the "
+                "space-separated last columns and header variants are normalised).",
+                "<b>Check.</b> Missing / infinite values, column order across files, sign of "
+                "values (check_before_real_data.py, data_profile.py). No cleaning was needed: "
+                "0 NaN and 0 Inf in every file.",
+                "<b>Label.</b> N-BaIoT labels come from the file (benign_traffic.csv = 0, attack "
+                "files = 1). IoT-23 uses the capture's own label column (Malicious = 1).",
+                "<b>Transform.</b> Signed log, sign(x) log(1 + |x|), then z-score. The z-score "
+                "mean and standard deviation are fitted on training (calibration) data only and "
+                "frozen; live data never moves them.",
+                "<b>Split.</b> Benchmark: temporal per file and class, first 70% of rows in "
+                "time order train, last 30% test, subsampled with an even stride. Scenarios: "
+                "disjoint row ranges per phase, so no record is used twice.",
+                "<b>Stream.</b> Scenario streams are 400 calibration records followed by phases "
+                "of 20-record rounds (table below). The live experiment uses the real capture "
+                "order instead.",
+            ]),
+            P("5.2 Measured data quality", "h2"),
+            table(rq, [5.3 * cm, 2.0 * cm, 1.3 * cm, 1.3 * cm, 2.9 * cm, 3.7 * cm]),
+            Spacer(1, 4),
+            table(iq, [5.0 * cm, 1.8 * cm, 2.0 * cm, 7.7 * cm]),
+            P("Table: raw file checks (N-BaIoT, top) and IoT-23 captures with attack types "
+              "(bottom).", "caption"),
+            P("5.3 What each processing step does", "h2"),
+            table(sp, [4.1 * cm, 3.7 * cm, 1.8 * cm, 3.7 * cm, 1.8 * cm]),
+            P("Spread of per-feature standard deviations on the benchmark training split. "
+              "Without the transform a single feature dominates every distance and the "
+              "evidence signals collapse (section 6.2).", "caption"),
+            P("Scenario 2 stream layout (N-BaIoT; IoT-23 and synthetic use the same layout):"),
+            table(lay, [3.0 * cm, 2.0 * cm, 2.6 * cm, 8.9 * cm]),
+            P("5.4 What the features are", "h2"),
+            P("N-BaIoT features were computed by the dataset authors with damped incremental "
+              "statistics (the Kitsune extractor). A name such as HH_jit_L0.1_variance reads "
+              "<i>aggregation</i>_<i>time window</i>_<i>statistic</i>. The five decay windows "
+              "L5, L3, L1, L0.1 and L0.01 correspond to roughly 100 ms, 500 ms, 1.5 s, 10 s "
+              "and 1 minute of history."),
+            table(groups, [2.2 * cm, 5.6 * cm, 7.4 * cm, 1.3 * cm]),
+            Spacer(1, 4),
+            table(stats, [3.6 * cm, 12.9 * cm]),
+            Spacer(1, 4),
+            P("IoT-23 features, one row per Zeek connection (flow):"),
+            table(iot, [3.4 * cm, 13.1 * cm]),
+            P("5.5 Which features carry the signal", "h2"),
+            figure("results/data_profile_real.png",
+                   "Figure: N-BaIoT processing and features. Left: per-feature spread after "
+                   "each step. Middle: top features by random-forest importance. Right: "
+                   "importance summed by aggregation and time window."),
+            table(top, [1.2 * cm, 4.3 * cm, 9.2 * cm, 1.8 * cm]),
+            P("N-BaIoT: per-host (H, MI_dir) packet counts and sizes over the longest windows "
+              "(~10 s, ~1 min) separate Mirai/Gafgyt from benign best: a bot sends many "
+              "packets of uniform size. Jitter features contribute little.", "caption"),
+            table(topi, [1.2 * cm, 4.3 * cm, 9.2 * cm, 1.8 * cm]),
+            P("IoT-23: transport protocol and packet/byte counts dominate (Mirai C&C and DDoS "
+              "flows are short, TCP, few packets). How the features are USED: every model "
+              "receives the full transformed vector; the trust gate's evidence signals use the "
+              "same frozen space (topology uses the first five features).", "caption")]
+
+
+def s6_training():
+    rows = [["Component", "Setting", "Value"],
+            ["Detector", "model", "River StandardScaler | LogisticRegression"],
+            ["", "optimizer / learning rate", "SGD, constant 0.01 (intercept 0.01)"],
+            ["", "loss / regularisation", "log loss, no L1/L2"],
+            ["", "initial training", "400 labelled calibration records (30% attack), one "
+             "pass, shuffled (seed 42)"],
+            ["", "later training", "one learn_one per record of an AUTHORIZED 20-record "
+             "update, label 'benign'"],
+            ["Drift trigger", "ADWIN", "delta 0.002, clock 32 (River defaults)"],
+            ["", "drift-active window", "15 rounds after each change point"],
+            ["", "feature-drift trigger", "ADWIN on ||z - c|| / sqrt(d) per record (optional)"],
+            ["Gates", "weights / thresholds", "0.4 / 0.3 / 0.3; trust 0.55; veto 0.3"],
+            ["Quarantine", "SPRT / hold", "feed error 0.3, alpha = beta = 0.01; provisional "
+             "0.45; hold 20 rounds"],
+            ["EWC", "lambda / Fisher", "50; diagonal Fisher on calibration inputs, max 1"],
+            ["Evaluation", "protocol", "prequential: predict, score, then (maybe) learn"]]
+    bench = [["Benchmark model", "Library", "Hyperparameters"],
+             ["Logistic regression", "scikit-learn", "lbfgs, max_iter 2000"],
+             ["Linear SVM", "scikit-learn", "LinearSVC, max_iter 5000"],
+             ["Decision tree", "scikit-learn", "min_samples_leaf 5"],
+             ["Random forest", "scikit-learn", "100 trees, min_samples_leaf 2"],
+             ["Gradient boosting", "scikit-learn", "HistGradientBoosting, defaults"],
+             ["k-NN", "scikit-learn", "k = 5"],
+             ["Gaussian naive Bayes", "scikit-learn", "defaults"],
+             ["MLP", "scikit-learn", "hidden (64, 32), early stopping, max_iter 300"],
+             ["Isolation forest", "scikit-learn", "200 trees, fit on benign only"],
+             ["Autoencoder", "scikit-learn", "MLPRegressor (64, 16, 64) on benign; alarm above "
+              "the 99th percentile of benign training error (Meidan et al.)"],
+             ["Online LR / Hoeffding tree / HAT / ARF (5 trees) / Gaussian NB", "River",
+              "defaults; one pass over 12,000 shuffled training rows"]]
+    return [P("6.7 How the models are trained", "h2"),
+            P("Scenario pipeline (every arm starts from the same trained model):"),
+            table(rows, [2.6 * cm, 4.2 * cm, 9.7 * cm]),
+            Spacer(1, 6),
+            P("Benchmark (section 9): every model gets the same preprocessed training split "
+              "(signed log + z-score fitted on it), is trained once, and is scored on the later "
+              "test split; 3 repeats with different seeds."),
+            table(bench, [5.6 * cm, 2.4 * cm, 8.5 * cm])]
+
+
+def s8_accuracy():
+    log = load("slow_poisoning_log_real.json")
+    arms = ["static", "ungated", "gate_traffic_only", "gate_full", "gate_quarantine"]
+    rows = [["Arm"] + [PHASE_NAMES[p] for p in PHASES_SP] + ["overall"]]
+    for a in arms:
+        rows.append([ARM_NAMES[a]] + [fmt(phase_acc(log, a, p)) for p in PHASES_SP]
+                    + [fmt(log[a][-1]["accuracy"])])
+    br, brm = _bench("real")
+    live = load("live_experiment_iot23.json")["summary"]
+    return [P("8.3 Why the overall accuracy looks low (about 0.55)", "h2"),
+            P("The headline 'overall accuracy' is a running average over the whole Scenario-2 "
+              "stream, and that stream is <i>designed</i> to be undetectable for 1,000 of its "
+              "1,600 evaluated records:"),
+            table(rows, [4.3 * cm, 2.4 * cm, 2.7 * cm, 2.7 * cm, 2.4 * cm, 2.0 * cm]),
+            P("Accuracy per phase, real N-BaIoT. In the two middle phases the attack has been "
+              "moved onto the benign feature manifold on purpose; no traffic classifier can "
+              "detect it there (every arm scores ~0), and that is the point of the scenario: "
+              "the question is whether the model gets <i>poisoned</i> while it cannot see the "
+              "attack. The last column is what the old report showed.", "caption"),
+            P(f"Measured the standard way, accuracy is high: on clean, later held-out traffic "
+              f"our detector scores {brm[BENCH_OURS]['accuracy']:.3f} (F1 "
+              f"{brm[BENCH_OURS]['f1']:.3f}) on N-BaIoT; on normal traffic and on the raw "
+              f"repeat attack the protected arms score 1.000; and on 21,000 live flows of a real "
+              f"capture the gated systems score {live['arms']['gate_full']['accuracy']:.3f}. "
+              "Reporting the per-phase table rather than one average is the honest fix.")]
+
+
+def s9_models():
+    out = [PageBreak(), P("9. Comparison with other models", "h1")]
+    for src, name in (("real", "N-BaIoT"), ("iot23", "IoT-23")):
+        d, _ = _bench(src)
+        p = d["protocol"]
+        rows = [["Model", "Family", "Acc.", "F1", "AUC", "FPR", "us/rec", "Train s", "KB"]]
+        for m in d["models"]:
+            rows.append([m["model"].replace(" (ours, as deployed)", " (OURS)"),
+                         {"unsupervised": "unsup."}.get(m["family"], m["family"]),
+                         f"{m['accuracy']:.4f}", f"{m['f1']:.4f}", fmt(m["roc_auc"], 4),
+                         f"{m['fpr']:.4f}", f"{m['single_latency_us']:.0f}",
+                         f"{m['train_seconds']:.2f}", f"{m['model_kb']:.0f}"])
+        out += [P(f"9.{1 if src == 'real' else 2} Detector benchmark on {name}", "h2"),
+                P(f"Temporal split; train {p['train_rows']:,} rows ({p['train_attack']:,} "
+                  f"attack), test {p['test_rows']:,} later rows ({p['test_attack']:,} attack), "
+                  f"{p['features']} features, mean of {p['repeats']} repeats. us/rec = latency "
+                  "to classify one record as it arrives."),
+                table(rows, [4.6 * cm, 1.4 * cm, 1.45 * cm, 1.45 * cm, 1.45 * cm, 1.45 * cm,
+                             1.35 * cm, 1.4 * cm, 1.4 * cm]),
+                Spacer(1, 4),
+                figure(f"results/benchmark_{src}.png",
+                       f"Figure: detector benchmark on {name}. Left: F1. Right: F1 against "
+                       "per-record latency (log), bubble size = model size.")]
+        if src == "real":
+            u = sorted((m for m in d["models"] if "unseen_device_fpr" in m),
+                       key=lambda m: m["unseen_device_fpr"])
+            out.append(P("<b>Unseen device.</b> False alarms on Ennio_Doorbell benign traffic, "
+                         "a device no model trained on: best "
+                         f"{u[0]['model']} {u[0]['unseen_device_fpr']:.3f}; ours "
+                         f"{next(m for m in u if m['model'] == BENCH_OURS)['unseen_device_fpr']:.3f}"
+                         ". Trained on only 400 rows, our detector generalises worst to a new "
+                         "device. This is exactly the situation the continual-learning loop "
+                         "exists for (Scenario 1), and why it must adapt safely."))
+    out += [P("<b>Reading the benchmark.</b> On clean data the detection problem is easy for "
+              "supervised models (F1 0.99-1.00). Our online LR is within 0.5 points of the best "
+              "while being 10-1000x faster per record than the batch ensembles and tiny (7 KB). "
+              "Unsupervised models trained on benign traffic only (isolation forest, the "
+              "N-BaIoT paper's autoencoder) are clearly weaker. River's naive Bayes collapses "
+              "on IoT-23 (it predicts everything benign at the 0.5 threshold, AUC 0.97).")]
+    sw = {s: load(f"sweep_models_{s}.json") for s in ("real", "iot23")}
+    from models.online_ids import BASE_MODEL_NAMES
+    arms = ["static", "ungated", "gate_traffic_only", "gate_full", "gate_quarantine"]
+    short = ["static", "ungated", "traffic-only", "full gate", "quarantine"]
+    out.append(P("9.3 Every defence on every base learner", "h2"))
+    for scen, title in (("slow_poisoning", "Repeat attack after poisoning"),
+                        ("genuine_drift", "Benign drift (feature-drift trigger), post-drift")):
+        rows = [["Base learner"] + short]
+        for r, ri in zip(sw["real"], sw["iot23"]):
+            rows.append([BASE_MODEL_NAMES[r["base_model"]]] + [
+                f"{r[f'{scen}|{a}']:.2f} / {ri[f'{scen}|{a}']:.2f}" for a in arms])
+        out += [P(f"<b>{title}</b> (each cell: N-BaIoT / IoT-23)"),
+                table(rows, [4.4 * cm] + [2.42 * cm] * 5), Spacer(1, 6)]
+    out += [figure("results/sweep_models_iot23.png",
+                   "Figure: every defence on every base learner (IoT-23). Zero-height bars are "
+                   "marked '0'."),
+            P("<b>Result.</b> The gate's protection does not depend on the learner. Wherever the "
+              "detector itself works (static = 1.00), both reputation-aware gates keep the "
+              "repeat attack at 1.00, while learning everything is poisoned (0.00-0.70) in 7 of "
+              "those 8 learner/dataset pairs; the traffic-only gate fails in 5 of them. Two "
+              "honest exceptions: Hoeffding trees on IoT-23 never split on 400 calibration "
+              "flows, so they detect nothing even before poisoning (no gate can fix a detector "
+              "that never learned); and on N-BaIoT naive Bayes moves so little that even "
+              "learning everything leaves it at 1.00 (on IoT-23 it is poisoned to 0.01 like the "
+              "others). On benign drift the quarantine gate matches or beats the one-shot gate "
+              "on every learner (IoT-23 logistic regression 0.97 vs 0.90).")]
+    return out
+
+
+def s10_live():
+    d = load("live_experiment_iot23.json")
+    s = d["summary"]
+    fast = load("live_experiment_iot23_maxspeed.json")["summary"]
+    rows = [["System", "Accuracy", "Precision", "Recall", "F1", "FPR", "Updates applied"]]
+    for a in ARMS:
+        if a in s["arms"]:
+            v = s["arms"][a]
+            rows.append([ARM_NAMES[a], f"{v['accuracy']:.4f}", f"{v['precision']:.4f}",
+                         f"{v['recall']:.4f}", f"{v['f1']:.4f}", f"{v['fpr']:.4f}",
+                         v["updates_applied"]])
+    pm = s["processing_ms_per_flow_all_arms"]
+    return [PageBreak(), P("10. Live experiment", "h1"),
+            P("<b>Setup.</b> The IoT-23 capture CTU-IoT-Malware-Capture-34-1 (23,145 real flows "
+              "recorded over 24 hours; Mirai C&C and DDoS mixed with benign traffic, including a "
+              "DDoS burst of about 13,000 flows at hour 17.5) is replayed in its original time "
+              "order and timing, compressed 600x, as a network tap would deliver it. Nothing is "
+              "constructed: no phases, no interpolation. The first 2,000 flows in time train "
+              "the detector; the remaining flows are unseen and arrive on the wall clock. All "
+              "six systems process every 20-flow round as it arrives, with the feature-drift "
+              "trigger on. Labels are used only to score predictions afterwards."),
+            table(rows, [5.0 * cm, 1.9 * cm, 1.9 * cm, 1.7 * cm, 1.6 * cm, 1.6 * cm, 2.8 * cm]),
+            P(f"{s['live_flows']:,} live flows ({s['live_malicious']:,} malicious), "
+              f"{s['drift_rounds']} drift-active rounds.", "caption"),
+            figure("results/live_experiment_iot23.png",
+                   "Figure: live run. Top: traffic as it arrived and when drift was active. "
+                   "Middle: rolling accuracy per system. Bottom: processing time per flow and "
+                   "backlog behind real time."),
+            P("<b>Result.</b> On real traffic in real order, naive self-learning destroys the "
+              f"detector: learning every drift-triggered update drops accuracy to "
+              f"{s['arms']['ungated']['accuracy']:.3f} (recall "
+              f"{s['arms']['ungated']['recall']:.3f}), the traffic-only gate to "
+              f"{s['arms']['gate_traffic_only']['accuracy']:.3f}, EWC to "
+              f"{s['arms']['ewc']['accuracy']:.3f}. Both reputation-aware gates keep "
+              f"{s['arms']['gate_full']['accuracy']:.3f} while still applying "
+              f"{s['arms']['gate_full']['updates_applied']} (one-shot) and "
+              f"{s['arms']['gate_quarantine']['updates_applied']} (quarantine) benign updates."),
+            P(f"<b>Real-time cost.</b> At 600x the pipeline kept up with arrival "
+              f"({s['throughput_flows_per_s']:.0f} flows/s needed); the worst backlog, during "
+              f"the DDoS burst, was {s['max_lag_s']:.2f} s. Processing all six systems takes a "
+              f"median {pm['p50']:.3f} ms per flow (95th percentile {pm['p95']:.3f} ms). Without "
+              f"pacing the same run processes {fast['throughput_flows_per_s']:,.0f} flows/s "
+              f"({fast['live_flows']:,} flows in {fast['wall_seconds']:.1f} s)."),
+            P("<b>Live sensor path.</b> POST /api/live/ingest accepts raw Zeek conn.log lines "
+              "(the #fields header plus rows) and scores them with a detector trained on the "
+              "capture's first 2,000 flows; experiments/live_feed.py tails a growing conn.log "
+              "(--follow), as written by a running Zeek sensor. Measured by feeding real logs: "
+              "10-12 us per flow; running accuracy 0.945 on the first 3,000 flows of the Mirai "
+              "capture and 0.832 on 1,000 flows of the Amazon Echo honeypot, a device the "
+              "detector never saw (17% false alarms; consistent with the unseen-device result "
+              "in section 9.1). The ingest path is detection-only: the trust gate needs a "
+              "reputation feed, which a raw sensor does not provide."),
+            P("<b>Limits.</b> This is a real-time replay of a real capture, not packets "
+              "captured on this machine; reputation is still simulated from the labels.")]
+
+
 def _footer(canvas, doc):
     canvas.saveState()
     canvas.setFont("Helvetica", 8)
@@ -804,9 +1233,11 @@ def build(out=OUT):
                             topMargin=2 * cm, bottomMargin=2 * cm, title="report_ids",
                             author="Trust-IDS project",
                             subject="Trust-aware continual learning for IoT intrusion detection")
-    story = (title_page() + s1_problem() + s2_structure() + s3_layout() + s4_datasets()
-             + s5_algorithms() + s6_setup() + s7_results() + s8_robustness() + s9_related()
-             + s10_software() + s11_visuals() + s12_tests() + s13_run() + s14_limits())
+    story = (title_page() + s0_review() + s1_problem() + s2_structure() + s3_layout()
+             + s4_datasets() + s5_processing() + s5_algorithms() + s6_training() + s6_setup()
+             + s7_results() + s8_accuracy() + s9_models() + s10_live() + s8_robustness()
+             + s9_related() + s10_software() + s11_visuals() + s12_tests() + s13_run()
+             + s14_limits())
     doc.build(story, onFirstPage=_footer, onLaterPages=_footer)
     print("wrote", out)
 

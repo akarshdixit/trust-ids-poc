@@ -75,6 +75,16 @@ def parse_conn_log(path):
                 rows.append(line.split())
     if fields is None:
         raise ValueError(f"{path}: no #fields header — not a Zeek conn log")
+    out = featurize(fields, rows)
+    _CACHE[path] = out
+    return out
+
+
+def featurize(fields, rows):
+    """Zeek conn records (header field names + split rows) -> feature_names() columns,
+    plus `label` / `detail` when the log is labelled (IoT-23). Used for files and for
+    live lines sent to the backend (POST /api/live/ingest); unlabelled live lines get
+    label -1."""
     fields = ["detailed_label" if c in ("det_label", "detailed-label") else c for c in fields]
     rows = [r for r in rows if len(r) == len(fields)]
     raw = pd.DataFrame(rows, columns=fields)
@@ -86,10 +96,28 @@ def parse_conn_log(path):
         out[f"proto_{p}"] = (raw["proto"] == p).astype(float)
     for s in CONN_STATES:
         out[f"state_{s}"] = (raw["conn_state"] == s).astype(float)
-    out["label"] = (raw["label"].str.lower() == "malicious").astype(int)
-    out["detail"] = raw["detailed_label"]
-    _CACHE[path] = out
+    if "label" in raw:
+        out["label"] = (raw["label"].str.lower() == "malicious").astype(int)
+        out["detail"] = raw["detailed_label"] if "detailed_label" in raw else "-"
+    else:
+        out["label"] = -1
+        out["detail"] = "-"
     return out
+
+
+def parse_timestamps(path):
+    """Flow start times (Zeek `ts`, epoch seconds), row-aligned with parse_conn_log(path)."""
+    fields, ts = None, []
+    with open(path, encoding="utf-8", errors="replace") as f:
+        for line in f:
+            line = line.rstrip("\n")
+            if line.startswith("#fields"):
+                fields = line.split()[1:]
+            elif line and not line.startswith("#"):
+                r = line.split()
+                if fields is not None and len(r) == len(fields):
+                    ts.append(float(r[fields.index("ts")]))
+    return np.array(ts)
 
 
 def _log(capture, root):

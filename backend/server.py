@@ -357,5 +357,164 @@ async def log_stream(backlog: int = 200, follow: bool = True):
                              headers={"Cache-Control": "no-cache"})
 
 
+# ------------------------------------------------------------------ live
+# Two live paths:
+#  * POST /api/live replays the real IoT-23 Mirai capture in its original time
+#    order, at a chosen speed, through the full six-arm pipeline
+#    (experiments/live_experiment.py), streamed to /live.
+#  * POST /api/live/ingest scores raw Zeek conn.log lines sent by a sensor or by
+#    experiments/live_feed.py, with a detector trained on the capture's past.
+class LiveRequest(BaseModel):
+    speed: float = Field(600.0, ge=0, le=100000,
+                         description="capture seconds per wall-clock second; 0 = no pacing")
+    max_flows: int | None = Field(None, ge=2100, le=100000)
+    reputation_noise: ReputationNoiseParams = ReputationNoiseParams()
+
+
+class LiveRun:
+    def __init__(self, req: LiveRequest):
+        self.id = "live-" + uuid.uuid4().hex[:6]
+        self.req, self.status, self.error = req, "running", None
+        self.events, self.summary = [], None
+
+
+LIVE: dict[str, LiveRun] = {}
+
+
+def _live_worker(lr: LiveRun):
+    from experiments.live_experiment import LiveExperiment
+    ll = logging.getLogger(f"trust_ids.live.{lr.id}")
+    try:
+        noise = lr.req.reputation_noise.model_dump()
+        exp = LiveExperiment(speed=lr.req.speed, max_flows=lr.req.max_flows,
+                             reputation_noise=noise if (noise["flip_rate"] or noise["sigma"]
+                                                        or noise["lag"]) else None)
+        ll.info("live replay: %d flows at %gx", len(exp.stream), lr.req.speed)
+
+        def on_event(ev):
+            lr.events.append(ev)
+            if ev["round"] % 25 == 0:
+                q = ev["arms"].get("gate_quarantine", {})
+                ll.info("r%4d capture %5.2fh lag %.2fs %.2f ms/flow malicious %d/20%s",
+                        ev["round"], ev["capture_hours"], ev["lag_s"],
+                        ev["busy_ms_per_flow"], ev["malicious"],
+                        " ROLLBACK" if q.get("rolled_back") else "")
+
+        lr.summary = exp.run(on_event=on_event)
+        lr.status = "done"
+        ll.info("live done: %.0f flows/s, max lag %.2fs", lr.summary["throughput_flows_per_s"],
+                lr.summary["max_lag_s"])
+    except Exception as e:  # noqa: BLE001 - reported to the client
+        lr.status, lr.error = "error", f"{type(e).__name__}: {e}"
+        ll.error("live failed: %s\n%s", lr.error, traceback.format_exc())
+
+
+@app.get("/live")
+def live_page():
+    return FileResponse(os.path.join(os.path.dirname(__file__), "live.html"))
+
+
+@app.post("/api/live", status_code=202, dependencies=authed)
+def start_live(req: LiveRequest):
+    from data.load_iot23 import available as iot23_available
+    if not iot23_available():
+        raise HTTPException(409, "IoT-23 captures not downloaded to data/iot23/")
+    with _runs_lock:
+        if any(r.status == "running" for r in LIVE.values()):
+            raise HTTPException(429, "a live replay is already running")
+        lr = LiveRun(req)
+        LIVE[lr.id] = lr
+    threading.Thread(target=_live_worker, args=(lr,), daemon=True).start()
+    return {"live_id": lr.id, "events": f"/api/live/{lr.id}/events"}
+
+
+def _get_live(live_id):
+    lr = LIVE.get(live_id)
+    if lr is None:
+        raise HTTPException(404, f"unknown live run {live_id}")
+    return lr
+
+
+@app.get("/api/live/{live_id}", dependencies=authed)
+def get_live(live_id: str):
+    lr = _get_live(live_id)
+    return {"live_id": lr.id, "status": lr.status, "error": lr.error,
+            "request": lr.req.model_dump(), "rounds": len(lr.events),
+            "summary": lr.summary, "events": lr.events}
+
+
+@app.get("/api/live/{live_id}/events", dependencies=authed)
+async def live_events(live_id: str):
+    lr = _get_live(live_id)
+
+    async def gen():
+        sent = 0
+        while True:
+            while sent < len(lr.events):
+                yield _sse("round", lr.events[sent])
+                sent += 1
+            if lr.status != "running" and sent >= len(lr.events):
+                yield _sse(lr.status, {"summary": lr.summary, "error": lr.error})
+                return
+            await asyncio.sleep(0.05)
+
+    return StreamingResponse(gen(), media_type="text/event-stream",
+                             headers={"Cache-Control": "no-cache"})
+
+
+class IngestRequest(BaseModel):
+    fields: list[str] = Field(..., min_length=5, description="the conn.log #fields header")
+    lines: list[str] = Field(..., min_length=1, max_length=5000)
+
+
+_DETECTOR = {}
+_detector_lock = threading.Lock()
+
+
+def _live_detector():
+    """Online LR trained on the first 2,000 flows (in time) of the Mirai capture."""
+    with _detector_lock:
+        if "ids" not in _DETECTOR:
+            from experiments.live_experiment import N_CALIB, chronological_stream
+            from models.online_ids import OnlineIDS
+            stream, names, _ = chronological_stream(N_CALIB, max_flows=N_CALIB)
+            ids = OnlineIDS(drift_detector=False)
+            for x, y, _ in stream:
+                ids.learn_one(x, y)
+            _DETECTOR.update(ids=ids, names=names, seen=0, alerts=0, correct=0, labelled=0)
+            log.info("live detector trained on %d calibration flows", len(stream))
+        return _DETECTOR
+
+
+@app.post("/api/live/ingest", dependencies=authed)
+def ingest(req: IngestRequest):
+    from data.load_iot23 import featurize
+    det = _live_detector()
+    df = featurize(req.fields, [ln.split() for ln in req.lines])
+    if df.empty:
+        raise HTTPException(422, "no line matched the #fields header")
+    names, ids = det["names"], det["ids"]
+    t0 = time.perf_counter()
+    out = []
+    for vec, label in zip(df[names].to_numpy(dtype=float), df["label"].to_numpy()):
+        x = dict(zip(names, map(float, vec)))
+        p = ids.model.predict_proba_one(x).get(1, 0.0)
+        out.append({"attack": bool(p >= 0.5), "score": round(float(p), 4),
+                    **({"label": int(label)} if label >= 0 else {})})
+    latency_us = (time.perf_counter() - t0) / len(out) * 1e6
+    with _detector_lock:
+        det["seen"] += len(out)
+        det["alerts"] += sum(o["attack"] for o in out)
+        lab = [o for o in out if "label" in o]
+        det["labelled"] += len(lab)
+        det["correct"] += sum(o["attack"] == bool(o["label"]) for o in lab)
+        running = {"flows": det["seen"], "alerts": det["alerts"],
+                   "accuracy_on_labelled": (det["correct"] / det["labelled"]
+                                            if det["labelled"] else None)}
+    log.info("ingest %d flows: %d alerts, %.1f us/flow (total %d)", len(out),
+             sum(o["attack"] for o in out), latency_us, running["flows"])
+    return {"predictions": out, "latency_us_per_flow": latency_us, "running": running}
+
+
 _load_saved_runs()
 log.info("backend ready: results dir %s, %d saved runs loaded", RESULTS, len(RUNS))

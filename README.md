@@ -9,7 +9,7 @@ against an out-of-band reputation signal.
 the committed Review-2 results exactly; IoT-23 replicates the headline on an
 independent dataset; the synthetic stream remains as a fast regression check.
 A sixth arm, the quarantine gate, extends the mechanism (see "Related work and
-what is new here"). 108 tests.
+what is new here"). 143 tests.
 
 **Documents**
 
@@ -66,7 +66,7 @@ python experiments/make_plots.py --tag real         # writes results/*_real.png
 ```powershell
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m pytest                       # 108 tests, ~30 s (real-data tests skip if data/ is absent)
+.\.venv\Scripts\python.exe -m pytest                       # 143 tests, ~1 min (real-data tests skip if data/ is absent)
 .\.venv\Scripts\python.exe -m uvicorn backend.server:app --port 8765
 .\.venv\Scripts\streamlit.exe run app.py                     # live re-runs go via the backend
 ```
@@ -109,6 +109,63 @@ With `--feature-drift`, real N-BaIoT Scenario 1 does trigger (15 drift rounds),
 but the full gate authorizes none of it: real benign traffic is jumpy window to
 window, so temporal stability is low (median 0.198), attribution sits at its
 cold-start 0.5, and the trust score peaks at 0.543 < 0.55.
+
+## Review-panel concerns (added on top; nothing above changed)
+
+| concern | what was added | headline |
+|---|---|---|
+| 1. no comparison with other models | `experiments/benchmark.py` (16 detectors, same temporal split), `sweeps.py models` (every defence on 5 learners), app tab **Model comparison** | clean detection: best F1 1.000 / 0.993, ours 0.995 / 0.990 (N-BaIoT / IoT-23) at 24 / 5 us per record; under poisoning the reputation gates hold 1.00 in all 8 learner/dataset pairs whose detector works, learning everything is poisoned in 7 |
+| 2. how the data was processed | `experiments/data_profile.py`, report section 5, app tab **Data & features** | 0 NaN / 0 Inf; raw N-BaIoT spans 18.5 orders of magnitude, after signed log + z-score 0 |
+| 3. what the features are | `data/features.py` (meaning of all 115 + 21 features), importance by aggregation x time window | long windows (~10 s, ~1 min) of per-host packet counts/sizes carry most signal |
+| 4. how the models were trained | report section 6.7: every hyperparameter, scenario pipeline and benchmark | 400 labelled calibration rows, then SGD only on authorized updates |
+| 5. accuracy too low | per-phase accuracy (report 8.3) | the 0.55 averages in 1,000 records disguised as benign *by design*; clean held-out 0.995, live 0.997 |
+| 6. no live experiment | `experiments/live_experiment.py`, backend `/live` dashboard, `POST /api/live/ingest` + `experiments/live_feed.py` for a real Zeek sensor, app tab **Live experiment** | 21,140 real flows replayed in real time: gates 0.997, learning everything 0.134; 13,766 flows/s capacity |
+
+**Detector benchmark** (temporal split: train on the first 70% of each file in
+time order, test on the last 30%; signed log + z-score fit on train; 3 repeats):
+
+| model | F1 N-BaIoT | F1 IoT-23 | us / record | KB |
+|---|---|---|---|---|
+| Random forest | 1.0000 | 0.9922 | 10678 | 110 |
+| Gradient boosting (HistGB) | 0.9999 | 0.9926 | 2038 | 431 |
+| Logistic regression | 1.0000 | 0.9922 | 230 | 2 |
+| MLP (64-32) | 0.9997 | 0.9922 | 249 | 231 |
+| k-NN (k=5) | 0.9997 | 0.9921 | 4193 | 27188 |
+| Adaptive random forest (River) | 0.9995 | 0.9922 | 32 | 462 |
+| Online logistic regression (River) | 0.9994 | 0.9908 | 24 | 7 |
+| Online LR, 400 calibration rows (ours, as deployed) | 0.9954 | 0.9898 | 24 | 7 |
+| Autoencoder (benign only, N-BaIoT paper) | 0.9931 | 0.5150 | 241 | 408 |
+| Isolation forest (benign only) | 0.9601 | 0.9497 | 23501 | 1773 |
+
+Honest reading: as a plain detector ours is **not** the most accurate (several
+models reach 1.000 on N-BaIoT); it is within 0.5 points of the best, the
+fastest, tiny, and trained on 400 rows only. It also raises false alarms on
+36% of an unseen device's benign traffic (best model: 0%). The project's claim
+is the gate around the detector, and that holds for every learner tried.
+
+**Live experiment** (IoT-23 Mirai capture, 24 h, original order and timing,
+600x; first 2,000 flows train, 21,140 live):
+
+| system | accuracy | recall | FPR | updates |
+|---|---|---|---|---|
+| static | 0.9971 | 0.9987 | 0.0238 | 0 |
+| ungated | 0.1343 | 0.0658 | 0.0000 | 139 |
+| gate_traffic_only | 0.2982 | 0.2445 | 0.0238 | 43 |
+| gate_full | 0.9971 | 0.9987 | 0.0238 | 8 |
+| ewc | 0.3233 | 0.2719 | 0.0277 | 139 |
+| gate_quarantine | 0.9971 | 0.9987 | 0.0238 | 6 |
+
+Median processing 0.052 ms per flow for all six
+systems; worst backlog 0.72 s during the DDoS burst.
+
+```powershell
+.\.venv\Scripts\python.exe experiments\benchmark.py --source real        # or iot23
+.\.venv\Scripts\python.exe experiments\sweeps.py models --source real
+.\.venv\Scripts\python.exe experiments\data_profile.py --source real
+.\.venv\Scripts\python.exe experiments\live_experiment.py --speed 600    # --speed 0 = max throughput
+# with the backend running: http://localhost:8765/live, or stream a Zeek sensor's log:
+.\.venv\Scripts\python.exe experiments\live_feed.py C:\path\to\conn.log --follow
+```
 
 ## Related work and what is new here
 

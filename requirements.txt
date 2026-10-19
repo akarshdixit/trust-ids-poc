@@ -8,6 +8,7 @@ altair==6.3.0
 fastapi==0.144.0
 uvicorn[standard]==0.54.0
 scipy==1.18.1
+scikit-learn==1.9.1   # benchmark models (experiments/benchmark.py)
 # report PDF (docs/build_report.py)
 reportlab==4.2.5
 # tests

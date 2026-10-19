@@ -10,12 +10,16 @@ channel cannot answer.
   quarantine  the quarantine extension vs the one-shot gate under a degraded
               feed, with ablations: no rollback, no lowered threshold, and a
               one-shot gate whose veto sits at the feed's midpoint (0.5)
+  models      every defence on top of every base learner (logistic regression,
+              Hoeffding tree, Hoeffding adaptive tree, adaptive random forest,
+              naive Bayes): does the gate's protection depend on the model?
 
 Usage:
   python experiments/sweeps.py seeds --source synth --n 10
   python experiments/sweeps.py reputation --source synth
   python experiments/sweeps.py ewc --source synth
   python experiments/sweeps.py quarantine --source real
+  python experiments/sweeps.py models --source real
 
 Outputs land in results/sweep_<kind>_<source>.json (+ .png for reputation/ewc).
 On --source fake the seed only reshuffles calibration rows (the files are fixed),
@@ -25,6 +29,7 @@ import argparse
 import json
 import os
 import sys
+import time
 
 import numpy as np
 
@@ -178,6 +183,37 @@ def sweep_quarantine(source, sigma=0.05, seed=42):
     return rows
 
 
+MODEL_ARMS = ["static", "ungated", "gate_traffic_only", "gate_full", "gate_quarantine"]
+
+
+def sweep_models(source, seed=42, reputation_noise=None):
+    """Both scenarios for every base learner. Scenario 1 uses the feature-drift
+    trigger, since without it real N-BaIoT never signals drift (a null result)."""
+    from models.online_ids import BASE_MODELS
+    rows = []
+    for base in BASE_MODELS:
+        row = {"base_model": base}
+        for scenario, phase in DECISIVE.items():
+            stream, names = build_stream(scenario, source, seed=seed,
+                                         reputation_noise=reputation_noise)
+            t0 = time.perf_counter()
+            log = run_scenario(stream, names, scenario, include_ewc=False, base_model=base,
+                               feature_drift=scenario == "genuine_drift")
+            row[f"{scenario}_seconds"] = time.perf_counter() - t0
+            for arm in MODEL_ARMS:
+                row[f"{scenario}|{arm}"] = phase_accuracy(log, arm, phase)
+                row[f"{scenario}|{arm}|overall"] = log[arm][-1]["accuracy"]
+                if scenario == "slow_poisoning":
+                    row[f"{scenario}|{arm}|poison_kept"] = poisoned_updates_kept(
+                        log, arm, stream)
+        rows.append(row)
+        print(f"  {base:24s} repeat-attack " + " ".join(
+            f"{a}={row['slow_poisoning|' + a]:.2f}" for a in MODEL_ARMS)
+            + "  | post-drift " + " ".join(
+            f"{a}={row['genuine_drift|' + a]:.2f}" for a in MODEL_ARMS), flush=True)
+    return rows
+
+
 # ------------------------------------------------------------------ figures
 INK, MUTED, GRID = "#1f1f1e", "#6b6a64", "#e4e3dd"
 BLUE_RAMP = ["#86b6ef", "#5598e7", "#256abf", "#0d366b"]   # ordinal: low -> high veto
@@ -280,9 +316,53 @@ def plot_quarantine(rows, path):
     print("wrote", path)
 
 
+MODEL_ARM_STYLE = {  # same hues as the scenario figures
+    "static": ("#9aa0a6", "never learns"),
+    "ungated": ("#d62728", "learns everything"),
+    "gate_traffic_only": ("#ff7f0e", "traffic-only gate"),
+    "gate_full": ("#2ca02c", "full gate (one-shot)"),
+    "gate_quarantine": ("#9467bd", "quarantine gate"),
+}
+
+
+SHORT_BASE = {"lr": "Logistic\nregression (ours)", "hoeffding_tree": "Hoeffding\ntree",
+              "hoeffding_adaptive_tree": "Hoeffding\nadaptive tree",
+              "arf": "Adaptive\nrandom forest", "naive_bayes": "Gaussian\nnaive Bayes"}
+
+
+def plot_models(rows, path, title_source=""):
+    import matplotlib.pyplot as plt
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.9), sharey=True)
+    xs = np.arange(len(rows))
+    w = 0.16
+    for ax, (scenario, title) in zip(axes, [
+            ("slow_poisoning", "Scenario 2 — catches the repeat attack after poisoning"),
+            ("genuine_drift", "Scenario 1 — adapts to benign drift (feature-drift trigger)")]):
+        for k, arm in enumerate(MODEL_ARMS):
+            color, label = MODEL_ARM_STYLE[arm]
+            vals = [r[f"{scenario}|{arm}"] for r in rows]
+            pos = xs + (k - 2) * w
+            ax.bar(pos, vals, w * 0.9, color=color, label=label)
+            for x, v in zip(pos, vals):
+                if v < 0.03:  # a zero bar is invisible: mark it
+                    ax.text(x, 0.01, "0", ha="center", va="bottom", fontsize=6.5,
+                            color=color)
+        _style(ax, title, "accuracy in the decisive phase")
+        ax.set_xticks(xs, [SHORT_BASE[r["base_model"]] for r in rows], fontsize=8)
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, frameon=False, fontsize=8, loc="upper center", ncol=5,
+               bbox_to_anchor=(0.5, 0.93), labelcolor=INK)
+    fig.suptitle(f"Every defence on every base learner{title_source}", x=0.01, ha="left",
+                 fontsize=12, color=INK)
+    fig.tight_layout(rect=(0, 0, 1, 0.88))
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+    print("wrote", path)
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("kind", choices=["seeds", "reputation", "ewc", "quarantine"])
+    ap.add_argument("kind", choices=["seeds", "reputation", "ewc", "quarantine", "models"])
     ap.add_argument("--source", choices=SOURCES, default="synth")
     ap.add_argument("--n", type=int, default=10, help="seeds, for kind=seeds")
     ap.add_argument("--feature-drift", action="store_true")
@@ -295,6 +375,11 @@ def main():
     elif args.kind == "reputation":
         data = sweep_reputation(args.source)
         plot_reputation(data, stem + ".png")
+    elif args.kind == "models":
+        data = sweep_models(args.source)
+        plot_models(data, stem + ".png",
+                    {"real": " (N-BaIoT)", "iot23": " (IoT-23)", "synth": " (synthetic)"}
+                    .get(args.source, ""))
     elif args.kind == "quarantine":
         data = sweep_quarantine(args.source)
         plot_quarantine(data, stem + ".png")

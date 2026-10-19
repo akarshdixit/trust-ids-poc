@@ -1,0 +1,284 @@
+{
+  "source": "real",
+  "raw_quality": {
+    "benign": {
+      "rows": 49548,
+      "cols": 115,
+      "nan": 0,
+      "inf": 0,
+      "negative_columns": 20,
+      "max_abs": 5.67e+17
+    },
+    "mirai_scan": {
+      "rows": 107685,
+      "cols": 115,
+      "nan": 0,
+      "inf": 0,
+      "negative_columns": 0,
+      "max_abs": 5.602399451601856e+17
+    },
+    "gafgyt_combo": {
+      "rows": 59718,
+      "cols": 115,
+      "nan": 0,
+      "inf": 0,
+      "negative_columns": 20,
+      "max_abs": 5.669444901972914e+17
+    },
+    "ennio_benign": {
+      "rows": 39100,
+      "cols": 115,
+      "nan": 0,
+      "inf": 0,
+      "negative_columns": 20,
+      "max_abs": 5.88e+17
+    }
+  },
+  "split": {
+    "benign": {
+      "rows_in_file": 49548,
+      "train": 15000,
+      "test": 6000
+    },
+    "mirai_scan": {
+      "rows_in_file": 107685,
+      "train": 7500,
+      "test": 3000
+    },
+    "gafgyt_combo": {
+      "rows_in_file": 59718,
+      "train": 7500,
+      "test": 3000
+    },
+    "ennio_benign (unseen device)": {
+      "rows_in_file": 39100,
+      "test": 6000
+    }
+  },
+  "class_balance": {
+    "train_benign": 15000,
+    "train_attack": 15000,
+    "test_benign": 6000,
+    "test_attack": 6000
+  },
+  "spread": {
+    "raw": {
+      "std_min": 0.005999704883428947,
+      "std_median": 45.357410255747965,
+      "std_max": 1.954891167372355e+16,
+      "orders_of_magnitude": 18.51299269577023
+    },
+    "signed_log": {
+      "std_min": 0.004953764796572902,
+      "std_median": 0.33477815287079593,
+      "std_max": 14.020961044861497,
+      "orders_of_magnitude": 3.4518424001338692
+    },
+    "z_score": {
+      "std_min": 0.9999999999991427,
+      "std_median": 1.0000000000000049,
+      "std_max": 1.000000000000819,
+      "orders_of_magnitude": 7.279708045004663e-13
+    }
+  },
+  "top_features": [
+    {
+      "feature": "H_L0.01_mean",
+      "importance": 0.10453578700540332,
+      "meaning": "mean packet size, source IP (sending host), window ~1 min",
+      "benign_mean_z": 0.9009428010806213,
+      "attack_mean_z": -0.9009428010808181
+    },
+    {
+      "feature": "H_L0.01_weight",
+      "importance": 0.09417029641110165,
+      "meaning": "decayed packet count, source IP (sending host), window ~1 min",
+      "benign_mean_z": -0.9904890552221804,
+      "attack_mean_z": 0.9904890552221791
+    },
+    {
+      "feature": "MI_dir_L0.1_weight",
+      "importance": 0.09054991315358496,
+      "meaning": "decayed packet count, source MAC+IP (sending host), window ~10 s",
+      "benign_mean_z": -0.9901522494849744,
+      "attack_mean_z": 0.9901522494849818
+    },
+    {
+      "feature": "MI_dir_L0.01_mean",
+      "importance": 0.06645485274598528,
+      "meaning": "mean packet size, source MAC+IP (sending host), window ~1 min",
+      "benign_mean_z": 0.9008164200891184,
+      "attack_mean_z": -0.9008164200893021
+    },
+    {
+      "feature": "H_L0.1_weight",
+      "importance": 0.06569265714157883,
+      "meaning": "decayed packet count, source IP (sending host), window ~10 s",
+      "benign_mean_z": -0.9901531546228922,
+      "attack_mean_z": 0.9901531546228997
+    },
+    {
+      "feature": "HH_L0.01_magnitude",
+      "importance": 0.06317831816510981,
+      "meaning": "sqrt(mean_out^2 + mean_in^2), source->destination IP channel, window ~1 min",
+      "benign_mean_z": 0.806354782268641,
+      "attack_mean_z": -0.8063547822739907
+    },
+    {
+      "feature": "H_L3_weight",
+      "importance": 0.05289658379882457,
+      "meaning": "decayed packet count, source IP (sending host), window ~500 ms",
+      "benign_mean_z": -0.9621772721397719,
+      "attack_mean_z": 0.9621772721397571
+    },
+    {
+      "feature": "MI_dir_L0.01_weight",
+      "importance": 0.05069905459532174,
+      "meaning": "decayed packet count, source MAC+IP (sending host), window ~1 min",
+      "benign_mean_z": -0.9904728048969582,
+      "attack_mean_z": 0.9904728048969572
+    },
+    {
+      "feature": "MI_dir_L1_weight",
+      "importance": 0.03292797506007165,
+      "meaning": "decayed packet count, source MAC+IP (sending host), window ~1.5 s",
+      "benign_mean_z": -0.9772555682043771,
+      "attack_mean_z": 0.9772555682043763
+    },
+    {
+      "feature": "HpHp_L0.01_weight",
+      "importance": 0.028943306055477045,
+      "meaning": "decayed packet count, source->destination socket (IP:port), window ~1 min",
+      "benign_mean_z": 0.9373926749828928,
+      "attack_mean_z": -0.9373926749803108
+    },
+    {
+      "feature": "HH_L0.01_mean",
+      "importance": 0.028848321227015826,
+      "meaning": "mean packet size, source->destination IP channel, window ~1 min",
+      "benign_mean_z": 0.7784426061742442,
+      "attack_mean_z": -0.7784426061878914
+    },
+    {
+      "feature": "HH_L0.1_magnitude",
+      "importance": 0.028417730580448795,
+      "meaning": "sqrt(mean_out^2 + mean_in^2), source->destination IP channel, window ~10 s",
+      "benign_mean_z": 0.8061305063642178,
+      "attack_mean_z": -0.8061305063697517
+    },
+    {
+      "feature": "MI_dir_L3_weight",
+      "importance": 0.0278178203059136,
+      "meaning": "decayed packet count, source MAC+IP (sending host), window ~500 ms",
+      "benign_mean_z": -0.962177272169575,
+      "attack_mean_z": 0.9621772721695601
+    },
+    {
+      "feature": "H_L1_weight",
+      "importance": 0.02661604558141815,
+      "meaning": "decayed packet count, source IP (sending host), window ~1.5 s",
+      "benign_mean_z": -0.9772555567947839,
+      "attack_mean_z": 0.9772555567947827
+    },
+    {
+      "feature": "H_L5_weight",
+      "importance": 0.020363807987080488,
+      "meaning": "decayed packet count, source IP (sending host), window ~100 ms",
+      "benign_mean_z": -0.9522498410540267,
+      "attack_mean_z": 0.952249841054004
+    }
+  ],
+  "stream_layout": {
+    "slow_poisoning": [
+      {
+        "phase": "calibration",
+        "records": 400,
+        "attack": 120
+      },
+      {
+        "phase": "pre_attack",
+        "records": 400,
+        "attack": 0
+      },
+      {
+        "phase": "slow_poison",
+        "records": 600,
+        "attack": 600
+      },
+      {
+        "phase": "post_poison",
+        "records": 400,
+        "attack": 400
+      },
+      {
+        "phase": "recovery_check",
+        "records": 200,
+        "attack": 200
+      }
+    ],
+    "genuine_drift": [
+      {
+        "phase": "calibration",
+        "records": 400,
+        "attack": 120
+      },
+      {
+        "phase": "pre_drift",
+        "records": 400,
+        "attack": 0
+      },
+      {
+        "phase": "genuine_drift",
+        "records": 600,
+        "attack": 0
+      },
+      {
+        "phase": "post_drift",
+        "records": 400,
+        "attack": 0
+      }
+    ]
+  },
+  "feature_count": 115,
+  "importance_by_group": {
+    "MI_dir": 0.2999384818227813,
+    "H": 0.39737745858538187,
+    "HH": 0.16565784748113327,
+    "HH_jit": 0.04113421762026046,
+    "HpHp": 0.09589199449044301
+  },
+  "importance_by_window": {
+    "L5": 0.07894268252982936,
+    "L3": 0.09430703375470917,
+    "L1": 0.07900935029979794,
+    "L0.1": 0.2804190222674785,
+    "L0.01": 0.467321911148185
+  },
+  "importance_grid": {
+    "MI_dir|L5": 0.010060419389297928,
+    "MI_dir|L3": 0.027822088087541597,
+    "MI_dir|L1": 0.039389717545379774,
+    "MI_dir|L0.1": 0.10058199438783749,
+    "MI_dir|L0.01": 0.12208426241272458,
+    "H|L5": 0.02036590411520678,
+    "H|L3": 0.05289894398187606,
+    "H|L1": 0.039584248336966846,
+    "H|L0.1": 0.08577514129188225,
+    "H|L0.01": 0.1987532208594499,
+    "HH|L5": 0.02085692480944174,
+    "HH|L3": 0.006451598807267641,
+    "HH|L1": 3.614004750084802e-06,
+    "HH|L0.1": 0.04241268427802172,
+    "HH|L0.01": 0.0959330255816521,
+    "HH_jit|L5": 2.299722013025251e-05,
+    "HH_jit|L3": 2.2742940417156918e-05,
+    "HH_jit|L1": 2.9350335131116626e-05,
+    "HH_jit|L0.1": 0.019487236112838386,
+    "HH_jit|L0.01": 0.021571891011743546,
+    "HpHp|L5": 0.02763643699575265,
+    "HpHp|L3": 0.00711165993760672,
+    "HpHp|L1": 2.420077570110531e-06,
+    "HpHp|L0.1": 0.032161966196898636,
+    "HpHp|L0.01": 0.028979511282614886
+  }
+}

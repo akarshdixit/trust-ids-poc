@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trust-IDS Live Experiment</title>
+<style>
+  :root { --bg:#0f1115; --panel:#151922; --fg:#d8dee9; --dim:#7a8291; --line:#222733;
+          --static:#9aa0a6; --ungated:#d62728; --traffic:#ff7f0e; --full:#2ca02c;
+          --ewc:#1f77b4; --quar:#9467bd; --attack:#d62728; --drift:#79c0ff; --lag:#eb6834; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.45 system-ui,Segoe UI,sans-serif; }
+  header { padding:12px 16px; border-bottom:1px solid var(--line); display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+  h1 { font-size:16px; margin:0 12px 0 0; font-weight:600; }
+  label { color:var(--dim); font-size:13px; }
+  select, button { background:#1a1e27; color:var(--fg); border:1px solid var(--line); padding:6px 10px; border-radius:6px; font:inherit; }
+  button { cursor:pointer; } button:hover { border-color:var(--dim); }
+  #status { color:var(--dim); margin-left:auto; font-size:13px; }
+  main { padding:14px 16px; display:grid; gap:14px; max-width:1200px; margin:0 auto; }
+  .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+  .tile { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+  .tile .k { color:var(--dim); font-size:12px; } .tile .v { font-size:22px; font-variant-numeric:tabular-nums; }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+  .panel h2 { font-size:13px; font-weight:600; margin:0 0 6px; }
+  .panel p { color:var(--dim); margin:0 0 6px; font-size:12px; }
+  svg { width:100%; height:200px; display:block; }
+  .legend { display:flex; flex-wrap:wrap; gap:12px; font-size:12px; color:var(--dim); margin-top:4px; }
+  .legend i { display:inline-block; width:10px; height:3px; border-radius:2px; margin-right:5px; vertical-align:middle; }
+  table { width:100%; border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-nums; }
+  th, td { text-align:right; padding:5px 8px; border-bottom:1px solid var(--line); }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:500; }
+  .wrap { overflow-x:auto; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Live experiment</h1>
+  <label>speed <select id="speed"><option value="300">300x (24 h in ~5 min)</option><option value="600" selected>600x (~2.5 min)</option><option value="1500">1500x (~1 min)</option><option value="0">no pacing</option></select></label>
+  <label title="Per-record probability the reputation feed is wrong">rep. error <select id="flip"><option>0</option><option>0.1</option><option>0.2</option><option>0.3</option></select></label>
+  <button id="go">Start live replay</button>
+  <a href="/" style="color:var(--dim);font-size:13px">log console</a>
+  <span id="status">idle</span>
+</header>
+<main>
+  <p style="color:var(--dim);margin:0;font-size:13px">Real IoT-23 Mirai capture (CTU-IoT-Malware-Capture-34-1, 24 h, 23,145 flows) replayed in its
+  original time order. The first 2,000 flows train the detector; every later flow is unseen and arrives on the wall clock at
+  the chosen speed. Six systems process each 20-flow round as it arrives.</p>
+  <section class="tiles">
+    <div class="tile"><div class="k">flows processed</div><div class="v" id="t-flows">0</div></div>
+    <div class="tile"><div class="k">capture time reached</div><div class="v" id="t-hours">0.0 h</div></div>
+    <div class="tile"><div class="k">throughput</div><div class="v" id="t-rate">-</div></div>
+    <div class="tile"><div class="k">processing / flow (6 systems)</div><div class="v" id="t-ms">-</div></div>
+    <div class="tile"><div class="k">backlog behind real time</div><div class="v" id="t-lag">-</div></div>
+    <div class="tile"><div class="k">drift rounds / rollbacks</div><div class="v" id="t-drift">0 / 0</div></div>
+  </section>
+  <section class="panel">
+    <h2>Accuracy on arriving flows (10-round rolling mean)</h2>
+    <svg id="acc" viewBox="0 0 1000 200" preserveAspectRatio="none" role="img" aria-label="rolling accuracy per system"></svg>
+    <div class="legend" id="legend"></div>
+  </section>
+  <section class="panel">
+    <h2>Traffic: malicious share per round, and when drift was active</h2>
+    <svg id="traffic" viewBox="0 0 1000 200" preserveAspectRatio="none" role="img" aria-label="malicious share and drift"></svg>
+    <div class="legend"><span><i style="background:var(--attack)"></i>malicious share</span><span><i style="background:var(--drift)"></i>drift active</span></div>
+  </section>
+  <section class="panel">
+    <h2>Real-time cost</h2>
+    <svg id="cost" viewBox="0 0 1000 200" preserveAspectRatio="none" role="img" aria-label="processing time and backlog"></svg>
+    <div class="legend"><span><i style="background:#5598e7"></i>ms per flow (left scale)</span><span><i style="background:var(--lag)"></i>backlog seconds (right scale)</span></div>
+  </section>
+  <section class="panel wrap">
+    <h2>Per system, live flows so far (attack = positive)</h2>
+    <table id="tbl"><thead><tr><th>system</th><th>accuracy</th><th>recall</th><th>false-positive rate</th><th>TP</th><th>FP</th><th>TN</th><th>FN</th><th>updates</th></tr></thead><tbody></tbody></table>
+  </section>
+</main>
+<script>
+const ARMS = [["static","never learns","--static"],["ungated","learns everything","--ungated"],
+  ["gate_traffic_only","traffic-only gate","--traffic"],["gate_full","full gate (one-shot)","--full"],
+  ["ewc","EWC","--ewc"],["gate_quarantine","quarantine gate (new)","--quar"]];
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const $ = id => document.getElementById(id);
+const token = new URLSearchParams(location.search).get("token") || "";
+const q = token ? `?token=${encodeURIComponent(token)}` : "";
+$("legend").innerHTML = ARMS.map(([, l, c]) => `<span><i style="background:var(${c})"></i>${l}</span>`).join("");
+let rounds = [], totals = {}, rollbacks = 0, es = null;
+
+function poly(svg, ys, color, max = 1, width = 2, dash = "") {
+  const n = Math.max(ys.length, 2), pts = ys.map((y, i) =>
+    `${(i / (n - 1) * 1000).toFixed(1)},${(195 - Math.min(y, max) / max * 185).toFixed(1)}`).join(" ");
+  svg.insertAdjacentHTML("beforeend", `<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="${width}" stroke-dasharray="${dash}" vector-effect="non-scaling-stroke"/>`);
+}
+function grid(svg) {
+  svg.innerHTML = [0.25, 0.5, 0.75, 1].map(f => `<line x1="0" x2="1000" y1="${195 - f * 185}" y2="${195 - f * 185}" stroke="${css("--line")}" vector-effect="non-scaling-stroke"/>`).join("");
+}
+function bands(svg, flags, color, opacity) {
+  const n = Math.max(flags.length, 2), w = 1000 / (n - 1);
+  flags.forEach((f, i) => f && svg.insertAdjacentHTML("beforeend",
+    `<rect x="${(i / (n - 1) * 1000 - w / 2).toFixed(1)}" y="5" width="${w.toFixed(2)}" height="190" fill="${color}" opacity="${opacity}"/>`));
+}
+function rolling(a, k = 10) { return a.map((_, i) => { const s = a.slice(Math.max(0, i - k + 1), i + 1); return s.reduce((x, y) => x + y, 0) / s.length; }); }
+function draw() {
+  const acc = $("acc"); grid(acc);
+  for (const [a, , c] of ARMS) if (rounds.length && rounds[0].arms[a])
+    poly(acc, rolling(rounds.map(r => (r.arms[a].tp + r.arms[a].tn) / 20)), css(c));
+  const tr = $("traffic"); grid(tr);
+  bands(tr, rounds.map(r => r.drift_active), css("--drift"), 0.18);
+  poly(tr, rounds.map(r => r.malicious / 20), css("--attack"), 1, 1.5);
+  const co = $("cost"); grid(co);
+  const ms = rounds.map(r => r.busy_ms_per_flow), lag = rounds.map(r => r.lag_s);
+  poly(co, ms, "#5598e7", Math.max(0.5, ...ms.slice(1)) * 1.1, 1.2);
+  poly(co, lag, css("--lag"), Math.max(1, ...lag) * 1.1, 1.6);
+}
+function table() {
+  $("tbl").tBodies[0].innerHTML = ARMS.filter(([a]) => totals[a]).map(([a, l]) => {
+    const t = totals[a], n = t.tp + t.fp + t.tn + t.fn, f = x => (100 * x).toFixed(1) + "%";
+    return `<tr><td>${l}</td><td>${f((t.tp + t.tn) / n)}</td><td>${f(t.tp / Math.max(1, t.tp + t.fn))}</td>` +
+      `<td>${f(t.fp / Math.max(1, t.fp + t.tn))}</td><td>${t.tp}</td><td>${t.fp}</td><td>${t.tn}</td><td>${t.fn}</td><td>${t.updates}</td></tr>`;
+  }).join("");
+}
+function onRound(ev) {
+  rounds.push(ev);
+  for (const [a, s] of Object.entries(ev.arms)) {
+    const t = totals[a] ||= { tp: 0, fp: 0, tn: 0, fn: 0, updates: 0 };
+    for (const k of ["tp", "fp", "tn", "fn"]) t[k] += s[k] || 0;
+    t.updates += s.authorized ? 1 : 0;
+    if (a === "gate_quarantine" && s.rolled_back) rollbacks += s.rolled_back;
+  }
+  const busy = rounds.slice(1).map(r => r.busy_ms_per_flow);
+  $("t-flows").textContent = (rounds.length * 20).toLocaleString();
+  $("t-hours").textContent = ev.capture_hours.toFixed(1) + " h";
+  $("t-rate").textContent = ev.wall_s > 0 ? Math.round(rounds.length * 20 / ev.wall_s).toLocaleString() + " /s" : "-";
+  $("t-ms").textContent = busy.length ? (busy.reduce((x, y) => x + y, 0) / busy.length).toFixed(2) + " ms" : "-";
+  $("t-lag").textContent = ev.lag_s.toFixed(2) + " s";
+  $("t-drift").textContent = `${rounds.filter(r => r.drift_active).length} / ${rollbacks}`;
+  if (rounds.length % 5 === 0) { draw(); table(); }
+}
+$("go").onclick = async () => {
+  if (es) es.close();
+  rounds = []; totals = {}; rollbacks = 0; draw(); table();
+  const flip = +$("flip").value;
+  const r = await fetch("/api/live" + q, { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ speed: +$("speed").value, reputation_noise: { flip_rate: flip, sigma: flip ? 0.05 : 0 } }) });
+  const j = await r.json();
+  if (!r.ok) { $("status").textContent = "error: " + JSON.stringify(j.detail); return; }
+  $("status").textContent = `live ${j.live_id} running (training on the first 2,000 flows...)`;
+  es = new EventSource(j.events + q);
+  es.addEventListener("round", e => { onRound(JSON.parse(e.data)); $("status").textContent = `live ${j.live_id} running`; });
+  for (const end of ["done", "error"]) es.addEventListener(end, e => {
+    const d = JSON.parse(e.data); es.close(); draw(); table();
+    $("status").textContent = end === "done"
+      ? `done: ${Math.round(d.summary.throughput_flows_per_s)} flows/s, max backlog ${d.summary.max_lag_s.toFixed(2)} s`
+      : "error: " + d.error;
+  });
+};
+draw();
+</script>
+</body>
+</html>

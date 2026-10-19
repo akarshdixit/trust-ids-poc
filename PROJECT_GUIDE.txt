@@ -87,6 +87,36 @@ later turns against them.
   * README: setup, data sources, related work and novelty, results tables.
   * This file, and report_ids.pdf (+ its generator docs/build_report.py).
 
+2.5 Review-panel additions (nothing earlier was changed; original results
+    reproduce exactly, tested)
+  1 "No comparison with other models":
+    * experiments/benchmark.py: 16 detectors (logistic regression, linear SVM,
+      decision tree, random forest, gradient boosting, k-NN, naive Bayes, MLP,
+      isolation forest, the N-BaIoT paper's autoencoder, 5 River online
+      models, and ours as deployed) on the same TEMPORAL split, with accuracy,
+      F1, AUC, false-positive rate, unseen-device false alarms, latency,
+      training time and model size.
+    * experiments/sweeps.py models: every defence on 5 different base learners
+      (models/online_ids.py BASE_MODELS; run_scenario(base_model=...)).
+  2 "How was the data processed": experiments/data_profile.py (checks,
+    effect of each processing step, splits, stream layout); report section 5.
+  3 "What are the features": data/features.py explains every one of the
+    115 N-BaIoT and 21 IoT-23 features; random-forest importance, also by
+    aggregation x time window.
+  4 "How were the models trained": report section 6.7, every hyperparameter.
+  5 "Accuracy too low": per-phase accuracy table (report 8.3) showing the
+    0.55 is an average over phases that are undetectable BY DESIGN; clean
+    and live accuracy are 0.995-0.997.
+  6 "No live experiment": experiments/live_experiment.py (real capture,
+    original order and timing, real-time pacing, six systems), backend /live
+    dashboard and POST /api/live, POST /api/live/ingest + experiments/
+    live_feed.py for a real Zeek sensor's conn.log.
+  * Streamlit app: three new tabs (Model comparison, Data & features, Live
+    experiment), dashboard.py.
+  * run_scenario(record_confusion=True) adds TP/FP/TN/FN per round (off by
+    default). data/load_iot23.py gained parse_timestamps() and featurize().
+  * 35 new tests (143 total). scikit-learn added to requirements.
+
 
 -------------------------------------------------------------------------------
  3. REPOSITORY STRUCTURE
@@ -121,9 +151,17 @@ later turns against them.
   experiments/sweeps.py         robustness sweeps (NEW)
   experiments/make_plots.py     static PNG figures
 
+  experiments/benchmark.py       16-model detector benchmark (review panel)
+  experiments/data_profile.py    data checks, processing effect, importance
+  experiments/live_experiment.py real-time replay of a real capture
+  experiments/live_feed.py       streams a Zeek conn.log to the backend
+  data/features.py               meaning of every feature
+  dashboard.py                   the app's comparison tabs
+
   backend/server.py          FastAPI backend (NEW)
   backend/console.html       live log console page (NEW)
-  tests/                     108 pytest tests
+  backend/live.html          live experiment dashboard (/live)
+  tests/                     143 pytest tests
   results/                   logs (.json) and figures (.png)
   docs/                      architecture, literature review, report sources
 
@@ -199,6 +237,20 @@ later turns against them.
 4.7 Rebuild the PDF report
 
     .\.venv\Scripts\python.exe docs\build_report.py   # writes report_ids.pdf
+
+4.8 Model comparison, data profile, live experiment
+
+    .\.venv\Scripts\python.exe experiments\benchmark.py --source real     # or iot23
+    .\.venv\Scripts\python.exe experiments\sweeps.py models --source real
+    .\.venv\Scripts\python.exe experiments\data_profile.py --source real
+    .\.venv\Scripts\python.exe experiments\live_experiment.py --speed 600
+         (--speed 0 = as fast as possible, --tag NAME keeps another output)
+
+  Live from the browser: start the backend, open http://localhost:8765/live,
+  choose a speed, press "Start live replay".
+  Live from a Zeek sensor (backend running):
+    .\.venv\Scripts\python.exe experiments\live_feed.py C:\path\to\conn.log --follow
+    (or --rate 200 to replay a finished log at 200 lines/s)
 
 
 -------------------------------------------------------------------------------
@@ -373,6 +425,47 @@ later turns against them.
    purple = ROLLBACK, red = error. Controls: scenario, data source, pace,
    reputation error rate, feature drift.
 
+ 7.4 Review-panel figures (results/) and tabs
+
+ benchmark_<real|iot23>.png
+   Left: F1 of every detector on later, held-out traffic, best at the top.
+   Blue = batch (scikit-learn), green = online (River), grey = unsupervised
+   (trained on benign only), purple = ours exactly as deployed (400 rows).
+   Right: F1 against latency per record (log scale); bubble size = model
+   size. Up and to the left is better.
+
+ sweep_models_<source>.png
+   Every defence (grey never learns, red learns everything, orange
+   traffic-only, green full gate, purple quarantine) on 5 base learners.
+   Left: repeat-attack accuracy after poisoning (high = not poisoned).
+   Right: post-drift accuracy (high = still adapts). A good defence is high
+   in BOTH. A "0" marks a bar of zero height.
+
+ data_profile_<real|iot23>.png
+   Left: spread of per-feature standard deviations after each processing
+   step (raw, signed log, + z-score); "decades" = orders of magnitude.
+   Middle: top 15 features by random-forest importance. Right (N-BaIoT):
+   importance summed per aggregation (rows) and time window (columns);
+   (IoT-23): benign vs attack mean of the top features.
+
+ live_experiment_iot23.png
+   Top: share of malicious flows per round of the real capture, capture
+   time, and when drift was active (blue). Middle: each system's rolling
+   accuracy on the arriving flows. Bottom: processing time per flow (blue)
+   and backlog behind real time (orange).
+
+ App tabs: "Model comparison" (metric selector over the benchmark,
+ efficiency scatter, defence-by-learner bars, poisoned-updates table),
+ "Data & features" (processing steps, checks, feature spread, importance,
+ full feature catalogue, stream layout), "Live experiment" (the recorded
+ run; link to /live for a new one).
+
+ Live dashboard (http://localhost:8765/live): tiles for flows processed,
+ capture hours reached, throughput, processing time, backlog and drift /
+ rollback counts; rolling accuracy per system; malicious share with drift
+ bands; real-time cost; a per-system table (accuracy, recall, false-positive
+ rate, TP/FP/TN/FN, updates applied), all updating as rounds arrive.
+
 
 -------------------------------------------------------------------------------
  8. KEY RESULTS
@@ -404,6 +497,23 @@ later turns against them.
  setting; one-shot veto 0.3: 2-9 at 20-40% feed error; without rollback a
  600-record-late feed leaves 14 on IoT-23.
 
+ Detector benchmark (temporal split, F1, N-BaIoT / IoT-23):
+   best supervised models  1.000 / 0.993   (random forest, LR, gradient boosting)
+   ours, as deployed       0.995 / 0.990   at 24 / 5 us per record, 7 KB
+   autoencoder (paper)     0.993 / 0.515   isolation forest 0.960 / 0.950
+   unseen device (Ennio) false alarms: best 0.000, ours 0.358
+ Every defence on 5 learners: in all 8 learner/dataset pairs whose detector
+   works, the reputation gates keep the repeat attack at 1.00; learning
+   everything is poisoned in 7 of them, the traffic-only gate fails in 5.
+ Per-phase (N-BaIoT, Scenario 2): normal 1.000, attack morphing 0.475,
+   disguised attack 0.000 (every arm, by design), raw repeat attack 1.000 for
+   the gates -> the 0.553 overall is an average, not a weak detector.
+ Live (21,140 real flows, original order, 600x): static / full gate /
+   quarantine 0.997; learns everything 0.134; traffic-only 0.298; EWC 0.323.
+   0.05 ms per flow for all six systems; 13,766 flows/s unpaced; worst
+   backlog 0.72 s. Ingest of real Zeek lines: 10-12 us per flow; accuracy
+   0.945 on the Mirai capture, 0.832 on an unseen device (Amazon Echo).
+
 
 -------------------------------------------------------------------------------
  9. LIMITATIONS (say these in the review)
@@ -423,6 +533,15 @@ later turns against them.
   * F1 is 0.000 in Scenario 1 because that scenario contains no attack
     records after calibration (no positives to detect); use accuracy there.
   * The novelty claim rests on a targeted, not systematic, literature search.
+  * As a plain detector ours is not the most accurate model (several reach
+    F1 1.000 on N-BaIoT, ours 0.995) and it raises false alarms on 36% of an
+    unseen device's benign traffic: it is trained on 400 rows only. The
+    contribution is the gate around it, which works for every learner tried.
+  * Hoeffding trees on IoT-23 never learn from 400 calibration flows (they
+    detect nothing, gate or not).
+  * The live experiment is a real-time replay of a real capture, not packet
+    capture on this machine; the ingest API accepts a real Zeek sensor but
+    scores it without the gate (a raw sensor has no reputation feed).
 
 
 -------------------------------------------------------------------------------

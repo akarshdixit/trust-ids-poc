@@ -3,11 +3,13 @@ Trust-Aware IDS — Review-2 demo frontend.
 
 Run:  .\.venv\Scripts\streamlit.exe run app.py
 
-Two views:
+Views:
   LIVE STREAM — replays the traffic stream one round at a time, showing
                 classification, drift detection and the gate's authorize/veto
                 decision as they happen. This is the demo.
   SUMMARY     — the final numbers, for the report.
+  MODEL COMPARISON, DATA & FEATURES, LIVE EXPERIMENT — dashboard.py: other
+                models vs ours, data processing and features, the real-time run.
 
 Loads precomputed logs instantly; the sidebar can re-run the pipeline live with
 different gate parameters, so you can watch the reputation veto be the only
@@ -23,6 +25,7 @@ import pandas as pd
 import streamlit as st
 
 import charts
+import dashboard
 import equations
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -189,7 +192,17 @@ if st.session_state.get("run_key") != run_key:
     st.session_state.t = 0
     st.session_state.playing = False
 
-tab_live, tab_summary = st.tabs(["Live stream", "Summary"])
+tab_live, tab_summary, tab_models, tab_data, tab_liveexp = st.tabs(
+    ["Live stream", "Summary", "Model comparison", "Data & features", "Live experiment"])
+
+# The comparison tabs render first: the Live-stream replay below re-runs the script
+# while it plays, and anything after it would not be drawn.
+with tab_models:
+    dashboard.models_tab(tag)
+with tab_data:
+    dashboard.data_tab(tag)
+with tab_liveexp:
+    dashboard.live_tab(BACKEND_URL)
 
 # ================================================================ LIVE STREAM
 with tab_live:

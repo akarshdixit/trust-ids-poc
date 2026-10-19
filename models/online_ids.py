@@ -20,12 +20,32 @@ Why River (decided for the 2-day Review-2 deadline):
   ~80-line wrapper from scratch, and a self-written model is easier to
   defend line-by-line in viva.
 """
-from river import linear_model, preprocessing, metrics, drift
+from river import drift, forest, linear_model, metrics, naive_bayes, preprocessing, tree
+
+# Base learners the gate can wrap (run_scenario(base_model=...)). "lr" is the
+# project's detector and the default; the others show the gate is not tied to it.
+BASE_MODELS = {
+    "lr": lambda: preprocessing.StandardScaler() | linear_model.LogisticRegression(),
+    "hoeffding_tree": lambda: tree.HoeffdingTreeClassifier(),
+    "hoeffding_adaptive_tree": lambda: tree.HoeffdingAdaptiveTreeClassifier(seed=1),
+    "arf": lambda: forest.ARFClassifier(n_models=5, seed=1),
+    "naive_bayes": lambda: preprocessing.StandardScaler() | naive_bayes.GaussianNB(),
+}
+BASE_MODEL_NAMES = {
+    "lr": "Logistic regression (ours)",
+    "hoeffding_tree": "Hoeffding tree",
+    "hoeffding_adaptive_tree": "Hoeffding adaptive tree",
+    "arf": "Adaptive random forest",
+    "naive_bayes": "Gaussian naive Bayes",
+}
 
 
 class OnlineIDS:
-    def __init__(self, drift_detector=True):
-        self.model = preprocessing.StandardScaler() | linear_model.LogisticRegression()
+    def __init__(self, drift_detector=True, base_model="lr"):
+        if base_model not in BASE_MODELS:
+            raise ValueError(f"unknown base_model {base_model!r}; expected one of "
+                             f"{sorted(BASE_MODELS)}")
+        self.model = BASE_MODELS[base_model]()
         self.metric = metrics.Accuracy()
         self.f1 = metrics.F1()
         self.adwin = drift.ADWIN() if drift_detector else None

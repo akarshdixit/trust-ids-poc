@@ -90,8 +90,16 @@ def advance_evidence(state, window_mean):
 
 def run_scenario(stream, feature_names, scenario_name, n_calib=N_CALIB, gate_params=None,
                  on_round=None, include_ewc=True, ewc_lambda=50.0, feature_drift=False,
-                 include_quarantine=True, quarantine_params=None):
-    """on_round(round_idx, {arm: log_entry}) is called after every round, if given."""
+                 include_quarantine=True, quarantine_params=None, base_model="lr",
+                 record_confusion=False):
+    """on_round(round_idx, {arm: log_entry}) is called after every round, if given.
+
+    record_confusion=True adds tp/fp/tn/fn (attack = positive) for the round to
+    every log entry; off by default so committed logs keep their exact format.
+
+    base_model picks the learner inside every arm (models/online_ids.BASE_MODELS).
+    EWC anchors logistic-regression weights, so the ewc arm exists only for "lr".
+    """
     names = list(feature_names)
 
     def vec(x_dict):
@@ -100,12 +108,9 @@ def run_scenario(stream, feature_names, scenario_name, n_calib=N_CALIB, gate_par
     calib = stream[:n_calib]
     rest = stream[n_calib:]
 
-    arms = {
-        "static": OnlineIDS(),
-        "ungated": OnlineIDS(),
-        "gate_traffic_only": OnlineIDS(),
-        "gate_full": OnlineIDS(),
-    }
+    arms = {name: OnlineIDS(base_model=base_model)
+            for name in ("static", "ungated", "gate_traffic_only", "gate_full")}
+    include_ewc = include_ewc and base_model == "lr"
     if include_ewc:
         arms["ewc"] = EWCOnlineIDS(ewc_lambda=ewc_lambda)
     gp = dict(gate_params or {})
@@ -115,7 +120,7 @@ def run_scenario(stream, feature_names, scenario_name, n_calib=N_CALIB, gate_par
     }
     if include_quarantine:
         qp = {**QUARANTINE_DEFAULTS, **(quarantine_params or {})}
-        arms["gate_quarantine"] = OnlineIDS()
+        arms["gate_quarantine"] = OnlineIDS(base_model=base_model)
         q_gate = TrustGate(traffic_only=True,
                            **{**gp, "trust_threshold": qp["provisional_threshold"]})
         q_test = SequentialReputationTest(qp["feed_error"], qp["alpha"], qp["beta"])
@@ -166,7 +171,7 @@ def run_scenario(stream, feature_names, scenario_name, n_calib=N_CALIB, gate_par
         reputation = float(np.mean(record_reps))
 
         # --- prequential predict + score, every arm, every sample ---
-        round_acc = {}
+        round_acc, round_conf = {}, {}
         change_point_this_round = False
         for name, arm in arms.items():
             preds = []
@@ -176,6 +181,12 @@ def run_scenario(stream, feature_names, scenario_name, n_calib=N_CALIB, gate_par
                 if name == "static" and arm.drift_detected():
                     change_point_this_round = True
             round_acc[name] = float(np.mean([p == t for p, t in zip(preds, true_ys)]))
+            if record_confusion:
+                round_conf[name] = {
+                    "tp": sum(1 for p, t in zip(preds, true_ys) if p == 1 and t == 1),
+                    "fp": sum(1 for p, t in zip(preds, true_ys) if p == 1 and t == 0),
+                    "tn": sum(1 for p, t in zip(preds, true_ys) if p == 0 and t == 0),
+                    "fn": sum(1 for p, t in zip(preds, true_ys) if p == 0 and t == 1)}
 
         if feature_adwin is not None:
             for d in np.linalg.norm(window_z - calib_centre, axis=1) / n_dims:
@@ -218,6 +229,9 @@ def run_scenario(stream, feature_names, scenario_name, n_calib=N_CALIB, gate_par
                     "round_accuracy": round_acc[name],
                 })
             prev_window_mean = window_mean_z
+            if record_confusion:
+                for name in arms:
+                    log[name][-1].update(round_conf[name])
             if on_round:
                 on_round(round_idx, {name: log[name][-1] for name in arms})
             continue
@@ -277,6 +291,9 @@ def run_scenario(stream, feature_names, scenario_name, n_calib=N_CALIB, gate_par
         })
 
         prev_window_mean = window_mean_z
+        if record_confusion:
+            for name in arms:
+                log[name][-1].update(round_conf[name])
         if on_round:
             on_round(round_idx, {name: log[name][-1] for name in arms})
 

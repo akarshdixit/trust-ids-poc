@@ -1,0 +1,240 @@
+{
+  "source": "iot23",
+  "raw_quality": {
+    "CTU-IoT-Malware-Capture-34-1": {
+      "flows": 23145,
+      "malicious": 21222,
+      "benign": 1923,
+      "attack_types": {
+        "C&C": 6706,
+        "PartOfAHorizontalPortScan": 122,
+        "DDoS": 14394
+      },
+      "nan": 0,
+      "max_abs": 76063056.0
+    },
+    "CTU-Honeypot-Capture-5-1": {
+      "flows": 1374,
+      "malicious": 0,
+      "benign": 1374,
+      "attack_types": {},
+      "nan": 0,
+      "max_abs": 349618679.0
+    },
+    "CTU-Honeypot-Capture-4-1": {
+      "flows": 452,
+      "malicious": 0,
+      "benign": 452,
+      "attack_types": {},
+      "nan": 0,
+      "max_abs": 2778408.0
+    }
+  },
+  "split": {
+    "CTU-IoT-Malware-Capture-34-1 malicious": {
+      "flows": 21222,
+      "train": 6000,
+      "test": 3000
+    },
+    "CTU-IoT-Malware-Capture-34-1 benign": {
+      "flows": 1923,
+      "train": 1346,
+      "test": 577
+    },
+    "CTU-Honeypot-Capture-5-1 benign": {
+      "flows": 1374,
+      "train": 961,
+      "test": 413
+    },
+    "CTU-Honeypot-Capture-4-1 benign": {
+      "flows": 452,
+      "train": 316,
+      "test": 136
+    }
+  },
+  "class_balance": {
+    "train_benign": 2623,
+    "train_attack": 6000,
+    "test_benign": 1126,
+    "test_attack": 3000
+  },
+  "spread": {
+    "raw": {
+      "std_min": 0.015227739342948018,
+      "std_median": 0.4424936359560783,
+      "std_max": 3765090.850168483,
+      "orders_of_magnitude": 8.393140025741152
+    },
+    "signed_log": {
+      "std_min": 0.010555064591866089,
+      "std_median": 0.3067132161787089,
+      "std_max": 2.6474815293158183,
+      "orders_of_magnitude": 2.399372043524822
+    },
+    "z_score": {
+      "std_min": 0.9999999999999107,
+      "std_median": 1.0000000000000064,
+      "std_max": 1.000000000000066,
+      "orders_of_magnitude": 6.740648991206954e-14
+    }
+  },
+  "top_features": [
+    {
+      "feature": "proto_tcp",
+      "importance": 0.2663597794893355,
+      "meaning": "one-hot: transport protocol TCP",
+      "benign_mean_z": -1.2839258977861807,
+      "attack_mean_z": 0.5612896049819107
+    },
+    {
+      "feature": "proto_udp",
+      "importance": 0.1451221508985548,
+      "meaning": "one-hot: transport protocol UDP",
+      "benign_mean_z": 1.2630689745075416,
+      "attack_mean_z": -0.5521716533555079
+    },
+    {
+      "feature": "orig_pkts",
+      "importance": 0.10312247741518436,
+      "meaning": "packets sent by the originator",
+      "benign_mean_z": 0.5549707227238695,
+      "attack_mean_z": -0.2426147009508499
+    },
+    {
+      "feature": "orig_ip_bytes",
+      "importance": 0.09673258651154032,
+      "meaning": "IP-level bytes sent by the originator",
+      "benign_mean_z": 0.8845528628973683,
+      "attack_mean_z": -0.3866970265632829
+    },
+    {
+      "feature": "state_SF",
+      "importance": 0.09014891225673845,
+      "meaning": "one-hot: normal establish and termination",
+      "benign_mean_z": 1.0339954119348571,
+      "attack_mean_z": -0.4520283275841637
+    },
+    {
+      "feature": "orig_bytes",
+      "importance": 0.058757383500659316,
+      "meaning": "payload bytes sent by the originator",
+      "benign_mean_z": 0.8847830455555902,
+      "attack_mean_z": -0.38679765474872374
+    },
+    {
+      "feature": "duration",
+      "importance": 0.05508566328713602,
+      "meaning": "flow duration in seconds",
+      "benign_mean_z": 0.21007679068009394,
+      "attack_mean_z": -0.09183857032564682
+    },
+    {
+      "feature": "resp_ip_bytes",
+      "importance": 0.04346526239341057,
+      "meaning": "IP-level bytes sent by the responder",
+      "benign_mean_z": 0.7501681824541816,
+      "attack_mean_z": -0.32794852376289996
+    },
+    {
+      "feature": "resp_bytes",
+      "importance": 0.04063869020009122,
+      "meaning": "payload bytes sent by the responder",
+      "benign_mean_z": 0.6966602968664818,
+      "attack_mean_z": -0.3045566597801293
+    },
+    {
+      "feature": "resp_pkts",
+      "importance": 0.033640543292587415,
+      "meaning": "packets sent by the responder",
+      "benign_mean_z": 0.4947862675003707,
+      "attack_mean_z": -0.21630406327557913
+    },
+    {
+      "feature": "state_SH",
+      "importance": 0.02334412335160615,
+      "meaning": "one-hot: originator SYN then FIN, no SYN-ACK",
+      "benign_mean_z": 0.2427115505998287,
+      "attack_mean_z": -0.10610539953722521
+    },
+    {
+      "feature": "state_OTH",
+      "importance": 0.023146765702539006,
+      "meaning": "one-hot: no SYN seen, midstream traffic",
+      "benign_mean_z": -0.9235287534733306,
+      "attack_mean_z": 0.4037359867267128
+    },
+    {
+      "feature": "state_S0",
+      "importance": 0.01818912180884694,
+      "meaning": "one-hot: SYN seen, no reply (scan / unanswered)",
+      "benign_mean_z": 0.1905417614497591,
+      "attack_mean_z": -0.08329850671374045
+    },
+    {
+      "feature": "state_RSTR",
+      "importance": 0.0014306328238829888,
+      "meaning": "one-hot: responder sent RST",
+      "benign_mean_z": 0.10689727640293137,
+      "attack_mean_z": -0.04673192600081478
+    },
+    {
+      "feature": "proto_icmp",
+      "importance": 0.0005151869348728709,
+      "meaning": "one-hot: transport protocol ICMP",
+      "benign_mean_z": 0.1764399665036031,
+      "attack_mean_z": -0.07713367202315838
+    }
+  ],
+  "stream_layout": {
+    "slow_poisoning": [
+      {
+        "phase": "calibration",
+        "records": 400,
+        "attack": 120
+      },
+      {
+        "phase": "pre_attack",
+        "records": 400,
+        "attack": 0
+      },
+      {
+        "phase": "slow_poison",
+        "records": 600,
+        "attack": 600
+      },
+      {
+        "phase": "post_poison",
+        "records": 400,
+        "attack": 400
+      },
+      {
+        "phase": "recovery_check",
+        "records": 200,
+        "attack": 200
+      }
+    ],
+    "genuine_drift": [
+      {
+        "phase": "calibration",
+        "records": 400,
+        "attack": 120
+      },
+      {
+        "phase": "pre_drift",
+        "records": 400,
+        "attack": 0
+      },
+      {
+        "phase": "genuine_drift",
+        "records": 600,
+        "attack": 0
+      },
+      {
+        "phase": "post_drift",
+        "records": 400,
+        "attack": 0
+      }
+    ]
+  },
+  "feature_count": 21
+}
