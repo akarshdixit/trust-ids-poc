@@ -158,10 +158,15 @@ class Run:
                 "request": self.req.model_dump(), "rounds": len(self.events),
                 "started": self.started, "finished": self.finished}
 
-    def save(self):
+    def save(self, status=None):
+        """status overrides the saved status, so a run can be persisted BEFORE
+        clients are told it finished."""
         path = os.path.join(RUNS_DIR, f"{self.id}.json")
+        d = {**self.summary(), "events": self.events}
+        if status is not None:
+            d["status"] = status
         with open(path + ".tmp", "w") as f:
-            json.dump({**self.summary(), "events": self.events}, f)
+            json.dump(d, f)
         os.replace(path + ".tmp", path)
 
     @classmethod
@@ -210,6 +215,7 @@ def _describe(round_idx, entries):
 def _worker(run: Run):
     rl = logging.getLogger(f"trust_ids.run.{run.id}")
     run.status = "running"
+    final_status = "error"
     rl.info("start scenario=%s source=%s seed=%s feature_drift=%s noise=%s gate=%s",
             run.req.scenario, run.req.source, run.req.seed, run.req.feature_drift,
             run.req.reputation_noise.model_dump(), run.req.gate.model_dump())
@@ -230,17 +236,18 @@ def _worker(run: Run):
                              feature_drift=run.req.feature_drift,
                              include_quarantine=run.req.include_quarantine,
                              quarantine_params=run.req.quarantine.model_dump())
-        run.status = "done"
+        final_status = "done"
         rl.info("done: " + "  ".join(f"{a}={final[a][-1]['accuracy']:.3f}" for a in final))
     except Exception as e:  # surface the failure to the client instead of dying silently
-        run.status, run.error = "error", f"{type(e).__name__}: {e}"
+        final_status, run.error = "error", f"{type(e).__name__}: {e}"
         rl.error("failed: %s\n%s", run.error, traceback.format_exc())
     finally:
         run.finished = time.time()
         try:
-            run.save()
+            run.save(status=final_status)
         except OSError as e:
             rl.error("could not save run: %s", e)
+        run.status = final_status  # only now do pollers and SSE clients see the end
 
 
 # ------------------------------------------------------------------ app

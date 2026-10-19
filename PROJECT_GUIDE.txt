@@ -1,0 +1,439 @@
+===============================================================================
+ TRUST-AWARE CONTINUAL LEARNING FOR IoT INTRUSION DETECTION
+ Project guide: what changed, how to run it, what every chart means
+===============================================================================
+
+ Repository : https://github.com/akarshdixit/trust-ids-poc
+ Report     : report_ids.pdf (full write-up: structure, algorithms, packages,
+              datasets, results). Rebuild it with: python docs/build_report.py
+ Previous version : commit 8251f5b ("add context file")
+ This version     : branch real-data-quarantine-gate
+
+
+-------------------------------------------------------------------------------
+ 1. WHAT THE PROJECT IS, IN ONE PARAGRAPH
+-------------------------------------------------------------------------------
+
+An IoT intrusion detection system (IDS) that keeps learning from live traffic
+can be "taught" by a patient attacker that attack traffic is normal (slow
+poisoning). This project puts an AUTHORIZATION GATE in front of every model
+update. When the drift detector says "the traffic has changed, adapt", the
+gate decides whether that update may be applied, using (a) three evidence
+scores computed from the traffic itself, which an attacker can influence, and
+(b) an out-of-band reputation signal (where the traffic is going), which the
+attacker cannot. The new extension, the QUARANTINE gate, treats that
+reputation signal as fallible evidence accumulated over the whole drift
+episode, applies updates provisionally, and rolls them back if the evidence
+later turns against them.
+
+
+-------------------------------------------------------------------------------
+ 2. WHAT CHANGED SINCE THE LAST VERSION (commit 8251f5b)
+-------------------------------------------------------------------------------
+
+2.1 Data
+  * REAL N-BaIoT data is now the default everywhere (it was synthetic before).
+    Four files are used (see section 5). The real run reproduces the results
+    that were already committed for the original four arms exactly; a test
+    checks this.
+  * NEW second real dataset: IoT-23 labelled Zeek flows (conn.log.labeled),
+    loader data/load_iot23.py, 21 features.
+  * data/fake_nbaiot.py: generator of fake files in the N-BaIoT format. It is
+    used ONLY by tests now; the UI no longer offers fake data.
+  * data/reputation.py: models an imperfect reputation feed (Gaussian noise,
+    a per-record flip rate = "wrong verdict", and lag = "late verdict").
+  * experiments/streams.py: one function, build_stream(), that the CLI, the
+    backend and the app all use, so the three can never build a scenario
+    differently.
+
+2.2 Algorithms
+  * NEW gate/quarantine.py + arm "gate_quarantine" (the novelty feature):
+      - sequential probability ratio test (Wald SPRT) over the reputation
+        votes of the whole drift episode, with an explicit assumption that
+        the feed is wrong on at most 30% of records (alpha = beta = 0.01);
+      - provisional updates with a model checkpoint before each one;
+      - a 20-round hold; if the episode is condemned within it, the updates
+        are rolled back (earliest checkpoint restored, other episodes'
+        updates replayed);
+      - a lower provisional trust threshold (0.45 instead of 0.55), because a
+        wrong acceptance is now reversible.
+  * NEW EWC baseline (models/online_ids.py, arm "ewc"): learns every update
+    but Elastic Weight Consolidation pulls important weights back towards the
+    calibration weights. Answers "is the gate just preventing forgetting?".
+  * NEW optional feature-drift trigger (--feature-drift): a second ADWIN on
+    each record's distance from the calibration centre. Fixes the Scenario-1
+    "null result" where benign drift never raised the error rate.
+  * gate/trust_gate.py: weights are normalised to sum 1; negative or all-zero
+    weights are rejected.
+
+2.3 Software
+  * NEW FastAPI backend (backend/server.py) with a live log console
+    (backend/console.html), Server-Sent-Event streams, saved runs, optional
+    API-key auth and a concurrency limit.
+  * The Streamlit app (app.py) now runs live re-runs through the backend,
+    shows all six arms, and has data-source, reputation-error and
+    feature-drift controls.
+  * NEW experiments/sweeps.py: seeds, reputation, ewc and quarantine sweeps,
+    each writing results/sweep_<kind>_<source>.json (+ .png).
+  * experiments/make_plots.py --tag real|iot23|synth writes per-source figures.
+  * Backend fix: a run is saved to disk BEFORE it is reported as finished
+    (a client polling for "done" could previously find no saved file).
+  * requirements.txt (pinned), pytest.ini, and 108 automated tests (was 0).
+  * check_before_real_data.py fixed for pandas 3.
+  * Old untagged results files (results/slow_poisoning_log.json etc.) were
+    removed; they matched neither the real nor the synthetic run.
+
+2.4 Documentation
+  * README: setup, data sources, related work and novelty, results tables.
+  * This file, and report_ids.pdf (+ its generator docs/build_report.py).
+
+
+-------------------------------------------------------------------------------
+ 3. REPOSITORY STRUCTURE
+-------------------------------------------------------------------------------
+
+  app.py                     Streamlit demo (charts, live replay, controls)
+  charts.py                  Altair charts used by the app
+  equations.py               "Explain how this works" panel in the app
+  check_before_real_data.py  sanity checks on the N-BaIoT files
+  requirements.txt           pinned Python packages
+  pytest.ini                 test configuration
+  PROJECT_GUIDE.txt          this file
+  report_ids.pdf             full project report
+
+  models/online_ids.py       OnlineIDS (River logistic regression + ADWIN)
+                             and EWCOnlineIDS
+  evidence/featurespace.py   frozen signed-log + z-score space (trust boundary)
+  evidence/extract.py        attribution, topology and temporal evidence
+  gate/trust_gate.py         one-shot gate: weighted trust score + veto
+  gate/quarantine.py         SPRT, provisional updates, rollback (NEW)
+
+  data/load_nbaiot.py        N-BaIoT loader and scenario streams
+  data/load_iot23.py         IoT-23 Zeek-log parser and streams (NEW)
+  data/synth_stream.py       synthetic 20-feature streams
+  data/reputation.py         imperfect reputation feed (NEW)
+  data/fake_nbaiot.py        fake N-BaIoT-format files, tests only (NEW)
+  data/nbaiot/, data/iot23/  downloaded datasets (gitignored)
+
+  experiments/run_scenarios.py  the orchestrator: runs every arm through the
+                                same pipeline, writes results/*_log_<tag>.json
+  experiments/streams.py        build_stream() for every source (NEW)
+  experiments/sweeps.py         robustness sweeps (NEW)
+  experiments/make_plots.py     static PNG figures
+
+  backend/server.py          FastAPI backend (NEW)
+  backend/console.html       live log console page (NEW)
+  tests/                     108 pytest tests
+  results/                   logs (.json) and figures (.png)
+  docs/                      architecture, literature review, report sources
+
+
+-------------------------------------------------------------------------------
+ 4. HOW TO RUN
+-------------------------------------------------------------------------------
+
+4.1 One-time setup (Windows, PowerShell, from the project folder)
+
+    py -3.12 -m venv .venv
+    .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+  Use Python 3.12: the project was built and tested on it (the system
+  Python 3.14 is not used).
+
+4.2 Get the data (gitignored, not in the repository)
+
+  N-BaIoT, into data\nbaiot\ :
+    https://archive.ics.uci.edu/ml/machine-learning-databases/00442/
+    Danmini_Doorbell/benign_traffic.csv
+    Danmini_Doorbell/mirai_attacks.rar  -> extract scan.csv into mirai_attacks\
+    Danmini_Doorbell/gafgyt_attacks.rar -> extract combo.csv into gafgyt_attacks\
+    Ennio_Doorbell/benign_traffic.csv
+    (C:\Windows\System32\tar.exe -xf mirai_attacks.rar scan.csv  works.)
+
+  IoT-23, into data\iot23\<capture>\conn.log.labeled :
+    https://mcfp.felk.cvut.cz/publicDatasets/IoT-23-Dataset/IndividualScenarios/
+    CTU-IoT-Malware-Capture-34-1/bro/conn.log.labeled
+    CTU-Honeypot-Capture-5-1/bro/conn.log.labeled
+    (labelled flows only; the PCAPs are not needed)
+
+  Without data, use --source synth; tests needing data skip automatically.
+
+4.3 Tests
+
+    .\.venv\Scripts\python.exe -m pytest          # 108 tests, ~30 s
+
+4.4 Experiments (command line)
+
+    .\.venv\Scripts\python.exe experiments\run_scenarios.py --source real
+    .\.venv\Scripts\python.exe experiments\run_scenarios.py --source iot23
+    .\.venv\Scripts\python.exe experiments\run_scenarios.py --source synth
+    options: --seed N  --feature-drift  --rep-flip 0.3 --rep-sigma 0.05
+             --rep-lag 300  --tag NAME
+    .\.venv\Scripts\python.exe experiments\make_plots.py --tag real
+    .\.venv\Scripts\python.exe experiments\sweeps.py quarantine --source real
+             kinds: seeds | reputation | ewc | quarantine
+
+4.5 Backend and live log console (terminal 1)
+
+    .\.venv\Scripts\python.exe -m uvicorn backend.server:app --port 8765
+    open http://localhost:8765
+
+  Port 8000 is used by another program on this machine, hence 8765.
+  Environment variables: TRUST_IDS_TOKEN (turns on API-key auth, header
+  X-API-Key or ?token=), TRUST_IDS_MAX_RUNS (default 2), TRUST_IDS_RUNS_DIR.
+  API: GET /api/health, GET /api/results/{scenario}/{tag},
+       POST /api/runs, GET /api/runs, GET /api/runs/{id},
+       GET /api/runs/{id}/events (SSE), GET /api/logs/stream (SSE).
+
+4.6 Streamlit app (terminal 2)
+
+    .\.venv\Scripts\streamlit.exe run app.py
+    open http://localhost:8501
+
+  The app shows precomputed logs instantly. Turning on "Live re-run with
+  custom gate" in the
+  sidebar sends the run to the backend (TRUST_IDS_BACKEND, default
+  http://localhost:8765) and falls back to running in-process if the backend
+  is not up.
+
+4.7 Rebuild the PDF report
+
+    .\.venv\Scripts\python.exe docs\build_report.py   # writes report_ids.pdf
+
+
+-------------------------------------------------------------------------------
+ 5. DATASETS
+-------------------------------------------------------------------------------
+
+  N-BaIoT (UCI 442), 115 pre-extracted statistical features per packet window
+    Danmini_Doorbell/benign_traffic.csv       49,548 rows  benign, both scenarios
+    Danmini_Doorbell/mirai_attacks/scan.csv  107,685 rows  attack, Scenario 2
+    Danmini_Doorbell/gafgyt_attacks/combo.csv 59,718 rows  sanity check only
+    Ennio_Doorbell/benign_traffic.csv         39,100 rows  2nd device, Scenario 1
+    All: 0 NaN, 0 Inf, identical column order.
+
+  IoT-23 (Stratosphere Lab), labelled Zeek conn logs, 21 features
+    (8 numeric: duration, bytes, packets...; 3 protocol one-hots;
+     10 connection-state one-hots)
+    CTU-IoT-Malware-Capture-34-1  23,145 flows (21,222 Mirai, 1,923 benign)
+    CTU-Honeypot-Capture-5-1       1,374 benign flows (Amazon Echo)
+    CTU-Honeypot-Capture-4-1         452 benign flows (parsed, not used)
+
+  Synthetic: 20 Gaussian features, data/synth_stream.py (regression check).
+
+  CICIoT2023 was not used (it requires a registration form).
+
+  The reputation signal: no dataset has a reputation field, so it is
+  SIMULATED from ground truth (benign 1.0, attack 0.05) and can be degraded
+  with data/reputation.py. Report it as "simulated out-of-band signal".
+
+
+-------------------------------------------------------------------------------
+ 6. THE PIPELINE AND THE ALGORITHMS
+-------------------------------------------------------------------------------
+
+  Each stream = 400 calibration records (labelled, 30% attack) followed by
+  phases of 20-record ROUNDS.
+
+  Per round:
+   1. Every arm predicts each record, THEN is scored (prequential,
+      test-then-train).
+   2. A shared ADWIN watches the frozen static arm's error rate (and, with
+      --feature-drift, a second ADWIN watches feature distance). A change
+      point opens a 15-round "drift-active" window.
+   3. Only during drift-active rounds is an update proposed: "learn this
+      window as benign". Each arm decides whether to apply it.
+
+  Evidence (in the frozen calibrated space: signed log, then z-score fit on
+  calibration benign data only):
+    attribution  cosine between this window's shift from the last trusted
+                 baseline and the EMA of previously authorized shifts,
+                 mapped to [0,1]; 0.5 before anything was authorized
+    topology     normalised entropy of a 10-bin histogram of 5 features
+    temporal     1 / (1 + ||window mean - previous window mean||)
+    trust score  T = 0.4*attribution + 0.3*topology + 0.3*temporal
+
+  One-shot gate (gate_full): refuse if mean window reputation < 0.3 (veto);
+  otherwise authorize if T >= 0.55.
+
+  Quarantine gate (gate_quarantine):
+    vote per record: benign if reputation > 0.5
+    LLR step  = ln((1-e)/e), e = 0.3        upper bound A = ln((1-b)/a)
+    lower bound B = ln(b/(1-a)), a = b = 0.01  (+-4.60)
+    LLR is clamped at A; reaching B condemns the episode (sticky)
+    provisional update if LLR > 0 and T >= 0.45; checkpoint kept 20 rounds
+    condemned while held -> roll back the episode's updates
+
+  The six arms:
+    static            never updates (reference)
+    ungated           applies every proposed update
+    gate_traffic_only traffic evidence only, no veto (an ExpIDS-style gate)
+    gate_full         traffic evidence + one-shot reputation veto (Review 2)
+    ewc               applies every update, EWC-anchored (lambda 50)
+    gate_quarantine   NEW: SPRT + provisional updates + rollback
+
+  Model: River pipeline StandardScaler | LogisticRegression (SGD), ADWIN.
+
+
+-------------------------------------------------------------------------------
+ 7. WHAT EVERY CHART MEANS
+-------------------------------------------------------------------------------
+
+ Line colours are the same everywhere:
+   grey = static, red = ungated, orange = traffic-only gate,
+   green = full gate (one-shot), blue = EWC, purple = quarantine gate.
+
+ 7.1 Static figures in results/  (<tag> = real, iot23 or synth)
+
+ scenario2_slow_poisoning_<tag>.png
+   x: adaptation round (20 records each). y: accuracy in that round only.
+   Dashed lines mark the phases: normal traffic -> attacker sneaking in
+   (attack slowly morphed towards benign) -> attacker holding in the benign
+   region -> "obvious repeat attack" (raw attack traffic again).
+   What to look for: the LAST phase. A system that was poisoned has learned
+   that attack is normal and scores low there (ungated, traffic-only ~0.2);
+   a protected system scores 1.0 (static, full gate, quarantine). Accuracy
+   in the middle phases is low for every arm, by design: the disguised
+   attack looks benign to any traffic-only model.
+
+ scenario1_genuine_drift_<tag>.png
+   Same axes. A benign device shift (device A -> device B). Here learning is
+   GOOD: a system that adapts keeps a high score after the shift, the frozen
+   static model may drop (IoT-23: static 0.86, gated arms ~0.98). On real
+   N-BaIoT without --feature-drift no drift is detected, so all lines are
+   the same: a real null result, not a bug.
+
+ gate_decision_trace_<tag>.png
+   Only the drift-active rounds of Scenario 2, for the one-shot full gate.
+   Blue: traffic trust score. Purple: reputation. Red shading: rounds where
+   the update was held or refused. Shows that the traffic score looks
+   acceptable (an attacker can fake it) while reputation stays low, which is
+   why the veto refuses.
+
+ sweep_reputation_<tag>.png
+   One-shot full gate only. x: reputation feed error rate (fraction of
+   records with the wrong verdict). One line per veto threshold (light blue
+   = low threshold, dark = high). Left: repeat-attack accuracy (higher =
+   still protected). Right: benign-drift accuracy (higher = still adapts).
+   Reading: the default veto 0.3 holds only up to 10% feed error; 0.5 holds
+   to 30%; 0.7 holds longer but starts blocking benign drift.
+
+ sweep_ewc_<tag>.png
+   x: EWC strength lambda. Blue: EWC arm. Dashed orange: full gate as a
+   reference. Left: repeat attack. Right: benign drift. Reading: EWC only
+   survives poisoning at a lambda so high it also stops adapting (IoT-23:
+   post-drift 0.76 vs 0.98 for the gate). The gate does not need that trade.
+
+ sweep_quarantine_<tag>.png   (NEW)
+   x: feed error rate. Purple solid: quarantine gate. Orange dashed:
+   one-shot gate with veto 0.3. Orange dotted: one-shot gate with veto 0.5.
+   Purple dotted: quarantine without rollback. Grey vertical line: the 30%
+   feed error the SPRT assumes. Reading: quarantine stays at 1.0 on the
+   repeat attack where the one-shot gates collapse. Note: this figure is a
+   single seed; across 5 seeds the guarantee holds up to 30% and breaks at
+   40% (see section 8).
+
+ 7.2 Streamlit app (http://localhost:8501)
+
+ Sidebar: scenario, data source (real / iot23 / synth), "Live re-run with
+ custom gate" with
+ advanced settings (trust threshold, veto threshold, the three weights,
+ reputation feed error, feature-drift trigger).
+
+ Live stream tab (replay controls: play, pause, step, reset, speed, position):
+   * "Is each system spotting the attack right now?" - one column per arm:
+     a bar with how many of the 20 records in this window it classified
+     correctly, and its running accuracy with the change since last round.
+   * "Should the system be allowed to learn from this traffic?" - during
+     drift: the three traffic checks as bars, the trust score vs threshold,
+     the reputation value, and what the traffic-only and full gates decided.
+   * "How often each system has been right" - running (cumulative)
+     prequential accuracy per arm. Shaded stripes are the phases; triangles
+     mark rounds where an arm accepted an update. Hover to read every line.
+   * Event log - phase changes, drift start, authorizations and vetoes.
+
+ Summary tab:
+   * One column per arm: overall accuracy, and "Caught the obvious attack"
+     (accuracy in the repeat-attack phase).
+   * "How often each system was right" - the full accuracy chart.
+   * Gate chart - traffic score (green) and reputation (red) per
+     drift-active round, with their cut-offs as dashed lines. A round is
+     accepted only if the green line is above its cut-off AND the red line
+     is above its cut-off.
+   * Evidence chart - the three traffic checks separately ("Same
+     direction?", "Mixed traffic?", "Smooth change?").
+   * Round-by-round decision table, "Explain how this works" (the equations),
+     and "What this demonstrates - and what it does not".
+
+ 7.3 Live log console (http://localhost:8765)
+   One line per round: phase, DRIFT or "no drift", trust score, reputation,
+   the full gate's verdict, the quarantine verdict with its LLR, and every
+   arm's running accuracy. Colours: yellow = VETO (traffic-only accepted
+   but the full gate refused), green = full gate AUTH, blue = drift,
+   purple = ROLLBACK, red = error. Controls: scenario, data source, pace,
+   reputation error rate, feature drift.
+
+
+-------------------------------------------------------------------------------
+ 8. KEY RESULTS
+-------------------------------------------------------------------------------
+
+ Accuracy in the repeat-attack phase after slow poisoning (oracle feed):
+                       N-BaIoT  IoT-23  synth
+   static                1.000   1.000  1.000
+   ungated               0.200   0.000  0.200
+   traffic-only gate     0.200   0.300  0.200
+   full gate (one-shot)  1.000   1.000  1.000
+   EWC                   1.000   1.000  1.000
+   quarantine gate       1.000   1.000  1.000
+ 10 seeds: full gate 1.000 +/- 0 vs traffic-only 0.200 (N-BaIoT) and
+ 0.265 +/- 0.032 (IoT-23).
+
+ Benign drift, post-drift accuracy, with the feature-drift trigger:
+   N-BaIoT: static 0.993, one-shot gate 0.993, quarantine 0.995
+   IoT-23 : static 0.860, one-shot gate 0.905, quarantine 0.975, EWC 0.760
+
+ Imperfect feed, 5 seeds, repeat-attack accuracy (quarantine vs one-shot):
+   20% wrong: 1.000 / 1.000 / 1.000  vs  0.42 / 0.62 / 0.40
+   30% wrong: 1.000 / 1.000 / 1.000  vs  0.22 / 0.32 / 0.20
+   40% wrong: 0.88  / 1.000 / 1.000  vs  0.22 / 0.32 / 0.20
+   At 40% (above the assumed 30%) the quarantine gate also starts refusing
+   benign drift (synth 0.40, IoT-23 0.90).
+
+ Poisoned updates left in the model (seed 42): quarantine 0 in every tested
+ setting; one-shot veto 0.3: 2-9 at 20-40% feed error; without rollback a
+ 600-record-late feed leaves 14 on IoT-23.
+
+
+-------------------------------------------------------------------------------
+ 9. LIMITATIONS (say these in the review)
+-------------------------------------------------------------------------------
+
+  * The reputation feed is simulated from ground truth; a real threat-intel
+    or C2-cost feed is Project-II work.
+  * The SPRT assumes independent per-record feed errors of at most 30%;
+    above that it fails (see section 8). feed_error must be a real bound.
+  * The quarantine hold was raised from 5 to 20 rounds after a lag-600
+    sweep exposed the short hold; that one setting was changed after seeing
+    results. Other thresholds are untuned defaults.
+  * On N-BaIoT, seeds only reshuffle calibration rows, so its confidence
+    intervals measure calibration-order sensitivity, not dataset variability.
+  * Scenario-2 pacing (attack rows interpolated towards benign rows in
+    signed-log space) is constructed; every endpoint is a real record.
+  * F1 is 0.000 in Scenario 1 because that scenario contains no attack
+    records after calibration (no positives to detect); use accuracy there.
+  * The novelty claim rests on a targeted, not systematic, literature search.
+
+
+-------------------------------------------------------------------------------
+ 10. TROUBLESHOOTING
+-------------------------------------------------------------------------------
+
+  * "No module named river": run .venv\Scripts\python.exe, not the system Python.
+  * Port 8000 busy: the backend uses 8765 on purpose.
+  * Servers stop on their own: the machine was low on memory (about 1 GB
+    free); close other programs and restart them.
+  * The project folder is synced by OneDrive: data\nbaiot (about 300 MB)
+    will be uploaded to OneDrive even though git ignores it.
+  * Real-data tests "skipped": the datasets are not in data\.
+===============================================================================

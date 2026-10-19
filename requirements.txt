@@ -8,6 +8,8 @@ altair==6.3.0
 fastapi==0.144.0
 uvicorn[standard]==0.54.0
 scipy==1.18.1
+# report PDF (docs/build_report.py)
+reportlab==4.2.5
 # tests
 pytest==9.1.1
 httpx==0.28.1

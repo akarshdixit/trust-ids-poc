@@ -5,10 +5,19 @@ authorization gate that decides whether a proposed continual-learning
 update should be trusted, using traffic-derived evidence cross-checked
 against an out-of-band reputation signal.
 
-**Status: runs end-to-end on a SYNTHETIC stream (`data/synth_stream.py`)
-that mimics the N-BaIoT feature schema. This proves the pipeline logic is
-correct. It is NOT your Review-2 result. You must re-run it against real
-N-BaIoT data (see below) before it goes anywhere near your report or PPT.**
+**Status: runs end-to-end on REAL data.** N-BaIoT (the default) reproduces
+the committed Review-2 results exactly; IoT-23 replicates the headline on an
+independent dataset; the synthetic stream remains as a fast regression check.
+A sixth arm, the quarantine gate, extends the mechanism (see "Related work and
+what is new here"). 108 tests.
+
+**Documents**
+
+| file | what it is |
+|---|---|
+| [`report_ids.pdf`](report_ids.pdf) | full report: structure, algorithms, packages, datasets, experiments, results, related work (rebuild: `python docs/build_report.py`) |
+| [`PROJECT_GUIDE.txt`](PROJECT_GUIDE.txt) | what changed since the previous version, how to run everything, what every chart means, troubleshooting |
+| this README | setup, data sources, results tables, novelty, datasets |
 
 ## What's implemented right now (tested)
 
@@ -26,9 +35,10 @@ N-BaIoT data (see below) before it goes anywhere near your report or PPT.**
   trigger for the rest of the pipeline: a detected change point opens a
   15-round "drift-active" window during which updates are proposed and
   each arm's gate decides whether to authorize them; outside that window,
-  nothing is proposed to anyone. Runs FOUR arms (static / ungated /
-  traffic-only gate / proposed full gate) through both scenarios (genuine
-  drift, slow poisoning + a follow-up "obvious repeat attack" check).
+  nothing is proposed to anyone. Runs SIX arms (static / ungated /
+  traffic-only gate / proposed full gate / EWC / quarantine gate) through
+  both scenarios (genuine drift, slow poisoning + a follow-up "obvious
+  repeat attack" check).
 - `experiments/make_plots.py` — generates the three demo figures in
   `results/`.
 
@@ -43,12 +53,12 @@ claim the gate "detects" the attacker — claim it demonstrates *what an
 authorization mechanism does once it has an independent signal*, and name
 integrating a real reputation/C2-cost source as Project-II work.
 
-## Quickstart (already run once — this is what produced results/)
+## Quickstart
 
 ```bash
-pip install river pandas numpy matplotlib
-python experiments/run_scenarios.py   # prints summary, writes results/*.json
-python experiments/make_plots.py      # writes results/*.png
+pip install -r requirements.txt
+python experiments/run_scenarios.py --source real   # prints summary, writes results/*_real.json
+python experiments/make_plots.py --tag real         # writes results/*_real.png
 ```
 
 ## Setup, tests, and running everything
