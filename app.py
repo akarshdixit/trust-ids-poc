@@ -36,9 +36,6 @@ ALL_ARMS = charts.ARMS
 LABELS = charts.LABELS
 SHORT = LABELS
 BACKEND_URL = os.environ.get("TRUST_IDS_BACKEND", "http://localhost:8765")
-# what a BROWSER should use to reach the backend (links to /live); differs from
-# BACKEND_URL when the app talks to the backend over a private network (Docker)
-BACKEND_PUBLIC_URL = os.environ.get("TRUST_IDS_BACKEND_PUBLIC", BACKEND_URL)
 
 EVIDENCE_PLAIN = [
     ("attribution", "Same direction as changes we already approved?",
@@ -162,30 +159,6 @@ with st.sidebar.expander("Advanced settings", expanded=False):
                                    "traffic, so a benign shift the model already handles "
                                    "still proposes updates.")
 
-@st.cache_resource(show_spinner="Downloading the IoT-23 flow logs (~3 MB, first time only)...")
-def _iot23_ready():
-    from data.fetch import ensure_iot23
-    return ensure_iot23()
-
-
-def source_ready(source):
-    """Can this data source be recomputed here? (Hosted deployments ship without data.)"""
-    if source == "synth":
-        return True
-    if source == "iot23":
-        return _iot23_ready()
-    from experiments.streams import real_data_available
-    return real_data_available()
-
-
-if live and not source_ready(tag):
-    st.sidebar.warning(
-        "Live re-run needs the dataset, which is not on this server. "
-        + ("N-BaIoT is ~300 MB and is not in the repository; "
-           if tag == "real" else "The IoT-23 download failed; ")
-        + "showing the precomputed run instead. Synthetic data always works.")
-    live = False
-
 if live and w_sum == 0:
     st.stop()
 if live:
@@ -229,7 +202,7 @@ with tab_models:
 with tab_data:
     dashboard.data_tab(tag)
 with tab_liveexp:
-    dashboard.live_tab(BACKEND_PUBLIC_URL)
+    dashboard.live_tab(BACKEND_URL)
 
 # ================================================================ LIVE STREAM
 with tab_live:
