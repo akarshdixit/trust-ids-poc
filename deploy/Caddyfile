@@ -1,0 +1,20 @@
+# Reverse proxy for docker-compose.prod.yml. Caddy obtains and renews HTTPS
+# certificates automatically for both domains.
+
+{$APP_DOMAIN} {
+	# the Streamlit app has no login of its own, so the proxy adds one
+	basic_auth {
+		{$BASIC_AUTH_USER} {$BASIC_AUTH_HASH}
+	}
+	reverse_proxy app:8501   # websockets (Streamlit) are proxied automatically
+}
+
+{$API_DOMAIN} {
+	# console, /live and the API; /api/* also needs TRUST_IDS_TOKEN
+	basic_auth {
+		{$BASIC_AUTH_USER} {$BASIC_AUTH_HASH}
+	}
+	reverse_proxy backend:8765 {
+		flush_interval -1    # stream Server-Sent Events without buffering
+	}
+}

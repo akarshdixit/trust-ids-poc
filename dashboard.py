@@ -213,8 +213,12 @@ def data_tab(source):
             .properties(height=200), width="stretch")
     with st.expander(f"Every feature and what it means ({p['feature_count']})"):
         if source == "real":
-            from data import load_nbaiot as nb
-            names = nb.feature_names()
+            try:
+                from data import load_nbaiot as nb
+                names = nb.feature_names()
+            except FileNotFoundError:   # hosted without the dataset: same 115 names
+                from data.fake_nbaiot import feature_names
+                names = feature_names()
         else:
             from data import load_iot23 as io
             names = io.feature_names()
@@ -228,13 +232,98 @@ def data_tab(source):
 
 
 # ------------------------------------------------------------------ live
+def _backend_up(url):
+    import urllib.request
+    try:
+        with urllib.request.urlopen(url.rstrip("/") + "/api/health", timeout=1.5) as r:
+            return r.status == 200
+    except OSError:
+        return False
+
+
+def _rolling_df(rounds):
+    rows = []
+    for r in rounds:
+        for a, v in r["arms"].items():
+            rows.append({"round": r["round"], "system": charts.LABELS.get(a, a),
+                         "accuracy": (v["tp"] + v["tn"]) / 20})
+    df = pd.DataFrame(rows)
+    df["rolling"] = df.groupby("system")["accuracy"].transform(
+        lambda x: x.rolling(10, min_periods=1).mean())
+    return df
+
+
+def _rolling_chart(df):
+    order = [charts.LABELS[a] for a in charts.ARMS if charts.LABELS[a] in set(df.system)]
+    return alt.Chart(df).mark_line(strokeWidth=2).encode(
+        x=alt.X("round:Q", title="round (20 live flows)"),
+        y=alt.Y("rolling:Q", scale=alt.Scale(domain=[0, 1.02]), title="accuracy, 10-round mean"),
+        color=alt.Color("system:N", sort=order, scale=alt.Scale(
+            domain=order, range=[charts.COLORS[a] for a in charts.ARMS
+                                 if charts.LABELS[a] in order]),
+            legend=alt.Legend(orient="bottom", title=None)),
+        tooltip=["round", "system", alt.Tooltip("rolling:Q", format=".3f")]
+    ).properties(height=300)
+
+
+def _arm_table(summary_arms):
+    return pd.DataFrame([{"system": charts.LABELS.get(a, a), **{k: v[k] for k in (
+        "accuracy", "precision", "recall", "f1", "fpr", "updates_applied")}}
+        for a, v in summary_arms.items()]).round(4)
+
+
+def _run_here():
+    """The live replay inside the app, for deployments without the backend."""
+    c = st.columns([2, 1])
+    speed = c[0].select_slider(
+        "Replay speed (capture seconds per real second)", options=[600, 1500, 3000, 0],
+        value=1500, format_func=lambda v: "as fast as possible" if v == 0 else
+        f"{v}x (24 h in ~{24 * 3600 / v / 60:.0f} min)")
+    if not c[1].button("Run the live replay here", type="primary", width="stretch"):
+        return
+    from data.fetch import ensure_iot23
+    with st.spinner("Getting the IoT-23 capture (~3 MB, first time only)..."):
+        if not ensure_iot23():
+            st.error("Could not download the IoT-23 capture from mcfp.felk.cvut.cz.")
+            return
+    from experiments.live_experiment import LiveExperiment
+    with st.spinner("Training on the first 2,000 flows..."):
+        exp = LiveExperiment(speed=float(speed))
+    status, tiles, chart = st.empty(), st.empty(), st.empty()
+
+    def on_event(ev):
+        if ev["round"] % 20 and ev["round"] != 1:
+            return
+        status.caption(f"live: capture hour {ev['capture_hours']:.1f} of 24, "
+                       f"round {ev['round']}, backlog {ev['lag_s']:.2f} s")
+        with tiles.container():
+            m = st.columns(3)
+            m[0].metric("flows processed", f"{len(exp.rounds) * 20:,}")
+            m[1].metric("processing / flow (6 systems)", f"{ev['busy_ms_per_flow']:.2f} ms")
+            m[2].metric("drift rounds", sum(r["drift_active"] for r in exp.rounds))
+        chart.altair_chart(_rolling_chart(_rolling_df(exp.rounds)), width="stretch")
+
+    summary = exp.run(on_event=on_event)
+    status.success(f"Done: {summary['live_flows']:,} live flows in {summary['wall_seconds']:.0f} s, "
+                   f"max backlog {summary['max_lag_s']:.2f} s.")
+    chart.altair_chart(_rolling_chart(_rolling_df(exp.rounds)), width="stretch")
+    st.dataframe(_arm_table(summary["arms"]), hide_index=True, width="stretch")
+
+
 def live_tab(backend_url):
     st.markdown("### Live experiment: a real capture, replayed in real time")
-    st.markdown(
-        f"Start a run on the live dashboard: **[{backend_url}/live]({backend_url}/live)** "
-        "(needs the backend). Real Zeek sensors can stream into "
-        f"`{backend_url}/api/live/ingest` with `python experiments/live_feed.py <conn.log> "
-        "--follow`. Below: the last recorded run.")
+    if _backend_up(backend_url):
+        st.markdown(
+            f"Backend found. Full live dashboard: **[{backend_url}/live]({backend_url}/live)**. "
+            "Real Zeek sensors can stream into "
+            f"`{backend_url}/api/live/ingest` with `python experiments/live_feed.py "
+            "<conn.log> --follow`.")
+    else:
+        st.markdown("No backend on this deployment, so the replay runs inside the app: the "
+                    "real 24-hour IoT-23 Mirai capture in its original order and timing, "
+                    "through all six systems.")
+    _run_here()
+    st.markdown("#### Last recorded run")
     d = _load("live_experiment_iot23.json")
     if d is None:
         _missing("recorded live run", "python experiments/live_experiment.py --speed 600")
@@ -249,25 +338,5 @@ def live_tab(backend_url):
     st.caption(f"Processing per flow, all six systems together: median "
                f"{s['processing_ms_per_flow_all_arms']['p50']:.2f} ms, 95th percentile "
                f"{s['processing_ms_per_flow_all_arms']['p95']:.2f} ms.")
-    rows = []
-    for r in rounds:
-        for a, v in r["arms"].items():
-            rows.append({"round": r["round"], "system": charts.LABELS.get(a, a),
-                         "accuracy": (v["tp"] + v["tn"]) / 20})
-    df = pd.DataFrame(rows)
-    df["rolling"] = df.groupby("system")["accuracy"].transform(
-        lambda x: x.rolling(10, min_periods=1).mean())
-    order = [charts.LABELS[a] for a in charts.ARMS if charts.LABELS[a] in set(df.system)]
-    st.altair_chart(alt.Chart(df).mark_line(strokeWidth=2).encode(
-        x=alt.X("round:Q", title="round (20 live flows)"),
-        y=alt.Y("rolling:Q", scale=alt.Scale(domain=[0, 1.02]), title="accuracy, 10-round mean"),
-        color=alt.Color("system:N", sort=order, scale=alt.Scale(
-            domain=order, range=[charts.COLORS[a] for a in charts.ARMS
-                                 if charts.LABELS[a] in order]),
-            legend=alt.Legend(orient="bottom", title=None)),
-        tooltip=["round", "system", alt.Tooltip("rolling:Q", format=".3f")])
-        .properties(height=300), width="stretch")
-    t = pd.DataFrame([{"system": charts.LABELS.get(a, a), **{k: v[k] for k in (
-        "accuracy", "precision", "recall", "f1", "fpr", "updates_applied")}}
-        for a, v in s["arms"].items()])
-    st.dataframe(t.round(4), hide_index=True, width="stretch")
+    st.altair_chart(_rolling_chart(_rolling_df(rounds)), width="stretch")
+    st.dataframe(_arm_table(s["arms"]), hide_index=True, width="stretch")

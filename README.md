@@ -17,6 +17,7 @@ what is new here"). 143 tests.
 |---|---|
 | [`report_ids.pdf`](report_ids.pdf) | full report: structure, algorithms, packages, datasets, experiments, results, related work (rebuild: `python docs/build_report.py`) |
 | [`PROJECT_GUIDE.txt`](PROJECT_GUIDE.txt) | what changed since the previous version, how to run everything, what every chart means, troubleshooting |
+| [`DEPLOYMENT.md`](DEPLOYMENT.md) | deploying as an application: Streamlit Community Cloud (hosted), or Docker (`docker compose up`, HTTPS + login on a public server) |
 | this README | setup, data sources, results tables, novelty, datasets |
 
 ## What's implemented right now (tested)
@@ -54,6 +55,15 @@ authorization mechanism does once it has an independent signal*, and name
 integrating a real reputation/C2-cost source as Project-II work.
 
 ## Quickstart
+
+As a containerized application (see [DEPLOYMENT.md](DEPLOYMENT.md)):
+
+```powershell
+copy .env.example .env          # set TRUST_IDS_TOKEN
+docker compose up --build -d    # app http://localhost:8501, backend http://localhost:8765
+```
+
+From source:
 
 ```bash
 pip install -r requirements.txt

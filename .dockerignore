@@ -1,0 +1,22 @@
+# keep the build context small and secret-free
+.git
+.venv
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.claude
+.env
+.env.*
+*.log
+logs/
+results/runs/
+
+# datasets are mounted at run time, never baked into the image
+data/nbaiot/
+data/iot23/
+data/fake_nbaiot/
+
+# documentation sources not needed to run the services
+docs/walkthrough/
+docs/report/
+report_ids.pdf

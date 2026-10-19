@@ -1,0 +1,70 @@
+# Local / single-server deployment: backend API + Streamlit app.
+#
+#   copy .env.example .env      (set TRUST_IDS_TOKEN at least)
+#   docker compose up --build -d
+#   app      http://localhost:8501
+#   backend  http://localhost:8765   (log console; /live = live experiment)
+#
+# For a public server put docker-compose.prod.yml on top (HTTPS + login):
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+x-common: &common
+  image: trust-ids:latest
+  build: .            # both services share one image (built once, cached)
+  restart: unless-stopped
+  volumes:
+    - ./data/nbaiot:/app/data/nbaiot:ro
+    - ./data/iot23:/app/data/iot23:ro
+  environment: &env
+    TRUST_IDS_TOKEN: ${TRUST_IDS_TOKEN:-}
+
+services:
+  backend:
+    <<: *common
+    command: ["python", "-m", "uvicorn", "backend.server:app", "--host", "0.0.0.0",
+              "--port", "8765", "--proxy-headers", "--forwarded-allow-ips", "*"]
+    environment:
+      <<: *env
+      TRUST_IDS_MAX_RUNS: ${TRUST_IDS_MAX_RUNS:-2}
+    volumes:
+      - ./data/nbaiot:/app/data/nbaiot:ro
+      - ./data/iot23:/app/data/iot23:ro
+      - runs:/app/state/runs        # finished runs survive restarts
+      - logs:/app/logs
+    ports:
+      - "${BACKEND_PORT:-8765}:8765"
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8765/api/health', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    mem_limit: ${BACKEND_MEM:-1g}
+
+  app:
+    <<: *common
+    depends_on:
+      backend:
+        condition: service_healthy
+    command: ["streamlit", "run", "app.py", "--server.address", "0.0.0.0",
+              "--server.port", "8501", "--server.headless", "true",
+              "--browser.gatherUsageStats", "false"]
+    environment:
+      <<: *env
+      TRUST_IDS_BACKEND: http://backend:8765                        # container to container
+      TRUST_IDS_BACKEND_PUBLIC: ${PUBLIC_BACKEND_URL:-http://localhost:8765}   # for browser links
+    ports:
+      - "${APP_PORT:-8501}:8501"
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    mem_limit: ${APP_MEM:-1g}
+
+volumes:
+  runs:
+  logs:

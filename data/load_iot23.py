@@ -36,7 +36,8 @@ import pandas as pd
 
 from data.load_nbaiot import _interp
 
-DEFAULT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "iot23")
+DEFAULT_ROOT = os.environ.get(
+    "IOT23_ROOT", os.path.join(os.path.dirname(os.path.abspath(__file__)), "iot23"))
 MIRAI = "CTU-IoT-Malware-Capture-34-1"
 BENIGN_B = "CTU-Honeypot-Capture-5-1"
 
