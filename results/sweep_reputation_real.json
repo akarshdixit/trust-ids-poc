@@ -1,0 +1,434 @@
+[
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.0,
+    "sigma": 0.0,
+    "veto_threshold": 0.2,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.0,
+    "sigma": 0.0,
+    "veto_threshold": 0.3,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.0,
+    "sigma": 0.0,
+    "veto_threshold": 0.5,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.0,
+    "sigma": 0.0,
+    "veto_threshold": 0.7,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.1,
+    "sigma": 0.05,
+    "veto_threshold": 0.2,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 21
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.1,
+    "sigma": 0.05,
+    "veto_threshold": 0.3,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.1,
+    "sigma": 0.05,
+    "veto_threshold": 0.5,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.1,
+    "sigma": 0.05,
+    "veto_threshold": 0.7,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.2,
+    "sigma": 0.05,
+    "veto_threshold": 0.2,
+    "gate_full": 0.2,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 6
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.2,
+    "sigma": 0.05,
+    "veto_threshold": 0.3,
+    "gate_full": 0.5,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 17
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.2,
+    "sigma": 0.05,
+    "veto_threshold": 0.5,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.2,
+    "sigma": 0.05,
+    "veto_threshold": 0.7,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.3,
+    "sigma": 0.05,
+    "veto_threshold": 0.2,
+    "gate_full": 0.2,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 2
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.3,
+    "sigma": 0.05,
+    "veto_threshold": 0.3,
+    "gate_full": 0.3,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 9
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.3,
+    "sigma": 0.05,
+    "veto_threshold": 0.5,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 23
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.3,
+    "sigma": 0.05,
+    "veto_threshold": 0.7,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.4,
+    "sigma": 0.05,
+    "veto_threshold": 0.2,
+    "gate_full": 0.2,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.4,
+    "sigma": 0.05,
+    "veto_threshold": 0.3,
+    "gate_full": 0.3,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 3
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.4,
+    "sigma": 0.05,
+    "veto_threshold": 0.5,
+    "gate_full": 0.5,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 19
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.4,
+    "sigma": 0.05,
+    "veto_threshold": 0.7,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.5,
+    "sigma": 0.05,
+    "veto_threshold": 0.2,
+    "gate_full": 0.2,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.5,
+    "sigma": 0.05,
+    "veto_threshold": 0.3,
+    "gate_full": 0.2,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 1
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.5,
+    "sigma": 0.05,
+    "veto_threshold": 0.5,
+    "gate_full": 0.2,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 7
+  },
+  {
+    "scenario": "slow_poisoning",
+    "flip_rate": 0.5,
+    "sigma": 0.05,
+    "veto_threshold": 0.7,
+    "gate_full": 1.0,
+    "gate_traffic_only": 0.2,
+    "vetoed_rounds": 24
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.0,
+    "sigma": 0.0,
+    "veto_threshold": 0.2,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.0,
+    "sigma": 0.0,
+    "veto_threshold": 0.3,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.0,
+    "sigma": 0.0,
+    "veto_threshold": 0.5,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.0,
+    "sigma": 0.0,
+    "veto_threshold": 0.7,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.1,
+    "sigma": 0.05,
+    "veto_threshold": 0.2,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.1,
+    "sigma": 0.05,
+    "veto_threshold": 0.3,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.1,
+    "sigma": 0.05,
+    "veto_threshold": 0.5,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.1,
+    "sigma": 0.05,
+    "veto_threshold": 0.7,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.2,
+    "sigma": 0.05,
+    "veto_threshold": 0.2,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.2,
+    "sigma": 0.05,
+    "veto_threshold": 0.3,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.2,
+    "sigma": 0.05,
+    "veto_threshold": 0.5,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.2,
+    "sigma": 0.05,
+    "veto_threshold": 0.7,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.3,
+    "sigma": 0.05,
+    "veto_threshold": 0.2,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.3,
+    "sigma": 0.05,
+    "veto_threshold": 0.3,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.3,
+    "sigma": 0.05,
+    "veto_threshold": 0.5,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.3,
+    "sigma": 0.05,
+    "veto_threshold": 0.7,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.4,
+    "sigma": 0.05,
+    "veto_threshold": 0.2,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.4,
+    "sigma": 0.05,
+    "veto_threshold": 0.3,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.4,
+    "sigma": 0.05,
+    "veto_threshold": 0.5,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.4,
+    "sigma": 0.05,
+    "veto_threshold": 0.7,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.5,
+    "sigma": 0.05,
+    "veto_threshold": 0.2,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.5,
+    "sigma": 0.05,
+    "veto_threshold": 0.3,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.5,
+    "sigma": 0.05,
+    "veto_threshold": 0.5,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  },
+  {
+    "scenario": "genuine_drift",
+    "flip_rate": 0.5,
+    "sigma": 0.05,
+    "veto_threshold": 0.7,
+    "gate_full": 0.9925,
+    "gate_traffic_only": 0.9925,
+    "vetoed_rounds": 0
+  }
+]

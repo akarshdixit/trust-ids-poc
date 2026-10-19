@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trust-IDS Live Console</title>
+<style>
+  :root { --bg:#0f1115; --fg:#d8dee9; --dim:#7a8291; --ok:#3fb950; --bad:#f85149; --warn:#d29922; --line:#222733; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.45 ui-monospace,Consolas,monospace; }
+  header { padding:12px 16px; border-bottom:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  label { color:var(--dim); }
+  select, button { background:#1a1e27; color:var(--fg); border:1px solid var(--line); padding:6px 10px; border-radius:6px; font:inherit; }
+  button { cursor:pointer; } button:hover { border-color:var(--dim); }
+  #status { color:var(--dim); margin-left:auto; }
+  #log { padding:12px 16px; white-space:pre-wrap; word-break:break-word; height:calc(100vh - 70px); overflow-y:auto; margin:0; }
+  .VETO { color:var(--warn); } .AUTH { color:var(--ok); } .ERROR { color:var(--bad); } .DRIFT { color:#79c0ff; } .ROLLBACK { color:#d2a8ff; }
+</style>
+</head>
+<body>
+<header>
+  <select id="scenario"><option value="slow_poisoning">Slow poisoning</option><option value="genuine_drift">Genuine drift</option></select>
+  <select id="source"><option value="real" selected>Real N-BaIoT</option><option value="iot23">IoT-23 (real)</option><option value="synth">Synthetic</option></select>
+  <select id="pace"><option value="300">slow</option><option value="150" selected>normal</option><option value="0">instant</option></select>
+  <label title="Per-record probability the reputation feed is wrong">rep. error <select id="flip"><option>0</option><option>0.1</option><option>0.2</option><option>0.3</option></select></label>
+  <label><input type="checkbox" id="fdrift"> feature drift</label>
+  <button id="go">Start run</button>
+  <button id="clear">Clear</button>
+  <span id="status">connecting…</span>
+</header>
+<pre id="log"></pre>
+<script>
+const out = document.getElementById("log"), status = document.getElementById("status");
+function add(line) {
+  const span = document.createElement("span");
+  span.className = /ERROR/.test(line) ? "ERROR" : /ROLLBACK/.test(line) ? "ROLLBACK" : /VETO/.test(line) ? "VETO"
+                 : /full_gate=AUTH/.test(line) ? "AUTH" : /DRIFT/.test(line) ? "DRIFT" : "";
+  span.textContent = line + "\n";
+  const atBottom = out.scrollHeight - out.scrollTop - out.clientHeight < 40;
+  out.appendChild(span);
+  if (atBottom) out.scrollTop = out.scrollHeight;
+}
+// open as /?token=... when the backend runs with TRUST_IDS_TOKEN set
+const token = new URLSearchParams(location.search).get("token") || "";
+const q = token ? `?token=${encodeURIComponent(token)}` : "";
+const es = new EventSource("/api/logs/stream" + q);
+es.addEventListener("log", e => add(JSON.parse(e.data)));
+es.onopen = () => status.textContent = "live";
+es.onerror = () => status.textContent = "disconnected — retrying";
+document.getElementById("clear").onclick = () => out.textContent = "";
+document.getElementById("go").onclick = async () => {
+  const r = await fetch("/api/runs" + q, { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ scenario: scenario.value, source: source.value, pace_ms: +pace.value,
+      feature_drift: fdrift.checked,
+      reputation_noise: { flip_rate: +flip.value, sigma: +flip.value ? 0.05 : 0 } }) });
+  const j = await r.json();
+  status.textContent = r.ok ? `run ${j.run_id} started` : `error: ${JSON.stringify(j.detail)}`;
+};
+</script>
+</body>
+</html>

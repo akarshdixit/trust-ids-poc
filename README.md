@@ -51,34 +51,189 @@ python experiments/run_scenarios.py   # prints summary, writes results/*.json
 python experiments/make_plots.py      # writes results/*.png
 ```
 
-## Swapping in the real N-BaIoT dataset (DO THIS NEXT)
+## Setup, tests, and running everything
 
-1. Download ONE device from
-   https://archive.ics.uci.edu/dataset/442/detection+of+iot+botnet+attacks+n+baiot
-   (`Danmini_Doorbell` is a good pick — has both Mirai and Gafgyt attacks).
-2. Use `data/load_nbaiot.py::load_device_stream(...)` to build the stream
-   instead of `data/synth_stream.py`. It returns the exact same
-   `(features_dict, label, meta_dict)` format, so nothing downstream needs
-   to change.
-3. For "genuine drift", split `benign_traffic.csv` into two halves (or use
-   two same-type devices) instead of an attack file.
-4. For "slow poisoning", you need to build the SLOW interpolation yourself
-   — real N-BaIoT attack files are not temporally paced to be slow. Either:
-   (a) interpolate row-by-row between a benign row and an attack row's
-   feature vectors (same technique as `synth_stream.py`, just fed real
-   rows), or (b) if time is too short, run the "sudden" version first
-   (real attack file introduced abruptly) to get a real result, then
-   attempt the slow version as a stretch goal.
-5. Re-run `run_scenarios.py` and `make_plots.py`. These numbers — not the
-   synthetic ones — are what go in your report/PPT.
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pytest                       # 108 tests, ~30 s (real-data tests skip if data/ is absent)
+.\.venv\Scripts\python.exe -m uvicorn backend.server:app --port 8765
+.\.venv\Scripts\streamlit.exe run app.py                     # live re-runs go via the backend
+```
+
+**Backend** (`backend/server.py`): http://localhost:8765 is a live console. API:
+`POST /api/runs`, `GET /api/runs/{id}/events` (SSE, one event per round),
+`GET /api/logs/stream` (SSE, all server logs), `GET /api/results/{scenario}/{tag}`.
+Logs also go to `logs/backend.log`; finished runs are saved to `results/runs/`
+and reloaded on restart. `TRUST_IDS_TOKEN` turns on API-key auth,
+`TRUST_IDS_MAX_RUNS` caps concurrent runs (default 2).
+
+**Data sources** (`experiments/streams.py`, used by CLI, backend and app):
+`real` (N-BaIoT, the default), `iot23` (IoT-23, a second real dataset),
+`synth` (20 synthetic features). `fake` (generated N-BaIoT-format files,
+`data/fake_nbaiot.py`) is kept only for tests and machines without the data;
+the UI no longer offers it.
+
+**Pipeline options:** `--source`, `--seed`, `--feature-drift` (second drift
+trigger on distance from calibration traffic), `--rep-sigma/--rep-flip/--rep-lag`
+(imperfect reputation feed, `data/reputation.py`). A fifth arm, `ewc` (Elastic
+Weight Consolidation), runs by default.
+
+**Robustness sweeps** (`experiments/sweeps.py seeds|reputation|ewc|quarantine --source real|iot23|synth`).
+Measured on REAL data (N-BaIoT Danmini_Doorbell, and IoT-23 as a second dataset):
+
+| | N-BaIoT | IoT-23 |
+|---|---|---|
+| repeat attack after poisoning, full gate vs traffic-only (10 seeds) | 1.000 +/- 0.000 vs 0.200 +/- 0.000 | 1.000 +/- 0.000 vs 0.265 +/- 0.032 |
+| benign device shift, frozen model -> gated learners (post-drift) | 0.997 -> 0.997 (null result) | 0.845 -> 0.977 |
+| full gate vs reputation-feed error rate, veto < 0.3 | holds to 10%, 0.50 at 20% | holds to 10%, 0.60 at 20% |
+| same, veto < 0.5 | holds to 30% | holds to 40% |
+| EWC: smallest lambda that survives poisoning | 20 | 5 |
+| EWC at that lambda, post-drift | 0.993 (no drift to adapt to) | 0.760 (vs gate 0.977) |
+
+So: the headline replicates on an independent dataset; the 0.3 veto is fragile
+once the reputation feed is imperfect; EWC can survive poisoning only by giving
+up adaptation (visible on IoT-23, where the benign shift actually hurts).
+
+With `--feature-drift`, real N-BaIoT Scenario 1 does trigger (15 drift rounds),
+but the full gate authorizes none of it: real benign traffic is jumpy window to
+window, so temporal stability is low (median 0.198), attribution sits at its
+cold-start 0.5, and the trust score peaks at 0.543 < 0.55.
+
+## Related work and what is new here
+
+A targeted search of the literature (not a systematic review) found every
+building block of this project already published:
+
+| idea | prior work |
+|---|---|
+| slow ("boiling frog") poisoning of a self-updating detector | Rubinstein et al., ANTIDOTE (IMC 2009); "Can't Boil This Frog" (arXiv 2002.02741) |
+| poisoning that fakes or hides concept drift | Korycki & Krawczyk, adversarial drift detection (arXiv 2009.09497) |
+| drift detection / adaptation for security classifiers | Transcend (USENIX Sec 2017), CADE (USENIX Sec 2021), OWAD (NDSS 2023), INSOMNIA, ExpIDS (arXiv 2509.20767) |
+| reject an update that a trusted reference contradicts | RONI (Nelson et al. 2008); FLTrust-style trusted root data in federated learning |
+| trust-weighted updates, rollback after poisoning | trust-aware federated IDS (e.g. AGAT-FL, PeerJ CS 2025); Crab (arXiv 2401.08216), FedRecover-style recovery |
+| sequential hypothesis tests over IDS feedback | Zhu et al., collaborative IDS (arXiv 1002.3190) |
+
+**What we did not find:** a single, non-federated, *self-labelling* online IoT
+IDS that (a) gates its own drift-triggered updates on an out-of-band channel
+that is independent of the traffic features, and (b) treats that channel as
+*sequential, fallible evidence* about a whole drift episode — with explicit,
+assumption-stated error rates — applying updates provisionally and rolling
+them back when the evidence turns. Federated work weighs *clients*; RONI and
+FLTrust need trusted *labelled* data; drift-adaptation work (OWAD, CADE,
+Transcend) does not model an adversary who manufactures the drift.
+
+So the defensible novelty claim is the *combination* and the episode-level
+sequential treatment of the independent channel, not any single component.
+
+### The extension: quarantine + sequential evidence + rollback (`gate/quarantine.py`)
+
+Arm `gate_quarantine`, run by default alongside the original four arms (which
+are bit-identical with or without it — tested):
+
+1. **Sequential reputation test.** Each record's reputation is a vote; a Wald
+   SPRT accumulates votes over the drift episode under an explicit feed model
+   ("the feed is wrong on at most `feed_error` = 30% of records"), with
+   alpha = beta = 0.01. Benign evidence is clamped so a lagged feed cannot bank
+   credit; reaching the lower bound condemns the episode for good.
+2. **Provisional updates.** An update is applied only while the episode's
+   evidence favours benign (LLR > 0) and the traffic trust score clears a
+   provisional threshold of 0.45 (the one-shot gate's 0.55 minus 0.1, set
+   a priori, not tuned).
+3. **Quarantine and rollback.** Each update keeps a model checkpoint for 20
+   rounds (400 records). If its episode is condemned in that time, its updates
+   are undone (earliest checkpoint restored, other episodes' updates replayed).
+   The hold must outlast the feed's worst-case lag. It was first 5 rounds;
+   the lag-600 sweep below showed that a hold shorter than the lag lets
+   poisoned updates commit before the evidence arrives (14 kept on IoT-23),
+   so it was raised to 20. That one setting was changed after seeing results;
+   the 5-round hold is kept in the sweep as an ablation.
+4. **Episodes merge while anything is held**, so a held update cannot escape
+   the evidence that arrives after its drift run ends.
+
+**Results** (`experiments/sweeps.py quarantine`, seed 42; "kept" = poisoned
+updates still in the model at the end, i.e. authorized on a window containing
+attack records and never rolled back):
+
+| feed | metric | one-shot veto < 0.3 | one-shot veto < 0.5 | **quarantine** | no rollback | 5-round hold |
+|---|---|---|---|---|---|---|
+| 20% wrong | repeat attack, N-BaIoT / IoT-23 / synth | 0.50 / 0.60 / 0.50 | 1.00 / 1.00 / 1.00 | **1.00 / 1.00 / 1.00** | 1.00 all | 1.00 all |
+| 30% wrong | repeat attack | 0.30 / 0.50 / 0.30 | 1.00 / 1.00 / 1.00 | **1.00 / 1.00 / 1.00** | 1.00 all | 1.00 all |
+| 40% wrong | repeat attack | 0.30 / 0.50 / 0.30 | 0.50 / 1.00 / 0.50 | **1.00 / 1.00 / 1.00** | 1.00 all | 1.00 all |
+| 20-40% wrong | poisoned updates kept | 2-9 | 0-2 | **0** | 0 | 0 |
+| 300 records late | poisoned updates kept | 0 / 1 / 0 | 0 / 1 / 0 | **0 / 0 / 0** | 0 / 4 / 0 | 0 / 0 / 0 |
+| 600 records late | poisoned updates kept | 1 / 1 / 2 | 1 / 1 / 2 | **0 / 0 / 0** | 1 / 14 / 6 | 1 / 14 / 5 |
+| oracle, feature-drift trigger | benign drift, post-drift accuracy | 0.993 / 0.905 / 1.00 | same | **0.995 / 0.975 / 1.00** | same as quarantine | same |
+
+10 seeds, oracle feed: quarantine matches the one-shot gate (repeat attack
+1.000 +/- 0 on all three; IoT-23 post-drift 0.976 vs 0.977).
+
+What each part buys, read off the ablations:
+- **The sequential test** is what makes the gate robust to a wrong feed: it
+  keeps zero poison at 20-40% feed error, where the one-shot veto at 0.3 keeps
+  2-9 updates and even a 0.5 veto keeps 1-2.
+- **Rollback + a hold longer than the feed lag** is what handles a *late*
+  feed: without rollback, 4-14 poisoned updates stay on IoT-23.
+- **The lowered provisional threshold** is what lets real benign drift in
+  under the feature-drift trigger (IoT-23 0.905 -> 0.975); the 0.55-threshold
+  ablation loses that gain.
+
+Limits, stated plainly:
+- The seed-42 table above flatters the 40% column. Over 5 seeds (benign drift
+  with the feature-drift trigger on real data):
+
+  | feed error | repeat attack, quarantine vs one-shot (N-BaIoT / IoT-23 / synth) | benign drift, quarantine vs one-shot |
+  |---|---|---|
+  | 20% | 1.000 / 1.000 / 1.000 vs 0.42 / 0.62 / 0.40 | 0.995 / 0.976 / 1.000 vs 0.997 / 0.960 / 1.000 |
+  | 30% | 1.000 / 1.000 / 1.000 vs 0.22 / 0.32 / 0.20 | 0.995 / 0.976 / 1.000 vs 0.997 / 0.960 / 1.000 |
+  | 40% | **0.88** / 1.000 / 1.000 vs 0.22 / 0.32 / 0.20 | 0.996 / **0.899** / **0.398** vs 0.997 / 0.960 / 1.000 |
+
+  Within the assumed 30% feed error the quarantine gate is strictly better.
+  Above it the SPRT's guarantee is gone: it starts condemning *benign* drift
+  (synth post-drift 0.40, one seed 0.00) and on N-BaIoT one seed in five lets
+  the attack through. `feed_error` must be set to a real bound on the feed.
+- Cost on the oracle feed: IoT-23 benign post-drift 0.975 vs 0.978.
+- The feed is still simulated from ground truth; the SPRT's feed model
+  (independent per-record errors) is an assumption a real feed may violate.
+
+## Datasets (downloaded, gitignored)
+
+**N-BaIoT** -> `data/nbaiot/`, from
+https://archive.ics.uci.edu/ml/machine-learning-databases/00442/
+
+| file | rows x cols | used for |
+|---|---|---|
+| `Danmini_Doorbell/benign_traffic.csv` | 49,548 x 115 | benign, both scenarios |
+| `Danmini_Doorbell/mirai_attacks/scan.csv` (from `mirai_attacks.rar`) | 107,685 x 115 | attack, Scenario 2 |
+| `Danmini_Doorbell/gafgyt_attacks/combo.csv` (from `gafgyt_attacks.rar`) | 59,718 x 115 | `check_before_real_data.py` only |
+| `Ennio_Doorbell/benign_traffic.csv` | 39,100 x 115 | second device, Scenario 1 |
+
+All 0 NaN / 0 Inf, identical column order. Only these files are fetched: the
+full dataset is ~7 GB unpacked. UCI does not support resumed downloads; if a
+`.rar` download stalls, bsdtar (`C:\Windows\System32\tar.exe -xf x.rar scan.csv`)
+can still extract any member that precedes the truncation (it CRC-checks each one).
+
+**IoT-23** -> `data/iot23/<capture>/conn.log.labeled`, labelled Zeek flows only
+(no PCAPs), from https://mcfp.felk.cvut.cz/publicDatasets/IoT-23-Dataset/IndividualScenarios/
+`<capture>/bro/conn.log.labeled`:
+
+| capture | flows | role |
+|---|---|---|
+| `CTU-IoT-Malware-Capture-34-1` | 23,145 (21,222 Mirai: DDoS + C&C; 1,923 benign) | attack + device-A benign |
+| `CTU-Honeypot-Capture-5-1` | 1,374 benign (Amazon Echo) | device B, Scenario 1 |
+| `CTU-Honeypot-Capture-4-1` | 452 benign (Philips HUE) | parsed, too small to use |
+
+**CICIoT2023** is not downloaded: UNB requires a registration form.
 
 ## What's still NOT implemented (must decide MUST/SHOULD/CAN-PLAN)
 
 - Real out-of-band reputation feed — currently simulated from ground-truth
   traffic origin (label the honest way in your report: "simulated
-  out-of-band signal, proof-of-concept").
-- EWC/Fisher-freezing baseline (only static/ungated/traffic-only/full-gate
-  implemented — EWC is a stretch goal, see main chat message).
-- Any hyperparameter tuning of trust_threshold / reputation_veto_threshold
-  / evidence weights — current values are untuned defaults, good enough to
-  demonstrate the mechanism, not yet validated.
+  out-of-band signal, proof-of-concept"). Its *degradation* is now modelled
+  (`data/reputation.py`) and swept, but it is still keyed to ground truth.
+- Any hyperparameter tuning of trust_threshold / evidence weights — current
+  values are untuned defaults. The reputation sweep suggests the 0.3 veto is
+  too low once the feed is imperfect (0.5 is more robust); not yet adopted,
+  because changing it would change the committed real-data results.
+- On N-BaIoT, seeds only reshuffle calibration rows (the files are fixed), so
+  its CIs measure calibration-order sensitivity, not dataset variability.

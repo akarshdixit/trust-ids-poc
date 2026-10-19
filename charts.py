@@ -14,7 +14,8 @@ it no hit area and it silently never fires.
 import altair as alt
 import pandas as pd
 
-ARMS = ["static", "ungated", "gate_traffic_only", "gate_full"]
+# ewc and gate_quarantine only exist in logs produced after they were added
+ARMS = ["static", "ungated", "gate_traffic_only", "gate_full", "ewc", "gate_quarantine"]
 
 # Deliberately plain names - these get read off a screen during a presentation.
 LABELS = {
@@ -22,12 +23,16 @@ LABELS = {
     "ungated": "Learns from everything",
     "gate_traffic_only": "Checks traffic only",
     "gate_full": "Our method (traffic + reputation)",
+    "ewc": "Learns everything, resists forgetting (EWC)",
+    "gate_quarantine": "Our method + quarantine & rollback",
 }
 COLORS = {
     "static": "#9aa0a6",
     "ungated": "#d62728",
     "gate_traffic_only": "#ff7f0e",
     "gate_full": "#2ca02c",
+    "ewc": "#1f77b4",
+    "gate_quarantine": "#9467bd",
 }
 ARM_ORDER = [LABELS[a] for a in ARMS]
 ARM_COLORS = [COLORS[a] for a in ARMS]
@@ -104,8 +109,10 @@ def accuracy_chart(log, upto=None, n_rounds=None, height=380):
     n_rounds = n_rounds or len(log["static"])
     cut = len(log["static"]) if upto is None else upto + 1
 
+    arms = [a for a in ARMS if a in log]
+    order, palette = [LABELS[a] for a in arms], [COLORS[a] for a in arms]
     rows = []
-    for a in ARMS:
+    for a in arms:
         for r in log[a][:cut]:
             rows.append({"round": r["round"], "accuracy": r["round_accuracy"],
                          "Detector": LABELS[a], "phase": r.get("phase", "")})
@@ -117,11 +124,11 @@ def accuracy_chart(log, upto=None, n_rounds=None, height=380):
     y = alt.Y("accuracy:Q", title="How often it was right  (y)",
               scale=alt.Scale(domain=[-0.04, 1.04]))
     color = alt.Color("Detector:N",
-                      scale=alt.Scale(domain=ARM_ORDER, range=ARM_COLORS),
+                      scale=alt.Scale(domain=order, range=palette),
                       legend=alt.Legend(title=None, orient="top", columns=2,
                                         labelLimit=440, symbolStrokeWidth=3))
 
-    sel, selectors, rule = _hover_layers(df, x, "Detector", "accuracy", ARM_ORDER)
+    sel, selectors, rule = _hover_layers(df, x, "Detector", "accuracy", order)
 
     line = alt.Chart(df).mark_line(strokeWidth=2.6, interpolate="monotone").encode(
         x=x, y=y, color=color)

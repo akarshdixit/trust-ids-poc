@@ -1,0 +1,44 @@
+[
+  {
+    "lambda": 0.0,
+    "slow_poisoning": 0.2,
+    "slow_poisoning_gate_full": 1.0,
+    "genuine_drift": 0.9925,
+    "genuine_drift_gate_full": 0.9925
+  },
+  {
+    "lambda": 1.0,
+    "slow_poisoning": 0.2,
+    "slow_poisoning_gate_full": 1.0,
+    "genuine_drift": 0.9925,
+    "genuine_drift_gate_full": 0.9925
+  },
+  {
+    "lambda": 5.0,
+    "slow_poisoning": 0.2,
+    "slow_poisoning_gate_full": 1.0,
+    "genuine_drift": 0.9925,
+    "genuine_drift_gate_full": 0.9925
+  },
+  {
+    "lambda": 20.0,
+    "slow_poisoning": 1.0,
+    "slow_poisoning_gate_full": 1.0,
+    "genuine_drift": 0.9925,
+    "genuine_drift_gate_full": 0.9925
+  },
+  {
+    "lambda": 50.0,
+    "slow_poisoning": 1.0,
+    "slow_poisoning_gate_full": 1.0,
+    "genuine_drift": 0.9925,
+    "genuine_drift_gate_full": 0.9925
+  },
+  {
+    "lambda": 100.0,
+    "slow_poisoning": 1.0,
+    "slow_poisoning_gate_full": 1.0,
+    "genuine_drift": 0.9925,
+    "genuine_drift_gate_full": 0.9925
+  }
+]

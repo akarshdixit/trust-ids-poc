@@ -31,10 +31,27 @@ import pandas as pd
 
 _CACHE = {}
 
-BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "nbaiot", "Danmini_Doorbell")
-BENIGN_CSV = os.path.join(BASE, "benign_traffic.csv")
-MIRAI_SCAN_CSV = os.path.join(BASE, "mirai_attacks", "scan.csv")
-GAFGYT_COMBO_CSV = os.path.join(BASE, "gafgyt_attacks", "combo.csv")
+# Dataset root: data/nbaiot/ (real download) by default. Every stream function
+# also takes `root=`, which is how the fake generator (data/fake_nbaiot.py)
+# feeds this loader without ever touching the real-data folder.
+DEFAULT_ROOT = os.environ.get(
+    "NBAIOT_ROOT", os.path.join(os.path.dirname(os.path.abspath(__file__)), "nbaiot"))
+DEVICE = "Danmini_Doorbell"
+
+
+def paths(root=None, device=DEVICE):
+    base = os.path.join(root or DEFAULT_ROOT, device)
+    return {
+        "benign": os.path.join(base, "benign_traffic.csv"),
+        "mirai_scan": os.path.join(base, "mirai_attacks", "scan.csv"),
+        "gafgyt_combo": os.path.join(base, "gafgyt_attacks", "combo.csv"),
+    }
+
+
+BASE = os.path.join(DEFAULT_ROOT, DEVICE)
+BENIGN_CSV = paths()["benign"]
+MIRAI_SCAN_CSV = paths()["mirai_scan"]
+GAFGYT_COMBO_CSV = paths()["gafgyt_combo"]
 
 BENIGN_REPUTATION = 1.0
 ATTACK_REPUTATION = 0.05
@@ -52,9 +69,9 @@ def _read(path):
     return _CACHE[path]
 
 
-def feature_names(path=None):
+def feature_names(path=None, root=None):
     """The 115 real column names, in file order. Replaces synth FEATURE_NAMES."""
-    return list(_read(path or BENIGN_CSV).columns)
+    return list(_read(path or paths(root)["benign"]).columns)
 
 
 FEATURE_NAMES = None  # populated lazily by feature_names(); see run_scenarios.py
@@ -104,7 +121,7 @@ def _interp(a_raw, b_raw, alpha):
 # --- calibration ----------------------------------------------------------
 
 def calibration_block(n_calib=400, attack_fraction=0.3, attack_csv=None,
-                      benign_offset=0, attack_offset=0, seed=42):
+                      benign_offset=0, attack_offset=0, seed=42, root=None):
     """
     Labelled bootstrap set. A real IDS is never trained from zero — it starts
     from a historical labelled corpus containing known attacks alongside
@@ -113,15 +130,16 @@ def calibration_block(n_calib=400, attack_fraction=0.3, attack_csv=None,
 
     Mirrors synth_stream._calibration_block, with real rows.
     """
-    attack_csv = attack_csv or MIRAI_SCAN_CSV
-    names = feature_names()
+    p = paths(root)
+    attack_csv = attack_csv or p["mirai_scan"]
+    names = feature_names(root=root)
     rng = np.random.default_rng(seed)
 
     n_attack = int(n_calib * attack_fraction)
     n_benign = n_calib - n_attack
 
     block = []
-    for v in _rows(BENIGN_CSV, n_benign, benign_offset):
+    for v in _rows(p["benign"], n_benign, benign_offset):
         block.append(_record(v, names, 0, BENIGN_REPUTATION, "calib_benign"))
     for v in _rows(attack_csv, n_attack, attack_offset):
         block.append(_record(v, names, 1, ATTACK_REPUTATION, "calib_attack"))
@@ -133,7 +151,7 @@ def calibration_block(n_calib=400, attack_fraction=0.3, attack_csv=None,
 # --- Scenario 1: genuine drift -------------------------------------------
 
 def genuine_drift_stream(n_calib=400, n_pre=400, n_drift=600, n_post=400,
-                         benign_b_csv=None, seed=42):
+                         benign_b_csv=None, seed=42, root=None):
     """
     Scenario 1 — legitimate behavioural drift to a NEW BENIGN operating point
     (e.g. a firmware update changes polling behaviour). Reputation stays clean
@@ -168,16 +186,17 @@ def genuine_drift_stream(n_calib=400, n_pre=400, n_drift=600, n_post=400,
             "See scripts/fetch_second_device.py, or pass a path explicitly."
         )
 
-    names = feature_names()
-    stream = list(calibration_block(n_calib, seed=seed))
+    benign_csv = paths(root)["benign"]
+    names = feature_names(root=root)
+    stream = list(calibration_block(n_calib, seed=seed, root=root))
 
     # pre-drift: device A's benign steady state
     off = (n_calib - int(n_calib * 0.3))
-    for v in _rows(BENIGN_CSV, n_pre, off):
+    for v in _rows(benign_csv, n_pre, off):
         stream.append(_record(v, names, 0, BENIGN_REPUTATION, "pre_drift"))
 
     # drift: gradual traversal from device A's benign point to device B's
-    a_rows = _rows(BENIGN_CSV, n_drift, off + n_pre)
+    a_rows = _rows(benign_csv, n_drift, off + n_pre)
     b_rows = _rows(benign_b_csv, n_drift, 0)
     for i in range(n_drift):
         alpha = i / max(1, n_drift - 1)
@@ -194,7 +213,7 @@ def genuine_drift_stream(n_calib=400, n_pre=400, n_drift=600, n_post=400,
 # --- Scenario 2: slow poisoning ------------------------------------------
 
 def slow_poisoning_stream(n_calib=400, n_pre=400, n_poison=600, n_post=400,
-                          n_recovery_check=200, attack_csv=None, seed=42):
+                          n_recovery_check=200, attack_csv=None, seed=42, root=None):
     """
     Scenario 2 — slow adversarial concept drift.
 
@@ -213,20 +232,21 @@ def slow_poisoning_stream(n_calib=400, n_pre=400, n_poison=600, n_post=400,
 
     Phases mirror synth_stream.slow_poisoning_stream exactly.
     """
-    attack_csv = attack_csv or MIRAI_SCAN_CSV
-    names = feature_names()
-    stream = list(calibration_block(n_calib, attack_csv=attack_csv, seed=seed))
+    benign_csv = paths(root)["benign"]
+    attack_csv = attack_csv or paths(root)["mirai_scan"]
+    names = feature_names(root=root)
+    stream = list(calibration_block(n_calib, attack_csv=attack_csv, seed=seed, root=root))
 
     b_off = n_calib - int(n_calib * 0.3)
     a_off = int(n_calib * 0.3)
 
     # pre-attack: clean benign steady state
-    for v in _rows(BENIGN_CSV, n_pre, b_off):
+    for v in _rows(benign_csv, n_pre, b_off):
         stream.append(_record(v, names, 0, BENIGN_REPUTATION, "pre_attack"))
 
     # slow poisoning: real attack rows walked toward real benign rows
     atk = _rows(attack_csv, n_poison, a_off)
-    ben = _rows(BENIGN_CSV, n_poison, b_off + n_pre)
+    ben = _rows(benign_csv, n_poison, b_off + n_pre)
     for i in range(n_poison):
         alpha = i / max(1, n_poison - 1)
         v = _interp(atk[i], ben[i], alpha)
@@ -237,7 +257,7 @@ def slow_poisoning_stream(n_calib=400, n_pre=400, n_poison=600, n_post=400,
     # the benign manifold, which is what makes them undetectable from traffic
     # alone and detectable only via the out-of-band channel.
     atk_p = _rows(attack_csv, n_post, a_off + n_poison)
-    ben_p = _rows(BENIGN_CSV, n_post, b_off + n_pre + n_poison)
+    ben_p = _rows(benign_csv, n_post, b_off + n_pre + n_poison)
     for i in range(n_post):
         v = _interp(atk_p[i], ben_p[i], 1.0)
         stream.append(_record(v, names, 1, ATTACK_REPUTATION, "post_poison"))

@@ -21,3 +21,8 @@ data/nbaiot/
 
 # built artifact: index.html with the screenshots inlined as data URIs
 docs/walkthrough/standalone.html
+
+logs/
+data/fake_nbaiot/
+results/runs/
+data/iot23/

@@ -16,11 +16,23 @@ import numpy as np
 N_FEATURES = 20
 FEATURE_NAMES = [f"f{i}" for i in range(N_FEATURES)]
 
-rng = np.random.default_rng(42)
-
-BENIGN_MEAN = rng.normal(0, 1, N_FEATURES)
-ATTACK_MEAN = BENIGN_MEAN + rng.normal(4, 0.5, N_FEATURES)  # well-separated
 NOISE_STD = 1.0
+
+
+def reseed(seed):
+    """Reset the generator AND the class means to a fresh world for `seed`.
+
+    The stream functions share this module-level state, so without reseeding
+    a stream depends on what was generated before it in the same process.
+    reseed(42) restores exactly the import-time state.
+    """
+    global rng, BENIGN_MEAN, ATTACK_MEAN
+    rng = np.random.default_rng(seed)
+    BENIGN_MEAN = rng.normal(0, 1, N_FEATURES)
+    ATTACK_MEAN = BENIGN_MEAN + rng.normal(4, 0.5, N_FEATURES)  # well-separated
+
+
+reseed(42)
 
 
 def _sample(mean_vec, n=1):
@@ -53,13 +65,16 @@ def _calibration_block(n_calib, attack_fraction=0.3):
     return block
 
 
-def genuine_drift_stream(n_calib=400, n_pre=400, n_drift=600, n_post=400):
+def genuine_drift_stream(n_calib=400, n_pre=400, n_drift=600, n_post=400, seed=None):
     """
     Scenario 1 — legitimate behavioural drift.
     A benign device's traffic pattern gradually shifts to a NEW benign
     operating point (e.g. firmware update changes polling behaviour).
     Destination reputation stays clean throughout (reputation=1.0).
+    seed=None continues the shared generator (historic behaviour).
     """
+    if seed is not None:
+        reseed(seed)
     stream = []
     new_benign_mean = BENIGN_MEAN + rng.normal(2.5, 0.3, N_FEATURES)
 
@@ -75,7 +90,8 @@ def genuine_drift_stream(n_calib=400, n_pre=400, n_drift=600, n_post=400):
     return stream
 
 
-def slow_poisoning_stream(n_calib=400, n_pre=400, n_poison=600, n_post=400, n_recovery_check=200):
+def slow_poisoning_stream(n_calib=400, n_pre=400, n_poison=600, n_post=400, n_recovery_check=200,
+                          seed=None):
     """
     Scenario 2 — slow adversarial concept drift.
     A patient, white-box attacker knows the IDS continually adapts, and
@@ -85,7 +101,10 @@ def slow_poisoning_stream(n_calib=400, n_pre=400, n_poison=600, n_post=400, n_re
     Crucially: the destination is still C2 infrastructure the whole time,
     so the out-of-band reputation signal stays bad (reputation=0.05)
     even as the traffic-derived features start to look benign.
+    seed=None continues the shared generator (historic behaviour).
     """
+    if seed is not None:
+        reseed(seed)
     stream = []
     stream.extend(_calibration_block(n_calib))
     for _ in range(n_pre):

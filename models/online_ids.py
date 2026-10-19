@@ -57,3 +57,67 @@ class OnlineIDS:
         """Apply an AUTHORIZED batch of (x, y) to the model."""
         for x, y in records:
             self.learn_one(x, y)
+
+
+class EWCOnlineIDS(OnlineIDS):
+    """
+    Elastic Weight Consolidation baseline: learns from EVERY drift-triggered
+    proposal (like the ungated arm), but each SGD step is followed by a step
+    on the EWC penalty
+
+        (lambda / 2) * sum_i F_i * (w_i - w*_i)^2
+
+    where w* are the logistic-regression weights after calibration and F is
+    the diagonal Fisher information of the calibration data, normalised to
+    max 1. Important weights are pulled back toward what calibration learned;
+    unimportant ones move freely.
+
+    This is the standard defence against FORGETTING. It has no notion of
+    whether an update is authorized, which is exactly why it is the right
+    baseline: it shows how much of the gate's benefit is just "don't forget".
+    Limitation, stated plainly: only the LR weights are anchored; the
+    StandardScaler in front of them keeps updating its running statistics.
+    """
+
+    def __init__(self, ewc_lambda=50.0, drift_detector=True):
+        super().__init__(drift_detector=drift_detector)
+        self.ewc_lambda = ewc_lambda
+        self.fisher = None
+        self.anchor = None
+
+    @property
+    def _scaler(self):
+        return self.model["StandardScaler"]
+
+    @property
+    def _lr(self):
+        return self.model["LogisticRegression"]
+
+    def consolidate(self, xs):
+        """Freeze the current weights as w* and estimate F on calibration inputs."""
+        fisher, fisher_b = {}, 0.0
+        for x in xs:
+            z = self._scaler.transform_one(x)
+            p = self._lr.predict_proba_one(z).get(True, 0.0)
+            g = p * (1.0 - p)
+            for k, v in z.items():
+                fisher[k] = fisher.get(k, 0.0) + g * v * v
+            fisher_b += g
+        top = max(list(fisher.values()) + [fisher_b, 1e-12])
+        self.fisher = {k: v / top for k, v in fisher.items()}
+        self.fisher_intercept = fisher_b / top
+        self.anchor = dict(self._lr._weights)
+        self.anchor_intercept = self._lr.intercept
+
+    def learn_one(self, x, y_true):
+        super().learn_one(x, y_true)
+        if self.anchor is None:
+            return
+        lr = self._lr
+        step = lr.optimizer.learning_rate * self.ewc_lambda
+        w = lr._weights
+        for k, w_star in self.anchor.items():
+            c = min(1.0, step * self.fisher.get(k, 0.0))
+            w[k] = w[k] - c * (w[k] - w_star)
+        c = min(1.0, step * self.fisher_intercept)
+        lr.intercept = lr.intercept - c * (lr.intercept - self.anchor_intercept)

@@ -1,4 +1,4 @@
-"""
+r"""
 READ-ONLY CHECKS ONLY. Does not modify any project file or write any output
 besides stdout. Run with: .\.venv\Scripts\python.exe check_before_real_data.py
 (place this at the trust_ids_poc/ root, next to data/).
@@ -44,7 +44,7 @@ for i in range(10):
     start = end
 
 block_means = np.array([b.mean(axis=0).to_numpy(dtype=float) for b in blocks])
-overall_std = benign_df.std(axis=0).to_numpy(dtype=float)
+overall_std = benign_df.std(axis=0).to_numpy(dtype=float, copy=True)  # pandas 3: views are read-only
 overall_std[overall_std == 0] = 1e-9  # avoid div by zero on constant columns
 
 standardized_means = block_means / overall_std  # standardize by overall feature std, same as prior inspection

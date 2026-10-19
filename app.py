@@ -29,16 +29,10 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE)
 RESULTS = os.path.join(BASE, "results")
 
-ARMS = ["static", "ungated", "gate_traffic_only", "gate_full"]
-LABELS = {
-    "static": "Never learns",
-    "ungated": "Learns from everything",
-    "gate_traffic_only": "Checks traffic only",
-    "gate_full": "Our method (traffic + reputation)",
-}
+ALL_ARMS = charts.ARMS
+LABELS = charts.LABELS
 SHORT = LABELS
-COLORS = {"static": "#888888", "ungated": "#d62728",
-          "gate_traffic_only": "#ff7f0e", "gate_full": "#2ca02c"}
+BACKEND_URL = os.environ.get("TRUST_IDS_BACKEND", "http://localhost:8765")
 
 EVIDENCE_PLAIN = [
     ("attribution", "Same direction as changes we already approved?",
@@ -73,27 +67,55 @@ def load_log(scenario, tag):
         return json.load(f)
 
 
-@st.cache_data(show_spinner="Running pipeline on real N-BaIoT (first run reads ~190 MB of CSV)...")
-def run_live(scenario, tag, trust_threshold, veto_threshold, w_att, w_topo, w_temp):
-    from experiments.run_scenarios import run_scenario
-    if tag == "synth":
-        from data.synth_stream import (genuine_drift_stream, slow_poisoning_stream,
-                                       FEATURE_NAMES)
-        names = FEATURE_NAMES
-        kw = {}
-    else:
-        from data.load_nbaiot import (genuine_drift_stream, slow_poisoning_stream,
-                                      feature_names)
-        names = feature_names()
-        kw = {"benign_b_csv": os.path.join(
-            BASE, "data", "nbaiot", "Ennio_Doorbell", "benign_traffic.csv")}
+def _backend_run(body, timeout=600):
+    """Run on the backend (backend/server.py); None if it isn't reachable."""
+    import urllib.error
+    import urllib.request
+    headers = {"Content-Type": "application/json"}
+    if os.environ.get("TRUST_IDS_TOKEN"):
+        headers["X-API-Key"] = os.environ["TRUST_IDS_TOKEN"]
 
+    def call(path, data=None):
+        req = urllib.request.Request(BACKEND_URL + path, headers=headers,
+                                     data=json.dumps(data).encode() if data else None)
+        with urllib.request.urlopen(req, timeout=10) as r:
+            return json.load(r)
+
+    try:
+        run_id = call("/api/runs", body)["run_id"]
+    except (urllib.error.URLError, OSError):
+        return None
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        run = call(f"/api/runs/{run_id}")
+        if run["status"] == "error":
+            raise RuntimeError(f"backend run {run_id} failed: {run['error']}")
+        if run["status"] == "done":
+            log = {arm: [] for arm in run["events"][0]["arms"]} if run["events"] else {}
+            for ev in run["events"]:
+                for arm, entry in ev["arms"].items():
+                    log[arm].append(entry)
+            return log
+        time.sleep(0.3)
+    raise TimeoutError(f"backend run {run_id} did not finish in {timeout}s")
+
+
+@st.cache_data(show_spinner="Running pipeline (real N-BaIoT: first run reads ~190 MB of CSV)...")
+def run_live(scenario, tag, trust_threshold, veto_threshold, w_att, w_topo, w_temp,
+             rep_flip=0.0, feature_drift=False):
     gp = dict(trust_threshold=trust_threshold,
               reputation_veto_threshold=veto_threshold,
               w_attribution=w_att, w_topology=w_topo, w_temporal=w_temp)
-    stream = (slow_poisoning_stream() if scenario == "slow_poisoning"
-              else genuine_drift_stream(**kw))
-    return run_scenario(stream, names, scenario, gate_params=gp)
+    noise = {"flip_rate": rep_flip, "sigma": 0.05 if rep_flip else 0.0}
+    log = _backend_run({"scenario": scenario, "source": tag, "gate": gp, "pace_ms": 0,
+                        "reputation_noise": noise, "feature_drift": feature_drift})
+    if log is not None:
+        return log
+    # no backend running: same pipeline, in-process
+    from experiments.run_scenarios import run_scenario
+    from experiments.streams import build_stream
+    stream, names = build_stream(scenario, tag, reputation_noise=noise)
+    return run_scenario(stream, names, scenario, gate_params=gp, feature_drift=feature_drift)
 
 
 # ------------------------------------------------------------------ sidebar
@@ -102,8 +124,9 @@ scenario = st.sidebar.radio(
     "Scenario", ["slow_poisoning", "genuine_drift"],
     format_func=lambda s: {"slow_poisoning": "2 — Slow poisoning (adversarial)",
                            "genuine_drift": "1 — Genuine drift (benign)"}[s])
-tag = st.sidebar.radio("Data source", ["real", "synth"],
+tag = st.sidebar.radio("Data source", ["real", "iot23", "synth"],
                        format_func=lambda t: {"real": "Real N-BaIoT",
+                                              "iot23": "IoT-23 (real, second dataset)",
                                               "synth": "Synthetic"}[t])
 
 st.sidebar.divider()
@@ -119,9 +142,25 @@ with st.sidebar.expander("Advanced settings", expanded=False):
     w_att = st.slider("Weight: same direction?", 0.0, 1.0, 0.40, 0.05, disabled=not live)
     w_topo = st.slider("Weight: mixed traffic?", 0.0, 1.0, 0.30, 0.05, disabled=not live)
     w_temp = st.slider("Weight: smooth change?", 0.0, 1.0, 0.30, 0.05, disabled=not live)
+    w_sum = w_att + w_topo + w_temp
+    if w_sum == 0:
+        st.error("At least one weight must be above zero.")
+    elif abs(w_sum - 1) > 1e-9:
+        st.caption(f"Weights sum to {w_sum:.2f}; the gate rescales them to "
+                   f"{w_att / w_sum:.2f} / {w_topo / w_sum:.2f} / {w_temp / w_sum:.2f}.")
+    rep_flip = st.slider("Reputation feed error rate", 0.0, 0.5, 0.0, 0.05, disabled=not live,
+                         help="Per-record probability the out-of-band feed reports the "
+                              "wrong class. 0 = the oracle used for the report.")
+    feature_drift = st.toggle("Also detect feature drift", value=False, disabled=not live,
+                              help="Second drift trigger on distance from calibration "
+                                   "traffic, so a benign shift the model already handles "
+                                   "still proposes updates.")
 
+if live and w_sum == 0:
+    st.stop()
 if live:
-    log = run_live(scenario, tag, trust_threshold, veto_threshold, w_att, w_topo, w_temp)
+    log = run_live(scenario, tag, trust_threshold, veto_threshold, w_att, w_topo, w_temp,
+                   rep_flip, feature_drift)
 else:
     log = load_log(scenario, tag)
 
@@ -135,11 +174,16 @@ if log is None:
              "`python experiments/run_scenarios.py` first, or enable live re-run.")
     st.stop()
 
+ARMS = [a for a in ALL_ARMS if a in log]  # older logs lack ewc / gate_quarantine
+if tag == "iot23":
+    st.info("**IoT-23** - real labelled Zeek flows (Mirai capture 34-1, Amazon Echo honeypot). "
+            "One record is one flow (21 features), not an N-BaIoT packet window.")
 N = len(log["static"])
 ROUND_SIZE = 20
 
 # reset the playhead whenever the underlying run changes
-run_key = f"{scenario}|{tag}|{live}|{THRESH}|{VETO}|{w_att}|{w_topo}|{w_temp}"
+run_key = (f"{scenario}|{tag}|{live}|{THRESH}|{VETO}|{w_att}|{w_topo}|{w_temp}"
+           f"|{rep_flip}|{feature_drift}")
 if st.session_state.get("run_key") != run_key:
     st.session_state.run_key = run_key
     st.session_state.t = 0
@@ -188,7 +232,7 @@ with tab_live:
 
     # --- live classification, this window ---
     st.subheader("Is each system spotting the attack right now?")
-    cs = st.columns(4)
+    cs = st.columns(len(ARMS))
     for col, arm in zip(cs, ARMS):
         acc = now[arm]["round_accuracy"]
         ncorrect = int(round(acc * ROUND_SIZE))
@@ -281,12 +325,12 @@ with tab_summary:
     if n_drift_rounds == 0:
         st.warning(
             "**No drift was detected in this scenario, so no update was ever proposed and "
-            "all four arms are identical.** This is a real negative result, not a bug: ADWIN "
+            "all arms are identical.** This is a real negative result, not a bug: ADWIN "
             "watches the frozen arm's *error rate*, and this benign-to-benign shift never "
             "crosses the decision boundary — the static model still scores ~0.99, so nothing "
             "needed adapting.")
 
-    st.markdown("**Four systems, same traffic, same model.** The only difference is what "
+    st.markdown(f"**{len(ARMS)} systems, same traffic, same model.** The only difference is what "
                 "each one is allowed to learn from. Scroll down for the plain-English "
                 "explanation.")
 
@@ -295,7 +339,7 @@ with tab_summary:
         sel = [r["round_accuracy"] for r in log[arm] if r.get("phase") == "recovery_check"]
         recovery[arm] = float(np.mean(sel)) if sel else None
 
-    cols = st.columns(4)
+    cols = st.columns(len(ARMS))
     for col, arm in zip(cols, ARMS):
         final = log[arm][-1]
         n_auth = sum(1 for r in log[arm] if r.get("authorized"))
@@ -374,9 +418,15 @@ with tab_summary:
             "**So the honest claim is:** this demonstrates what an authorization mechanism does "
             "*once it has an independent signal* — not that the gate detects the attacker. "
             "Integrating a real reputation / C2-cost source is Project-II work.\n\n"
-            "**Also outstanding:** no hyperparameter tuning; no EWC/Fisher-freezing baseline; "
-            "Scenario 1 currently produces a null result because a benign-to-benign device "
-            "shift does not degrade the frozen model enough for error-rate-driven ADWIN to fire.\n\n"
+            "**Also outstanding:** no hyperparameter tuning. On real N-BaIoT, Scenario 1 is a "
+            "null result unless the feature-drift trigger is on, because a benign-to-benign "
+            "device shift does not degrade the frozen model enough for error-rate-driven ADWIN "
+            "to fire.\n\n"
+            "**The quarantine arm** (`gate/quarantine.py`) replaces the one-shot reputation veto "
+            "with a sequential test over the whole drift episode and applies updates "
+            "provisionally, with rollback. Robustness to a *wrong* feed comes from the "
+            "sequential test; rollback is what removes poison a *late* feed let in. Both hold "
+            "only while the feed is wrong on at most the assumed 30% of records.\n\n"
             "**Evidence is computed in a calibrated feature space** (`evidence/featurespace.py`), "
             "fit on calibration benign data only. On raw N-BaIoT values the geometric evidence "
             "signals collapse: `temporal_stability` returns 1.7e-17 and five "

@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import matplotlib.pyplot as plt
@@ -10,19 +11,23 @@ COLORS = {
     "ungated": "#d62728",
     "gate_traffic_only": "#ff7f0e",
     "gate_full": "#2ca02c",
+    "ewc": "#1f77b4",
+    "gate_quarantine": "#9467bd",
 }
 LABELS = {
     "static": "Static (never updates)",
     "ungated": "Ungated continual learning",
     "gate_traffic_only": "Traffic-only gate (ExpIDS-style)",
     "gate_full": "Proposed: trust gate + reputation veto",
+    "ewc": "EWC (learns everything, anchored)",
+    "gate_quarantine": "Extension: quarantine + sequential test + rollback",
 }
 
 
 def plot_scenario(log_path, title, out_path, phase_lines=None):
     log = json.load(open(log_path))
     fig, ax = plt.subplots(figsize=(10, 5))
-    for arm in ["static", "ungated", "gate_traffic_only", "gate_full"]:
+    for arm in [a for a in LABELS if a in log]:
         rounds = [r["round"] for r in log[arm]]
         accs = [r["round_accuracy"] for r in log[arm]]
         ax.plot(rounds, accs, label=LABELS[arm], color=COLORS[arm], linewidth=2)
@@ -62,20 +67,31 @@ def plot_authorization_timeline(log_path, out_path):
     print("wrote", out_path)
 
 
-if __name__ == "__main__":
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--tag", default="real", help="which logs to plot: real / synth / fake")
+    tag = ap.parse_args().tag
+
+    def res(name):
+        return os.path.join(RESULTS, name)
+
     plot_scenario(
-        os.path.join(RESULTS, "genuine_drift_log.json"),
-        "Scenario 1 — Genuine drift: static falls behind, all continual learners adapt",
-        os.path.join(RESULTS, "scenario1_genuine_drift.png"),
+        res(f"genuine_drift_log_{tag}.json"),
+        f"Scenario 1 — Genuine drift ({tag})",
+        res(f"scenario1_genuine_drift_{tag}.png"),
         phase_lines=[(20, "drift starts"), (50, "drift settled")],
     )
     plot_scenario(
-        os.path.join(RESULTS, "slow_poisoning_log.json"),
-        "Scenario 2 — Slow poisoning: only the trust gate survives it",
-        os.path.join(RESULTS, "scenario2_slow_poisoning.png"),
+        res(f"slow_poisoning_log_{tag}.json"),
+        f"Scenario 2 — Slow poisoning ({tag})",
+        res(f"scenario2_slow_poisoning_{tag}.png"),
         phase_lines=[(20, "poisoning starts"), (50, "post-poison"), (70, "obvious repeat attack")],
     )
     plot_authorization_timeline(
-        os.path.join(RESULTS, "slow_poisoning_log.json"),
-        os.path.join(RESULTS, "gate_decision_trace.png"),
+        res(f"slow_poisoning_log_{tag}.json"),
+        res(f"gate_decision_trace_{tag}.png"),
     )
+
+
+if __name__ == "__main__":
+    main()
